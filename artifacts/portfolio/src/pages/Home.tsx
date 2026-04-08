@@ -404,7 +404,7 @@ function CursorSpotlight() {
     <div
       className="pointer-events-none fixed inset-0 z-[1]"
       style={{
-        background: `radial-gradient(600px circle at ${pos.x}px ${pos.y}px, rgba(255,255,255,0.028), transparent 80%)`,
+        background: `radial-gradient(280px circle at ${pos.x}px ${pos.y}px, rgba(255,255,255,0.016), transparent 80%)`,
         transition: "background 0.05s linear",
       }}
     />
@@ -631,13 +631,6 @@ export default function Home() {
             <a href="#experience" className="link-anim text-[#888] hover:text-[#e4e4e7] text-sm pb-px">{tr.navExperience}</a>
             <a href="#projects"   className="link-anim text-[#888] hover:text-[#e4e4e7] text-sm pb-px">{tr.navProjects}</a>
             <a href="#contact"    className="link-anim text-[#888] hover:text-[#e4e4e7] text-sm pb-px">{tr.navContact}</a>
-            <a href="/cv.pdf" download
-              className="link-anim text-[#888] hover:text-[#e4e4e7] text-sm pb-px flex items-center gap-1"
-              aria-label="Download CV"
-            >
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              CV
-            </a>
             <a href="https://github.com/neo-nunez" target="_blank" rel="noreferrer"
               className="text-[#888] hover:text-[#e4e4e7] transition-colors" aria-label="GitHub">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
