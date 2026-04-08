@@ -540,14 +540,14 @@ export default function Home() {
           if (entry.isIntersecting) setActive(entry.target.id);
         });
       },
-      { rootMargin: "-35% 0px -65% 0px", threshold: 0 }
+      { rootMargin: "-20% 0px -55% 0px", threshold: 0 }
     );
     ids.forEach(id => {
       const el = document.getElementById(id);
       if (el) observer.observe(el);
     });
     const handleScroll = () => {
-      const nearBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 80;
+      const nearBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 16;
       if (nearBottom) setActive("contact");
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
