@@ -538,51 +538,28 @@ export default function Home() {
     return () => window.removeEventListener("keydown", handle);
   }, []);
 
-  // Section tracking — hybrid:
-  //   tall sections (intro/experience/projects): activate as soon as their top passes the navbar
-  //   short sections (skills/languages/contact):  midpoint-based (closest midpoint to viewport centre)
+  // Section tracking — pure midpoint for intro→languages, bottom-detection for contact
   useEffect(() => {
-    const tallIds  = ["intro", "experience", "projects"];
-    const shortIds = ["skills", "languages", "contact"];
-    const NAV = 72; // navbar height px
+    const ids = ["intro", "experience", "projects", "skills", "languages"];
 
     const update = () => {
-      // Switch to short-zone once the Projects section's bottom crosses the viewport midpoint.
-      // At that moment Projects is mostly above-centre and Skills is approaching — the right
-      // time to hand off to midpoint-based tracking for the bottom three sections.
-      const projectsEl = document.getElementById("projects");
-      const inShortZone = projectsEl
-        ? projectsEl.getBoundingClientRect().bottom <= window.innerHeight / 2
-        : false;
+      // Contact only when the user cannot scroll any further
+      const atBottom =
+        window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4;
+      if (atBottom) { setActive("contact"); return; }
 
-      if (inShortZone) {
-        // Contact: only at the absolute bottom of the page
-        const atBottom =
-          window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4;
-        if (atBottom) { setActive("contact"); return; }
-
-        // Skills vs Languages: whichever midpoint is closest to viewport centre
-        const mid = window.scrollY + window.innerHeight / 2;
-        let closest = "skills";
-        let minDist = Infinity;
-        for (const id of ["skills", "languages"]) {
-          const el = document.getElementById(id);
-          if (!el) continue;
-          const elMid = window.scrollY + el.getBoundingClientRect().top + el.offsetHeight / 2;
-          const dist = Math.abs(mid - elMid);
-          if (dist < minDist) { minDist = dist; closest = id; }
-        }
-        setActive(closest);
-      } else {
-        // "Past the top" approach for intro / experience / projects
-        let active = tallIds[0];
-        for (let i = tallIds.length - 1; i >= 0; i--) {
-          const el = document.getElementById(tallIds[i]);
-          if (!el) continue;
-          if (el.getBoundingClientRect().top <= NAV) { active = tallIds[i]; break; }
-        }
-        setActive(active);
+      // Every other section: whichever midpoint is closest to the viewport centre wins
+      const mid = window.scrollY + window.innerHeight / 2;
+      let closest = ids[0];
+      let minDist = Infinity;
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        const elMid = window.scrollY + el.getBoundingClientRect().top + el.offsetHeight / 2;
+        const dist = Math.abs(mid - elMid);
+        if (dist < minDist) { minDist = dist; closest = id; }
       }
+      setActive(closest);
     };
 
     update();
