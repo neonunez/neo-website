@@ -1,17 +1,36 @@
 import { useEffect } from "react";
+import {
+  Building2,
+  BrainCircuit,
+  Mic,
+  LayoutGrid,
+  GraduationCap,
+} from "lucide-react";
 
 type BadgeProps = {
+  icon: React.ReactNode;
   children: React.ReactNode;
-  color?: string;
 };
 
-function Badge({ children, color = "#e4e4e7" }: BadgeProps) {
+function Badge({ icon, children }: BadgeProps) {
   return (
-    <span
-      style={{ borderColor: `${color}22`, color }}
-      className="inline-flex items-center gap-1 px-2 py-0.5 text-xs rounded border bg-white/[0.04] align-middle leading-snug font-medium whitespace-nowrap"
-    >
+    <span className="inline-flex items-center gap-1.5 px-2 py-1 text-xs rounded-md border border-white/[0.08] bg-white/[0.04] text-[#e4e4e7] align-middle leading-none font-medium whitespace-nowrap">
+      <span className="flex items-center opacity-90">{icon}</span>
       {children}
+    </span>
+  );
+}
+
+type FlagBadgeProps = {
+  flag: string;
+  label: string;
+};
+
+function FlagBadge({ flag, label }: FlagBadgeProps) {
+  return (
+    <span className="inline-flex items-center gap-1.5 px-2 py-1 text-xs rounded-md border border-white/[0.08] bg-white/[0.04] text-[#e4e4e7] align-middle leading-none font-medium whitespace-nowrap">
+      <span className="text-sm leading-none">{flag}</span>
+      {label}
     </span>
   );
 }
@@ -111,29 +130,29 @@ export default function Home() {
         </p>
 
         {/* Status lines */}
-        <div className="space-y-2 text-sm leading-relaxed mb-6">
+        <div className="space-y-2.5 text-sm leading-relaxed mb-6">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-[#888]">Working at</span>{" "}
-            <Badge color="#60a5fa">Apply Latam</Badge>
+            <span className="text-[#888]">Working at</span>
+            <Badge icon={<Building2 size={11} className="text-[#60a5fa]" />}>Apply Latam</Badge>
           </div>
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-[#888]">Building</span>{" "}
-            <Badge color="#a78bfa">Enterprise RAG System</Badge>
-            <Badge color="#34d399">VoiceFlow</Badge>
-            <Badge color="#fb923c">FocusPad</Badge>
+            <span className="text-[#888]">Building</span>
+            <Badge icon={<BrainCircuit size={11} className="text-[#a78bfa]" />}>Enterprise RAG System</Badge>
+            <Badge icon={<Mic size={11} className="text-[#34d399]" />}>VoiceFlow</Badge>
+            <Badge icon={<LayoutGrid size={11} className="text-[#fb923c]" />}>FocusPad</Badge>
           </div>
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-[#888]">Studying at</span>{" "}
-            <Badge color="#f472b6">UBA — Computer Science</Badge>
+            <span className="text-[#888]">Studying at</span>
+            <Badge icon={<GraduationCap size={11} className="text-[#f472b6]" />}>UBA — Computer Science</Badge>
           </div>
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-[#888]">Fluent in</span>{" "}
-            <Badge color="#e4e4e7">ES</Badge>
-            <Badge color="#e4e4e7">EN</Badge>
-            <Badge color="#e4e4e7">FR</Badge>
-            <Badge color="#e4e4e7">DE</Badge>
-            <Badge color="#e4e4e7">IT</Badge>
-            <Badge color="#e4e4e7">PT</Badge>
+            <span className="text-[#888]">Fluent in</span>
+            <FlagBadge flag="🇦🇷" label="Spanish" />
+            <FlagBadge flag="🇬🇧" label="English" />
+            <FlagBadge flag="🇫🇷" label="French" />
+            <FlagBadge flag="🇩🇪" label="German" />
+            <FlagBadge flag="🇮🇹" label="Italian" />
+            <FlagBadge flag="🇧🇷" label="Portuguese" />
           </div>
         </div>
 
