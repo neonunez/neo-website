@@ -392,25 +392,6 @@ function LanguageSwitcher({ lang, setLang }: { lang: Lang; setLang: (l: Lang) =>
   );
 }
 
-// Cursor spotlight — subtle radial glow that follows the pointer
-function CursorSpotlight() {
-  const [pos, setPos] = useState({ x: -1000, y: -1000 });
-  useEffect(() => {
-    const move = (e: MouseEvent) => setPos({ x: e.clientX, y: e.clientY });
-    window.addEventListener("mousemove", move);
-    return () => window.removeEventListener("mousemove", move);
-  }, []);
-  return (
-    <div
-      className="pointer-events-none fixed inset-0 z-[1]"
-      style={{
-        background: `radial-gradient(280px circle at ${pos.x}px ${pos.y}px, rgba(255,255,255,0.016), transparent 80%)`,
-        transition: "background 0.05s linear",
-      }}
-    />
-  );
-}
-
 // Section indicator — left sidebar
 function SectionIndicator({ active, sections }: { active: string; sections: { id: string; label: string }[] }) {
   return (
@@ -605,9 +586,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-[#121212] text-[#e4e4e7] antialiased">
-
-      {/* Cursor spotlight */}
-      <CursorSpotlight />
 
       {/* Grain */}
       <div className="pointer-events-none fixed inset-0 z-50 opacity-[0.025]"
@@ -827,16 +805,16 @@ export default function Home() {
             <h2 className="text-xs font-semibold uppercase tracking-widest text-[#555] mb-6">{tr.sectionSkills}</h2>
             <div className="space-y-3 text-sm text-[#888]">
               {[
-                { label: tr.skillLang,  value: "Python · JavaScript · Groovy · Jython · SQL · HTML · CSS" },
-                { label: "AI / ML",     value: "LangGraph · LlamaIndex · RAG · LLM orchestration · Gemini · Ollama · mlx-whisper · prompt engineering" },
-                { label: "Frameworks",  value: "FastAPI · Next.js · React Native (Expo)" },
-                { label: tr.skillData,  value: "Oracle ODI · ETL/ELT · Supabase · data warehousing" },
-                { label: tr.skillTools, value: "Git · Docker · Cursor · Google Workspace" },
+                { label: tr.skillLang,     value: "Python · JavaScript · TypeScript · Groovy · Jython · SQL · HTML · CSS" },
+                { label: "AI / ML",        value: "LangGraph · LlamaIndex · RAG · LLM orchestration · Gemini · Ollama · mlx-whisper · prompt engineering" },
+                { label: "Frameworks",     value: "FastAPI · Next.js · React Native (Expo)" },
+                { label: tr.skillData,     value: "Oracle ODI · ETL/ELT · Supabase · data warehousing" },
+                { label: tr.skillTools,    value: "Git · Docker · Cursor · Google Workspace" },
                 { label: tr.skillLearning, value: "ML fundamentals · neural networks · fine-tuning · reinforcement learning" },
               ].map(row => (
-                <div key={row.label} className="flex gap-2 flex-wrap items-baseline">
-                  <span className="text-[#555] text-xs w-28 shrink-0">{row.label}</span>
-                  <span>{row.value}</span>
+                <div key={row.label} className="grid gap-x-6" style={{ gridTemplateColumns: "7rem 1fr" }}>
+                  <span className="text-[#555] text-xs self-start pt-[3px] leading-relaxed">{row.label}</span>
+                  <span className="leading-relaxed">{row.value}</span>
                 </div>
               ))}
             </div>
@@ -849,13 +827,31 @@ export default function Home() {
         <FadeUp>
           <section id="languages">
             <h2 className="text-xs font-semibold uppercase tracking-widest text-[#555] mb-6">{tr.sectionLanguages}</h2>
-            <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm text-[#888]">
-              <div className="flex justify-between"><span>{tr.langSpanish}</span><span className="text-[#555] text-xs">{tr.langNative}</span></div>
-              <div className="flex justify-between"><span>{tr.langPortuguese}</span><span className="text-[#555] text-xs">{tr.langNativeLevel}</span></div>
-              <div className="flex justify-between"><span>{tr.langEnglish}</span><span className="text-[#555] text-xs">C1 · Cambridge</span></div>
-              <div className="flex justify-between"><span>{tr.langFrench}</span><span className="text-[#555] text-xs">B2 · Alliance Française</span></div>
-              <div className="flex justify-between"><span>{tr.langGerman}</span><span className="text-[#555] text-xs">B2 · Goethe Institut</span></div>
-              <div className="flex justify-between"><span>{tr.langItalian}</span><span className="text-[#555] text-xs">B1 · Dante Alighieri</span></div>
+            <div className="grid grid-cols-2 gap-x-8 gap-y-3 text-sm text-[#888]">
+              {[
+                { name: tr.langSpanish,    level: tr.langNative,      cert: "#" },
+                { name: tr.langPortuguese, level: tr.langNativeLevel,  cert: "#" },
+                { name: tr.langEnglish,    level: "C1 · Cambridge",    cert: "#" },
+                { name: tr.langFrench,     level: "B2 · Alliance Fr.", cert: "#" },
+                { name: tr.langGerman,     level: "B2 · Goethe",       cert: "#" },
+                { name: tr.langItalian,    level: "B1 · Dante Aligh.", cert: "#" },
+              ].map(({ name, level, cert }) => (
+                <div key={name} className="flex items-center justify-between gap-2">
+                  <a
+                    href={cert}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="group link-anim inline-flex items-center gap-1.5 text-[#e4e4e7] pb-px hover:text-white"
+                  >
+                    {name}
+                    <ExternalLink
+                      size={10}
+                      className="opacity-25 group-hover:opacity-60 transition-opacity shrink-0"
+                    />
+                  </a>
+                  <span className="text-[#555] text-xs shrink-0">{level}</span>
+                </div>
+              ))}
             </div>
           </section>
         </FadeUp>
