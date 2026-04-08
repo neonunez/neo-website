@@ -547,17 +547,21 @@ export default function Home() {
     const NAV = 72; // navbar height px
 
     const update = () => {
-      // Are we in the short-section zone? (skills top has scrolled above the nav)
-      const skillsEl = document.getElementById("skills");
-      const inShortZone = skillsEl ? skillsEl.getBoundingClientRect().top <= NAV : false;
+      // Switch to short-zone once the Projects section's bottom crosses the viewport midpoint.
+      // At that moment Projects is mostly above-centre and Skills is approaching — the right
+      // time to hand off to midpoint-based tracking for the bottom three sections.
+      const projectsEl = document.getElementById("projects");
+      const inShortZone = projectsEl
+        ? projectsEl.getBoundingClientRect().bottom <= window.innerHeight / 2
+        : false;
 
       if (inShortZone) {
-        // Contact: only when fully scrolled to the very end
+        // Contact: only at the absolute bottom of the page
         const atBottom =
           window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4;
         if (atBottom) { setActive("contact"); return; }
 
-        // Skills vs Languages: whichever midpoint is closer to viewport centre
+        // Skills vs Languages: whichever midpoint is closest to viewport centre
         const mid = window.scrollY + window.innerHeight / 2;
         let closest = "skills";
         let minDist = Infinity;
