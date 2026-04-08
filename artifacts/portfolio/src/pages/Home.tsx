@@ -307,7 +307,7 @@ function TechBadge({ label }: { label: string }) {
 function SocialLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
     <a href={href} target="_blank" rel="noreferrer"
-      className="inline-flex items-center gap-1.5 text-[#888] hover:text-[#e4e4e7] transition-colors duration-150 text-sm">
+      className="link-anim inline-flex items-center gap-1.5 text-[#888] hover:text-[#e4e4e7] text-sm pb-px">
       {children}
     </a>
   );
@@ -389,6 +389,25 @@ function LanguageSwitcher({ lang, setLang }: { lang: Lang; setLang: (l: Lang) =>
         </motion.div>
       )}
     </div>
+  );
+}
+
+// Cursor spotlight — subtle radial glow that follows the pointer
+function CursorSpotlight() {
+  const [pos, setPos] = useState({ x: -1000, y: -1000 });
+  useEffect(() => {
+    const move = (e: MouseEvent) => setPos({ x: e.clientX, y: e.clientY });
+    window.addEventListener("mousemove", move);
+    return () => window.removeEventListener("mousemove", move);
+  }, []);
+  return (
+    <div
+      className="pointer-events-none fixed inset-0 z-[1]"
+      style={{
+        background: `radial-gradient(600px circle at ${pos.x}px ${pos.y}px, rgba(255,255,255,0.028), transparent 80%)`,
+        transition: "background 0.05s linear",
+      }}
+    />
   );
 }
 
@@ -587,6 +606,9 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-[#121212] text-[#e4e4e7] antialiased">
 
+      {/* Cursor spotlight */}
+      <CursorSpotlight />
+
       {/* Grain */}
       <div className="pointer-events-none fixed inset-0 z-50 opacity-[0.025]"
         style={{
@@ -606,9 +628,16 @@ export default function Home() {
         <nav className="px-8 py-3.5 flex items-center justify-between max-w-[780px] mx-auto">
           <a href="/" className="font-mono text-sm text-[#e4e4e7] opacity-80 hover:opacity-100 tracking-tight">nn_</a>
           <div className="flex items-center gap-5">
-            <a href="#experience" className="text-[#888] hover:text-[#e4e4e7] transition-colors text-sm">{tr.navExperience}</a>
-            <a href="#projects"   className="text-[#888] hover:text-[#e4e4e7] transition-colors text-sm">{tr.navProjects}</a>
-            <a href="#contact"    className="text-[#888] hover:text-[#e4e4e7] transition-colors text-sm">{tr.navContact}</a>
+            <a href="#experience" className="link-anim text-[#888] hover:text-[#e4e4e7] text-sm pb-px">{tr.navExperience}</a>
+            <a href="#projects"   className="link-anim text-[#888] hover:text-[#e4e4e7] text-sm pb-px">{tr.navProjects}</a>
+            <a href="#contact"    className="link-anim text-[#888] hover:text-[#e4e4e7] text-sm pb-px">{tr.navContact}</a>
+            <a href="/cv.pdf" download
+              className="link-anim text-[#888] hover:text-[#e4e4e7] text-sm pb-px flex items-center gap-1"
+              aria-label="Download CV"
+            >
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              CV
+            </a>
             <a href="https://github.com/neo-nunez" target="_blank" rel="noreferrer"
               className="text-[#888] hover:text-[#e4e4e7] transition-colors" aria-label="GitHub">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -632,6 +661,15 @@ export default function Home() {
             <LanguageSwitcher lang={lang} setLang={setLang} />
           </div>
         </nav>
+        {/* Mobile: active section label — hidden on xl+ where sidebar is visible */}
+        <div className="xl:hidden border-t border-white/[0.04]">
+          <div className="max-w-[780px] mx-auto px-8 py-1.5 flex items-center gap-2">
+            <span className="block h-px w-3 bg-white/20" />
+            <span className="text-[9px] uppercase tracking-widest text-[#444] font-medium">
+              {sections.find(s => s.id === activeSection)?.label ?? ""}
+            </span>
+          </div>
+        </div>
       </div>
 
       {/* Content */}
@@ -700,7 +738,7 @@ export default function Home() {
             <p>
               {tr.bio1.split("github.com/neo-nunez")[0]}
               <a href="https://github.com/neo-nunez" target="_blank" rel="noreferrer"
-                className="text-[#e4e4e7] underline underline-offset-4 decoration-white/20 hover:decoration-white/60 transition-colors">
+                className="link-anim text-[#e4e4e7] pb-px">
                 github.com/neo-nunez
               </a>
               {tr.bio1.split("github.com/neo-nunez")[1]}
@@ -709,7 +747,7 @@ export default function Home() {
             <p>
               {tr.bio3}{" "}
               <a href="mailto:neonunez129@gmail.com"
-                className="text-[#e4e4e7] underline underline-offset-4 decoration-white/20 hover:decoration-white/60 transition-colors">
+                className="link-anim text-[#e4e4e7] pb-px">
                 {tr.bio3Link}
               </a>.
             </p>
@@ -857,13 +895,23 @@ export default function Home() {
                   setCopied(true);
                   setTimeout(() => setCopied(false), 2000);
                 }}
-                className="inline-flex items-center gap-1.5 text-[#e4e4e7] underline underline-offset-4 decoration-white/20 hover:decoration-white/60 transition-colors cursor-pointer"
+                className="link-anim inline-flex items-center gap-1.5 text-[#e4e4e7] cursor-pointer pb-px"
               >
                 {copied
-                  ? <><Check size={12} className="text-[#34d399]" /><span className="text-[#34d399] no-underline">Copied!</span></>
+                  ? <><Check size={12} className="text-[#34d399]" /><span className="text-[#34d399]">Copied!</span></>
                   : "neonunez129@gmail.com"
                 }
               </button>
+            </p>
+            <p className="text-sm text-[#555] mt-3">
+              You can also{" "}
+              <a href="/cv.pdf" download
+                className="link-anim text-[#888] hover:text-[#e4e4e7] pb-px inline-flex items-center gap-1"
+              >
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                download my CV
+              </a>
+              .
             </p>
           </section>
         </FadeUp>

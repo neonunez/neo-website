@@ -6,6 +6,19 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Animated underline: left-to-right draw on hover */
+.link-anim {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  transition: background-size 0.35s ease, color 0.15s ease;
+  text-decoration: none !important;
+}
+.link-anim:hover {
+  background-size: 100% 1px;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
