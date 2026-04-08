@@ -12,6 +12,9 @@ import {
   Check,
   ArrowUp,
   ChevronRight,
+  Briefcase,
+  Code2,
+  Mail,
 } from "lucide-react";
 import {
   SiNextdotjs,
@@ -274,9 +277,9 @@ function Badge({ icon, children }: { icon: React.ReactNode; children: React.Reac
   );
 }
 
-function FlagBadge({ flag, label }: { flag: string; label: string }) {
+function FlagBadge({ flag, label, compact }: { flag: string; label: string; compact?: boolean }) {
   return (
-    <span className="inline-flex items-center gap-1.5 px-2 py-1 text-xs rounded-md border border-white/[0.08] bg-white/[0.04] text-[#e4e4e7] align-middle leading-none font-medium whitespace-nowrap">
+    <span className={`inline-flex items-center gap-1 ${compact ? "px-1.5 py-0.5" : "px-2 py-1"} text-xs rounded-md border border-white/[0.08] bg-white/[0.04] text-[#e4e4e7] align-middle leading-none font-medium whitespace-nowrap`}>
       <span className="text-sm leading-none">{flag}</span>
       {label}
     </span>
@@ -619,9 +622,18 @@ export default function Home() {
         <nav className="px-8 py-3.5 flex items-center justify-between max-w-[780px] mx-auto">
           <a href="/" className="font-mono text-sm text-[#e4e4e7] opacity-80 hover:opacity-100 tracking-tight">nn_</a>
           <div className="flex items-center gap-5">
-            <a href="#experience" className="link-anim text-[#888] hover:text-[#e4e4e7] text-sm pb-px">{tr.navExperience}</a>
-            <a href="#projects"   className="link-anim text-[#888] hover:text-[#e4e4e7] text-sm pb-px">{tr.navProjects}</a>
-            <a href="#contact"    className="link-anim text-[#888] hover:text-[#e4e4e7] text-sm pb-px">{tr.navContact}</a>
+            <a href="#experience" className="link-anim text-[#888] hover:text-[#e4e4e7] pb-px flex items-center" aria-label={tr.navExperience}>
+              <Briefcase size={15} className="md:hidden" />
+              <span className="hidden md:inline text-sm">{tr.navExperience}</span>
+            </a>
+            <a href="#projects" className="link-anim text-[#888] hover:text-[#e4e4e7] pb-px flex items-center" aria-label={tr.navProjects}>
+              <Code2 size={15} className="md:hidden" />
+              <span className="hidden md:inline text-sm">{tr.navProjects}</span>
+            </a>
+            <a href="#contact" className="link-anim text-[#888] hover:text-[#e4e4e7] pb-px flex items-center" aria-label={tr.navContact}>
+              <Mail size={15} className="md:hidden" />
+              <span className="hidden md:inline text-sm">{tr.navContact}</span>
+            </a>
             <a href="https://github.com/neo-nunez" target="_blank" rel="noreferrer"
               className="text-[#888] hover:text-[#e4e4e7] transition-colors" aria-label="GitHub">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -703,14 +715,14 @@ export default function Home() {
               <span className="text-[#888]">{tr.studyingAt}</span>
               <Badge icon={<GraduationCap size={11} className="text-[#f472b6]" />}>UBA — Computer Science</Badge>
             </div>
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-[#888]">{tr.fluentIn}</span>
-              <FlagBadge flag="🇦🇷" label={tr.langSpanish} />
-              <FlagBadge flag="🇬🇧" label={tr.langEnglish} />
-              <FlagBadge flag="🇫🇷" label={tr.langFrench} />
-              <FlagBadge flag="🇩🇪" label={tr.langGerman} />
-              <FlagBadge flag="🇮🇹" label={tr.langItalian} />
-              <FlagBadge flag="🇧🇷" label={tr.langPortuguese} />
+            <div className="flex items-center gap-1 flex-nowrap">
+              <span className="text-[#888] shrink-0 mr-1">{tr.fluentIn}</span>
+              <FlagBadge flag="🇦🇷" label={tr.langSpanish} compact />
+              <FlagBadge flag="🇬🇧" label={tr.langEnglish} compact />
+              <FlagBadge flag="🇫🇷" label={tr.langFrench} compact />
+              <FlagBadge flag="🇩🇪" label={tr.langGerman} compact />
+              <FlagBadge flag="🇮🇹" label={tr.langItalian} compact />
+              <FlagBadge flag="🇧🇷" label={tr.langPortuguese} compact />
             </div>
           </motion.div>
 
