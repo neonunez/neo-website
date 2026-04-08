@@ -6,6 +6,13 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Subtle dot-grid background */
+.dot-bg {
+  background-color: #121212;
+  background-image: radial-gradient(circle, rgba(30, 58, 138, 0.28) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
 /* Only apply hover interactions on devices that support true hover (mouse/trackpad) */
 @variant hover {
   @media (hover: hover) {

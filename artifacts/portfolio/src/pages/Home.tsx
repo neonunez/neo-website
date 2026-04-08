@@ -601,7 +601,7 @@ export default function Home() {
   const nameChars = "Neo Nuñez".split("");
 
   return (
-    <div className="min-h-screen bg-[#121212] text-[#e4e4e7] antialiased">
+    <div className="min-h-screen dot-bg text-[#e4e4e7] antialiased">
 
       {/* Grain */}
       <div className="pointer-events-none fixed inset-0 z-50 opacity-[0.025]"
