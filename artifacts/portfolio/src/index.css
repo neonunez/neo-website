@@ -6,6 +6,13 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Only apply hover interactions on devices that support true hover (mouse/trackpad) */
+@variant hover {
+  @media (hover: hover) {
+    &:hover {}
+  }
+}
+
 /* Animated underline: left-to-right draw on hover */
 .link-anim {
   background-image: linear-gradient(currentColor, currentColor);
@@ -15,8 +22,10 @@ html {
   transition: background-size 0.35s ease, color 0.15s ease;
   text-decoration: none !important;
 }
-.link-anim:hover {
-  background-size: 100% 1px;
+@media (hover: hover) {
+  .link-anim:hover {
+    background-size: 100% 1px;
+  }
 }
 
 @custom-variant dark (&:is(.dark *));
