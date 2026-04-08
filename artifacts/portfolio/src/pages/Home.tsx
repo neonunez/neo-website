@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import {
   Building2,
   BrainCircuit,
@@ -7,6 +7,11 @@ import {
   LayoutGrid,
   GraduationCap,
   ChevronDown,
+  ExternalLink,
+  Copy,
+  Check,
+  ArrowUp,
+  ChevronRight,
 } from "lucide-react";
 import {
   SiNextdotjs,
@@ -29,6 +34,7 @@ interface Translations {
   navExperience: string;
   navProjects: string;
   navContact: string;
+  sectionIntro: string;
   tagline: string;
   workingAt: string;
   building: string;
@@ -61,11 +67,13 @@ interface Translations {
   langSpanish: string; langPortuguese: string; langEnglish: string;
   langFrench: string; langGerman: string; langItalian: string;
   langNative: string; langNativeLevel: string;
+  cmdCopyEmail: string;
 }
 
 const t: Record<Lang, Translations> = {
   en: {
     navExperience: "Experience", navProjects: "Projects", navContact: "Contact",
+    sectionIntro: "Introduction",
     tagline: "Hey! I'm Neo, an AI Engineer and Oracle Data Integration Developer based in Buenos Aires.",
     workingAt: "Working at", building: "Building", studyingAt: "Studying at", fluentIn: "Fluent in",
     bio1: "I have a deep interest in building production-grade AI systems — RAG pipelines, LLM orchestration, and automation tools. I enjoy bridging the gap between complex data architectures and cutting-edge AI methods. You can find my open-source work on github.com/neo-nunez.",
@@ -90,9 +98,11 @@ const t: Record<Lang, Translations> = {
     langSpanish: "Spanish", langPortuguese: "Portuguese", langEnglish: "English",
     langFrench: "French", langGerman: "German", langItalian: "Italian",
     langNative: "Native", langNativeLevel: "Native-level",
+    cmdCopyEmail: "Copy email",
   },
   es: {
     navExperience: "Experiencia", navProjects: "Proyectos", navContact: "Contacto",
+    sectionIntro: "Introducción",
     tagline: "¡Hola! Soy Neo, Ingeniero de IA y Desarrollador de Integración de Datos Oracle en Buenos Aires.",
     workingAt: "Trabajando en", building: "Construyendo", studyingAt: "Estudiando en", fluentIn: "Hablo",
     bio1: "Tengo un profundo interés en construir sistemas de IA de nivel productivo — pipelines RAG, orquestación de LLMs y herramientas de automatización. Me apasiona cerrar la brecha entre arquitecturas de datos complejas y los últimos avances en IA. Podés encontrar mi trabajo en github.com/neo-nunez.",
@@ -117,9 +127,11 @@ const t: Record<Lang, Translations> = {
     langSpanish: "Español", langPortuguese: "Portugués", langEnglish: "Inglés",
     langFrench: "Francés", langGerman: "Alemán", langItalian: "Italiano",
     langNative: "Nativo", langNativeLevel: "Nivel nativo",
+    cmdCopyEmail: "Copiar email",
   },
   fr: {
     navExperience: "Expérience", navProjects: "Projets", navContact: "Contact",
+    sectionIntro: "Introduction",
     tagline: "Bonjour ! Je suis Neo, Ingénieur IA et Développeur d'Intégration de Données Oracle à Buenos Aires.",
     workingAt: "Travaille chez", building: "En construction", studyingAt: "Étudie à", fluentIn: "Parle",
     bio1: "J'ai un intérêt profond pour la construction de systèmes d'IA de niveau production — pipelines RAG, orchestration de LLM et outils d'automatisation. J'aime combler le fossé entre les architectures de données complexes et les méthodes d'IA de pointe. Mon travail open-source se trouve sur github.com/neo-nunez.",
@@ -144,9 +156,11 @@ const t: Record<Lang, Translations> = {
     langSpanish: "Espagnol", langPortuguese: "Portugais", langEnglish: "Anglais",
     langFrench: "Français", langGerman: "Allemand", langItalian: "Italien",
     langNative: "Natif", langNativeLevel: "Niveau natif",
+    cmdCopyEmail: "Copier l'email",
   },
   de: {
     navExperience: "Erfahrung", navProjects: "Projekte", navContact: "Kontakt",
+    sectionIntro: "Einführung",
     tagline: "Hallo! Ich bin Neo, KI-Ingenieur und Oracle Data Integration Entwickler aus Buenos Aires.",
     workingAt: "Arbeite bei", building: "Im Aufbau", studyingAt: "Studiere an", fluentIn: "Spreche",
     bio1: "Ich interessiere mich leidenschaftlich für den Aufbau produktionsreifer KI-Systeme — RAG-Pipelines, LLM-Orchestrierung und Automatisierungstools. Ich verbinde komplexe Datenarchitekturen mit modernster KI. Meine Open-Source-Arbeit gibt es auf github.com/neo-nunez.",
@@ -171,9 +185,11 @@ const t: Record<Lang, Translations> = {
     langSpanish: "Spanisch", langPortuguese: "Portugiesisch", langEnglish: "Englisch",
     langFrench: "Französisch", langGerman: "Deutsch", langItalian: "Italienisch",
     langNative: "Muttersprache", langNativeLevel: "Muttersprachniveau",
+    cmdCopyEmail: "E-Mail kopieren",
   },
   it: {
     navExperience: "Esperienza", navProjects: "Progetti", navContact: "Contatto",
+    sectionIntro: "Introduzione",
     tagline: "Ciao! Sono Neo, Ingegnere AI e Sviluppatore Oracle Data Integration a Buenos Aires.",
     workingAt: "Lavoro presso", building: "Costruendo", studyingAt: "Studio a", fluentIn: "Parlo",
     bio1: "Ho un profondo interesse per la costruzione di sistemi AI di livello produttivo — pipeline RAG, orchestrazione di LLM e strumenti di automazione. Mi piace colmare il divario tra architetture dati complesse e metodi AI all'avanguardia. Il mio lavoro open-source si trova su github.com/neo-nunez.",
@@ -198,9 +214,11 @@ const t: Record<Lang, Translations> = {
     langSpanish: "Spagnolo", langPortuguese: "Portoghese", langEnglish: "Inglese",
     langFrench: "Francese", langGerman: "Tedesco", langItalian: "Italiano",
     langNative: "Madrelingua", langNativeLevel: "Livello madrelingua",
+    cmdCopyEmail: "Copia email",
   },
   pt: {
     navExperience: "Experiência", navProjects: "Projetos", navContact: "Contato",
+    sectionIntro: "Introdução",
     tagline: "Olá! Sou Neo, Engenheiro de IA e Desenvolvedor de Integração de Dados Oracle em Buenos Aires.",
     workingAt: "Trabalhando em", building: "Construindo", studyingAt: "Estudando em", fluentIn: "Falo",
     bio1: "Tenho um profundo interesse em construir sistemas de IA de nível produtivo — pipelines RAG, orquestração de LLMs e ferramentas de automação. Gosto de conectar arquiteturas de dados complexas com os métodos mais avançados de IA. Você pode encontrar meu trabalho em github.com/neo-nunez.",
@@ -225,6 +243,7 @@ const t: Record<Lang, Translations> = {
     langSpanish: "Espanhol", langPortuguese: "Português", langEnglish: "Inglês",
     langFrench: "Francês", langGerman: "Alemão", langItalian: "Italiano",
     langNative: "Nativo", langNativeLevel: "Nível nativo",
+    cmdCopyEmail: "Copiar email",
   },
 };
 
@@ -298,6 +317,18 @@ function Divider() {
   return <div className="border-t border-white/[0.06] my-10" />;
 }
 
+// Hover row — subtle left accent + bg tint, no layout shift
+function HoverRow({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="-mx-3 px-3 py-2 rounded-md transition-all duration-200 hover:bg-white/[0.02]"
+      style={{ boxShadow: "inset 0 0 0 0 transparent" }}
+      onMouseEnter={e => (e.currentTarget.style.boxShadow = "inset 2px 0 0 rgba(255,255,255,0.09)")}
+      onMouseLeave={e => (e.currentTarget.style.boxShadow = "inset 0 0 0 0 transparent")}>
+      {children}
+    </div>
+  );
+}
+
 // Fade-up on scroll, once
 function FadeUp({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -361,19 +392,190 @@ function LanguageSwitcher({ lang, setLang }: { lang: Lang; setLang: (l: Lang) =>
   );
 }
 
+// Section indicator — left sidebar
+function SectionIndicator({ active, sections }: { active: string; sections: { id: string; label: string }[] }) {
+  return (
+    <div className="fixed left-7 top-[72px] z-30 hidden xl:flex flex-col gap-5 py-6">
+      {sections.map((s) => {
+        const isActive = active === s.id;
+        return (
+          <button
+            key={s.id}
+            onClick={() => {
+              if (s.id === "intro") window.scrollTo({ top: 0, behavior: "smooth" });
+              else document.getElementById(s.id)?.scrollIntoView({ behavior: "smooth" });
+            }}
+            className="flex items-center gap-2 group text-left"
+          >
+            <span
+              className="block h-px transition-all duration-300"
+              style={{
+                width: isActive ? "16px" : "8px",
+                backgroundColor: isActive ? "rgba(228,228,231,0.5)" : "rgba(228,228,231,0.12)",
+              }}
+            />
+            <span
+              className="text-[10px] uppercase tracking-widest font-medium transition-colors duration-300 whitespace-nowrap"
+              style={{ color: isActive ? "rgba(228,228,231,0.55)" : "rgba(228,228,231,0.15)" }}
+            >
+              {s.label}
+            </span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+// Command palette
+type CmdItem = { label: string; icon: React.ReactNode; hint?: string; action: () => void };
+
+function CommandPalette({ items, open, onClose }: { items: CmdItem[]; open: boolean; onClose: () => void }) {
+  const [idx, setIdx] = useState(0);
+  const idxRef = useRef(0);
+  idxRef.current = idx;
+
+  useEffect(() => {
+    if (!open) { setIdx(0); return; }
+    const handle = (e: KeyboardEvent) => {
+      if (e.key === "ArrowDown") { e.preventDefault(); setIdx(i => (i + 1) % items.length); }
+      if (e.key === "ArrowUp")   { e.preventDefault(); setIdx(i => (i - 1 + items.length) % items.length); }
+      if (e.key === "Enter")     { items[idxRef.current]?.action(); }
+      if (e.key === "Escape")    { onClose(); }
+    };
+    window.addEventListener("keydown", handle);
+    return () => window.removeEventListener("keydown", handle);
+  }, [open, items, onClose]);
+
+  return (
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          className="fixed inset-0 z-[60] flex items-start justify-center pt-[20vh]"
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+          transition={{ duration: 0.15 }}
+          onClick={onClose}
+        >
+          {/* Backdrop */}
+          <div className="absolute inset-0 bg-black/50" style={{ backdropFilter: "blur(4px)" }} />
+
+          {/* Panel */}
+          <motion.div
+            initial={{ opacity: 0, y: -12, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -8, scale: 0.97 }}
+            transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+            className="relative w-full max-w-[400px] mx-4 rounded-xl border border-white/[0.1] bg-[#161616] shadow-2xl overflow-hidden"
+            onClick={e => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="px-4 pt-3 pb-2 border-b border-white/[0.06]">
+              <p className="text-[10px] uppercase tracking-widest text-[#444] font-medium">Navigate</p>
+            </div>
+
+            {/* Items */}
+            <div className="py-1.5">
+              {items.map((item, i) => (
+                <button
+                  key={item.label}
+                  onClick={item.action}
+                  onMouseEnter={() => setIdx(i)}
+                  className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm transition-colors text-left
+                    ${i === idx ? "bg-white/[0.06] text-[#e4e4e7]" : "text-[#888] hover:text-[#e4e4e7]"}`}
+                >
+                  <span className="flex items-center opacity-60">{item.icon}</span>
+                  <span className="flex-1">{item.label}</span>
+                  {item.hint && <span className="text-[10px] text-[#444] font-mono">{item.hint}</span>}
+                </button>
+              ))}
+            </div>
+
+            {/* Footer */}
+            <div className="px-4 py-2 border-t border-white/[0.06] flex gap-4">
+              <span className="text-[10px] text-[#333]">↑↓ navigate</span>
+              <span className="text-[10px] text-[#333]">↵ select</span>
+              <span className="text-[10px] text-[#333]">esc close</span>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
 export default function Home() {
   const [lang, setLang] = useState<Lang>("en");
   const tr = t[lang];
 
+  const [copied, setCopied]           = useState(false);
+  const [cmdOpen, setCmdOpen]         = useState(false);
+  const [activeSection, setActive]    = useState("intro");
+
+  // Title + dark mode
   useEffect(() => {
     document.documentElement.classList.add("dark");
     document.title = "Neo Nuñez — AI Engineer";
   }, []);
 
+  // ⌘K / Ctrl+K toggle
+  useEffect(() => {
+    const handle = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        setCmdOpen(o => !o);
+      }
+    };
+    window.addEventListener("keydown", handle);
+    return () => window.removeEventListener("keydown", handle);
+  }, []);
+
+  // Section observer
+  useEffect(() => {
+    const ids = ["intro", "experience", "projects", "contact"];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) setActive(entry.target.id);
+        });
+      },
+      { rootMargin: "-35% 0px -65% 0px", threshold: 0 }
+    );
+    ids.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, []);
+
+  // Command palette items
+  const scrollTo = (id: string) => {
+    setCmdOpen(false);
+    if (id === "intro") window.scrollTo({ top: 0, behavior: "smooth" });
+    else document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const cmdItems: CmdItem[] = [
+    { label: tr.sectionIntro,      icon: <ArrowUp size={13} />,       hint: "↑",   action: () => scrollTo("intro") },
+    { label: tr.navExperience,     icon: <ChevronRight size={13} />,  hint: "§1",  action: () => scrollTo("experience") },
+    { label: tr.navProjects,       icon: <ChevronRight size={13} />,  hint: "§2",  action: () => scrollTo("projects") },
+    { label: tr.navContact,        icon: <ChevronRight size={13} />,  hint: "§3",  action: () => scrollTo("contact") },
+    { label: "GitHub",             icon: <ExternalLink size={13} />,  hint: "↗",   action: () => { window.open("https://github.com/neo-nunez", "_blank"); setCmdOpen(false); } },
+    { label: "LinkedIn",           icon: <ExternalLink size={13} />,  hint: "↗",   action: () => { window.open("https://linkedin.com/in/neo-nunez", "_blank"); setCmdOpen(false); } },
+    { label: tr.cmdCopyEmail,      icon: <Copy size={13} />,          hint: "⌘C",  action: () => { navigator.clipboard.writeText("neonunez129@gmail.com"); setCopied(true); setTimeout(() => setCopied(false), 2000); setCmdOpen(false); } },
+  ];
+
+  const sections = [
+    { id: "intro",      label: tr.sectionIntro },
+    { id: "experience", label: tr.navExperience },
+    { id: "projects",   label: tr.navProjects },
+    { id: "contact",    label: tr.navContact },
+  ];
+
   // Stagger delays for intro items
-  const intro = [0, 0.07, 0.14, 0.21, 0.28, 0.35];
+  const introDelay = [0.05, 0.12, 0.19, 0.26];
+  const nameChars = "Neo Nuñez".split("");
 
   return (
     <div className="min-h-screen bg-[#121212] text-[#e4e4e7] antialiased">
@@ -385,15 +587,21 @@ export default function Home() {
           backgroundRepeat: "repeat", backgroundSize: "128px 128px",
         }} />
 
-      {/* Nav — full-width blur wrapper */}
+      {/* Section indicator */}
+      <SectionIndicator active={activeSection} sections={sections} />
+
+      {/* Command palette */}
+      <CommandPalette items={cmdItems} open={cmdOpen} onClose={() => setCmdOpen(false)} />
+
+      {/* Nav */}
       <div className="fixed top-0 left-0 right-0 z-40"
         style={{ backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", backgroundColor: "rgba(18,18,18,0.75)" }}>
         <nav className="px-8 py-3.5 flex items-center justify-between max-w-[780px] mx-auto">
           <a href="/" className="font-mono text-sm text-[#e4e4e7] opacity-80 hover:opacity-100 tracking-tight">nn_</a>
           <div className="flex items-center gap-5">
             <a href="#experience" className="text-[#888] hover:text-[#e4e4e7] transition-colors text-sm">{tr.navExperience}</a>
-            <a href="#projects" className="text-[#888] hover:text-[#e4e4e7] transition-colors text-sm">{tr.navProjects}</a>
-            <a href="#contact" className="text-[#888] hover:text-[#e4e4e7] transition-colors text-sm">{tr.navContact}</a>
+            <a href="#projects"   className="text-[#888] hover:text-[#e4e4e7] transition-colors text-sm">{tr.navProjects}</a>
+            <a href="#contact"    className="text-[#888] hover:text-[#e4e4e7] transition-colors text-sm">{tr.navContact}</a>
             <a href="https://github.com/neo-nunez" target="_blank" rel="noreferrer"
               className="text-[#888] hover:text-[#e4e4e7] transition-colors" aria-label="GitHub">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -406,6 +614,14 @@ export default function Home() {
                 <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
               </svg>
             </a>
+            {/* ⌘K hint */}
+            <button
+              onClick={() => setCmdOpen(true)}
+              className="hidden sm:flex items-center gap-1.5 text-[#444] hover:text-[#666] transition-colors text-[10px] font-mono border border-white/[0.05] rounded px-1.5 py-0.5"
+              aria-label="Open command palette"
+            >
+              <span>⌘K</span>
+            </button>
             <LanguageSwitcher lang={lang} setLang={setLang} />
           </div>
         </nav>
@@ -414,86 +630,96 @@ export default function Home() {
       {/* Content */}
       <main className="pt-24 pb-24 px-8 max-w-[640px] mx-auto">
 
-        {/* Name */}
-        <motion.h1
-          initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, ease: [0.25, 0.1, 0.25, 1], delay: intro[0] }}
-          className="text-2xl font-semibold text-[#e4e4e7] mb-3">
-          Neo Nuñez
-        </motion.h1>
+        {/* ── Intro section ── */}
+        <div id="intro">
 
-        {/* Tagline */}
-        <motion.p
-          initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, ease: [0.25, 0.1, 0.25, 1], delay: intro[1] }}
-          className="text-[#888] text-sm leading-relaxed mb-6">
-          {tr.tagline}
-        </motion.p>
+          {/* Name — character-by-character reveal */}
+          <h1 className="text-2xl font-semibold text-[#e4e4e7] mb-3 flex flex-wrap">
+            {nameChars.map((char, i) => (
+              <motion.span
+                key={i}
+                initial={{ opacity: 0, y: 7 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, ease: "easeOut", delay: 0.05 + i * 0.028 }}
+              >
+                {char === " " ? "\u00A0" : char}
+              </motion.span>
+            ))}
+          </h1>
 
-        {/* Status lines */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, ease: [0.25, 0.1, 0.25, 1], delay: intro[2] }}
-          className="space-y-2.5 text-sm leading-relaxed mb-6">
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-[#888]">{tr.workingAt}</span>
-            <Badge icon={<Building2 size={11} className="text-[#60a5fa]" />}>Apply Latam</Badge>
-          </div>
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-[#888]">{tr.building}</span>
-            <Badge icon={<BrainCircuit size={11} className="text-[#a78bfa]" />}>Enterprise RAG System</Badge>
-            <Badge icon={<Mic size={11} className="text-[#34d399]" />}>VoiceFlow</Badge>
-            <Badge icon={<LayoutGrid size={11} className="text-[#fb923c]" />}>FocusPad</Badge>
-          </div>
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-[#888]">{tr.studyingAt}</span>
-            <Badge icon={<GraduationCap size={11} className="text-[#f472b6]" />}>UBA — Computer Science</Badge>
-          </div>
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-[#888]">{tr.fluentIn}</span>
-            <FlagBadge flag="🇦🇷" label={tr.langSpanish} />
-            <FlagBadge flag="🇬🇧" label={tr.langEnglish} />
-            <FlagBadge flag="🇫🇷" label={tr.langFrench} />
-            <FlagBadge flag="🇩🇪" label={tr.langGerman} />
-            <FlagBadge flag="🇮🇹" label={tr.langItalian} />
-            <FlagBadge flag="🇧🇷" label={tr.langPortuguese} />
-          </div>
-        </motion.div>
+          {/* Tagline */}
+          <motion.p
+            initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, ease: [0.25, 0.1, 0.25, 1], delay: introDelay[0] }}
+            className="text-[#888] text-sm leading-relaxed mb-6">
+            {tr.tagline}
+          </motion.p>
 
-        {/* Bio */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, ease: [0.25, 0.1, 0.25, 1], delay: intro[3] }}
-          className="space-y-4 text-sm leading-[1.85] text-[#aaa]">
-          <p>
-            {tr.bio1.split("github.com/neo-nunez")[0]}
-            <a href="https://github.com/neo-nunez" target="_blank" rel="noreferrer"
-              className="text-[#e4e4e7] underline underline-offset-4 decoration-white/20 hover:decoration-white/60 transition-colors">
-              github.com/neo-nunez
-            </a>
-            {tr.bio1.split("github.com/neo-nunez")[1]}
-          </p>
-          <p>{tr.bio2}</p>
-          <p>
-            {tr.bio3}{" "}
-            <a href="mailto:neonunez129@gmail.com"
-              className="text-[#e4e4e7] underline underline-offset-4 decoration-white/20 hover:decoration-white/60 transition-colors">
-              {tr.bio3Link}
-            </a>
-            .
-          </p>
-        </motion.div>
+          {/* Status lines */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, ease: [0.25, 0.1, 0.25, 1], delay: introDelay[1] }}
+            className="space-y-2.5 text-sm leading-relaxed mb-6">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-[#888]">{tr.workingAt}</span>
+              <Badge icon={<Building2 size={11} className="text-[#60a5fa]" />}>Apply Latam</Badge>
+            </div>
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-[#888]">{tr.building}</span>
+              <Badge icon={<BrainCircuit size={11} className="text-[#a78bfa]" />}>Enterprise RAG System</Badge>
+              <Badge icon={<Mic size={11} className="text-[#34d399]" />}>VoiceFlow</Badge>
+              <Badge icon={<LayoutGrid size={11} className="text-[#fb923c]" />}>FocusPad</Badge>
+            </div>
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-[#888]">{tr.studyingAt}</span>
+              <Badge icon={<GraduationCap size={11} className="text-[#f472b6]" />}>UBA — Computer Science</Badge>
+            </div>
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-[#888]">{tr.fluentIn}</span>
+              <FlagBadge flag="🇦🇷" label={tr.langSpanish} />
+              <FlagBadge flag="🇬🇧" label={tr.langEnglish} />
+              <FlagBadge flag="🇫🇷" label={tr.langFrench} />
+              <FlagBadge flag="🇩🇪" label={tr.langGerman} />
+              <FlagBadge flag="🇮🇹" label={tr.langItalian} />
+              <FlagBadge flag="🇧🇷" label={tr.langPortuguese} />
+            </div>
+          </motion.div>
+
+          {/* Bio */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, ease: [0.25, 0.1, 0.25, 1], delay: introDelay[2] }}
+            className="space-y-4 text-sm leading-[1.85] text-[#aaa]">
+            <p>
+              {tr.bio1.split("github.com/neo-nunez")[0]}
+              <a href="https://github.com/neo-nunez" target="_blank" rel="noreferrer"
+                className="text-[#e4e4e7] underline underline-offset-4 decoration-white/20 hover:decoration-white/60 transition-colors">
+                github.com/neo-nunez
+              </a>
+              {tr.bio1.split("github.com/neo-nunez")[1]}
+            </p>
+            <p>{tr.bio2}</p>
+            <p>
+              {tr.bio3}{" "}
+              <a href="mailto:neonunez129@gmail.com"
+                className="text-[#e4e4e7] underline underline-offset-4 decoration-white/20 hover:decoration-white/60 transition-colors">
+                {tr.bio3Link}
+              </a>.
+            </p>
+          </motion.div>
+
+        </div>{/* end #intro */}
 
         <Divider />
 
-        {/* Experience */}
+        {/* ── Experience ── */}
         <section id="experience">
           <FadeUp>
             <h2 className="text-xs font-semibold uppercase tracking-widest text-[#555] mb-6">{tr.sectionExperience}</h2>
           </FadeUp>
-          <div className="space-y-8">
+          <div className="space-y-6">
             <FadeUp delay={0.05}>
-              <div>
+              <HoverRow>
                 <div className="flex items-baseline justify-between gap-4 mb-1">
                   <h3 className="text-sm font-medium text-[#e4e4e7]">{tr.exp1Title}</h3>
                   <span className="text-xs text-[#555] whitespace-nowrap">{tr.exp1Period}</span>
@@ -505,10 +731,10 @@ export default function Home() {
                   <li>{tr.exp1p3}</li>
                   <li>{tr.exp1p4}</li>
                 </ul>
-              </div>
+              </HoverRow>
             </FadeUp>
             <FadeUp delay={0.1}>
-              <div>
+              <HoverRow>
                 <div className="flex items-baseline justify-between gap-4 mb-1">
                   <h3 className="text-sm font-medium text-[#e4e4e7]">{tr.exp2Title}</h3>
                   <span className="text-xs text-[#555] whitespace-nowrap">{tr.exp2Period}</span>
@@ -518,38 +744,26 @@ export default function Home() {
                   <li>{tr.exp2p1}</li>
                   <li>{tr.exp2p2}</li>
                 </ul>
-              </div>
+              </HoverRow>
             </FadeUp>
           </div>
         </section>
 
         <Divider />
 
-        {/* Projects */}
+        {/* ── Projects ── */}
         <section id="projects">
           <FadeUp>
             <h2 className="text-xs font-semibold uppercase tracking-widest text-[#555] mb-6">{tr.sectionProjects}</h2>
           </FadeUp>
-          <div className="space-y-6">
+          <div className="space-y-4">
             {[
-              {
-                name: "Enterprise RAG System",
-                desc: tr.proj1Desc,
-                tags: ["Next.js", "FastAPI", "LangGraph", "LlamaIndex", "Supabase", "Gemini Flash"],
-              },
-              {
-                name: "VoiceFlow",
-                desc: tr.proj2Desc,
-                tags: ["Python", "mlx-whisper", "pyobjc", "rumps", "pywebview"],
-              },
-              {
-                name: "FocusPad",
-                desc: tr.proj3Desc,
-                tags: ["React Native", "Expo", "TypeScript"],
-              },
+              { name: "Enterprise RAG System", desc: tr.proj1Desc, tags: ["Next.js", "FastAPI", "LangGraph", "LlamaIndex", "Supabase", "Gemini Flash"] },
+              { name: "VoiceFlow",             desc: tr.proj2Desc, tags: ["Python", "mlx-whisper", "pyobjc", "rumps", "pywebview"] },
+              { name: "FocusPad",              desc: tr.proj3Desc, tags: ["React Native", "Expo", "TypeScript"] },
             ].map((p, i) => (
               <FadeUp key={p.name} delay={i * 0.06}>
-                <div>
+                <HoverRow>
                   <div className="flex items-baseline justify-between gap-4 mb-1">
                     <h3 className="text-sm font-medium text-[#e4e4e7]">{p.name}</h3>
                     <a href="https://github.com/neo-nunez" target="_blank" rel="noreferrer"
@@ -559,11 +773,9 @@ export default function Home() {
                   </div>
                   <p className="text-sm text-[#888] leading-relaxed mb-2">{p.desc}</p>
                   <div className="flex flex-wrap gap-1.5">
-                    {p.tags.map((label) => (
-                      <TechBadge key={label} label={label} />
-                    ))}
+                    {p.tags.map(label => <TechBadge key={label} label={label} />)}
                   </div>
-                </div>
+                </HoverRow>
               </FadeUp>
             ))}
           </div>
@@ -571,19 +783,19 @@ export default function Home() {
 
         <Divider />
 
-        {/* Skills */}
+        {/* ── Skills ── */}
         <FadeUp>
           <section>
             <h2 className="text-xs font-semibold uppercase tracking-widest text-[#555] mb-6">{tr.sectionSkills}</h2>
             <div className="space-y-3 text-sm text-[#888]">
               {[
-                { label: tr.skillLang, value: "Python · JavaScript · Groovy · Jython · SQL · HTML · CSS" },
-                { label: "AI / ML", value: "LangGraph · LlamaIndex · RAG · LLM orchestration · Gemini · Ollama · mlx-whisper · prompt engineering" },
-                { label: "Frameworks", value: "FastAPI · Next.js · React Native (Expo)" },
-                { label: tr.skillData, value: "Oracle ODI · ETL/ELT · Supabase · data warehousing" },
+                { label: tr.skillLang,  value: "Python · JavaScript · Groovy · Jython · SQL · HTML · CSS" },
+                { label: "AI / ML",     value: "LangGraph · LlamaIndex · RAG · LLM orchestration · Gemini · Ollama · mlx-whisper · prompt engineering" },
+                { label: "Frameworks",  value: "FastAPI · Next.js · React Native (Expo)" },
+                { label: tr.skillData,  value: "Oracle ODI · ETL/ELT · Supabase · data warehousing" },
                 { label: tr.skillTools, value: "Git · Docker · Cursor · Google Workspace" },
                 { label: tr.skillLearning, value: "ML fundamentals · neural networks · fine-tuning · reinforcement learning" },
-              ].map((row) => (
+              ].map(row => (
                 <div key={row.label} className="flex gap-2 flex-wrap items-baseline">
                   <span className="text-[#555] text-xs w-28 shrink-0">{row.label}</span>
                   <span>{row.value}</span>
@@ -595,7 +807,7 @@ export default function Home() {
 
         <Divider />
 
-        {/* Languages */}
+        {/* ── Languages ── */}
         <FadeUp>
           <section>
             <h2 className="text-xs font-semibold uppercase tracking-widest text-[#555] mb-6">{tr.sectionLanguages}</h2>
@@ -612,7 +824,7 @@ export default function Home() {
 
         <Divider />
 
-        {/* Contact */}
+        {/* ── Contact ── */}
         <FadeUp>
           <section id="contact">
             <h2 className="text-xs font-semibold uppercase tracking-widest text-[#555] mb-5">{tr.sectionFindMe}</h2>
@@ -632,10 +844,19 @@ export default function Home() {
             </div>
             <p className="text-sm text-[#888]">
               {tr.orMailMe}{" "}
-              <a href="mailto:neonunez129@gmail.com"
-                className="text-[#e4e4e7] underline underline-offset-4 decoration-white/20 hover:decoration-white/60 transition-colors">
-                neonunez129@gmail.com
-              </a>
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText("neonunez129@gmail.com");
+                  setCopied(true);
+                  setTimeout(() => setCopied(false), 2000);
+                }}
+                className="inline-flex items-center gap-1.5 text-[#e4e4e7] underline underline-offset-4 decoration-white/20 hover:decoration-white/60 transition-colors cursor-pointer"
+              >
+                {copied
+                  ? <><Check size={12} className="text-[#34d399]" /><span className="text-[#34d399] no-underline">Copied!</span></>
+                  : "neonunez129@gmail.com"
+                }
+              </button>
             </p>
           </section>
         </FadeUp>
