@@ -68,6 +68,7 @@ interface Translations {
   langFrench: string; langGerman: string; langItalian: string;
   langNative: string; langNativeLevel: string;
   cmdCopyEmail: string;
+  langsBio: string;
 }
 
 const t: Record<Lang, Translations> = {
@@ -99,6 +100,7 @@ const t: Record<Lang, Translations> = {
     langFrench: "French", langGerman: "German", langItalian: "Italian",
     langNative: "Native", langNativeLevel: "Native-level",
     cmdCopyEmail: "Copy email",
+    langsBio: "Growing up, I devoted myself to learning languages through dedicated classes and formal certifications — driven by a deep passion for multicultural environments and the belief that language is the most direct bridge between people.",
   },
   es: {
     navExperience: "Experiencia", navProjects: "Proyectos", navContact: "Contacto",
@@ -128,6 +130,7 @@ const t: Record<Lang, Translations> = {
     langFrench: "Francés", langGerman: "Alemán", langItalian: "Italiano",
     langNative: "Nativo", langNativeLevel: "Nivel nativo",
     cmdCopyEmail: "Copiar email",
+    langsBio: "Desde pequeño, me dediqué a aprender idiomas a través de clases especializadas y certificaciones formales — motivado por una profunda pasión por los entornos multiculturales y la convicción de que el idioma es el puente más directo entre las personas.",
   },
   fr: {
     navExperience: "Expérience", navProjects: "Projets", navContact: "Contact",
@@ -157,6 +160,7 @@ const t: Record<Lang, Translations> = {
     langFrench: "Français", langGerman: "Allemand", langItalian: "Italien",
     langNative: "Natif", langNativeLevel: "Niveau natif",
     cmdCopyEmail: "Copier l'email",
+    langsBio: "En grandissant, je me suis consacré à l'apprentissage des langues grâce à des cours spécialisés et des certifications formelles — animé par une passion profonde pour les environnements multiculturels et la conviction que la langue est le pont le plus direct entre les personnes.",
   },
   de: {
     navExperience: "Erfahrung", navProjects: "Projekte", navContact: "Kontakt",
@@ -186,6 +190,7 @@ const t: Record<Lang, Translations> = {
     langFrench: "Französisch", langGerman: "Deutsch", langItalian: "Italienisch",
     langNative: "Muttersprache", langNativeLevel: "Muttersprachniveau",
     cmdCopyEmail: "E-Mail kopieren",
+    langsBio: "Schon in meiner Kindheit widmete ich mich dem Sprachenlernen durch gezielte Kurse und formelle Zertifizierungen — angetrieben von einer tiefen Leidenschaft für multikulturelle Umgebungen und der Überzeugung, dass Sprache die direkteste Brücke zwischen Menschen ist.",
   },
   it: {
     navExperience: "Esperienza", navProjects: "Progetti", navContact: "Contatto",
@@ -215,6 +220,7 @@ const t: Record<Lang, Translations> = {
     langFrench: "Francese", langGerman: "Tedesco", langItalian: "Italiano",
     langNative: "Madrelingua", langNativeLevel: "Livello madrelingua",
     cmdCopyEmail: "Copia email",
+    langsBio: "Fin dall'infanzia, mi sono dedicato all'apprendimento delle lingue attraverso corsi specializzati e certificazioni formali — spinto da una profonda passione per gli ambienti multiculturali e dalla convinzione che la lingua sia il ponte più diretto tra le persone.",
   },
   pt: {
     navExperience: "Experiência", navProjects: "Projetos", navContact: "Contato",
@@ -244,6 +250,7 @@ const t: Record<Lang, Translations> = {
     langFrench: "Francês", langGerman: "Alemão", langItalian: "Italiano",
     langNative: "Nativo", langNativeLevel: "Nível nativo",
     cmdCopyEmail: "Copiar email",
+    langsBio: "Desde a infância, dediquei-me ao aprendizado de idiomas por meio de aulas especializadas e certificações formais — movido por uma profunda paixão por ambientes multiculturais e pela crença de que o idioma é a ponte mais direta entre as pessoas.",
   },
 };
 
@@ -531,27 +538,26 @@ export default function Home() {
     return () => window.removeEventListener("keydown", handle);
   }, []);
 
-  // Section observer + end-of-page detection
+  // Section tracking — find which section midpoint is closest to viewport midpoint
   useEffect(() => {
     const ids = ["intro", "experience", "projects", "skills", "languages", "contact"];
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) setActive(entry.target.id);
-        });
-      },
-      { rootMargin: "-20% 0px -55% 0px", threshold: 0 }
-    );
-    ids.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-    const handleScroll = () => {
-      const nearBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 16;
-      if (nearBottom) setActive("contact");
+    const update = () => {
+      const viewportMid = window.scrollY + window.innerHeight / 2;
+      let closestId = ids[0];
+      let closestDist = Infinity;
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        const elTop = window.scrollY + el.getBoundingClientRect().top;
+        const elMid = elTop + el.offsetHeight / 2;
+        const dist = Math.abs(viewportMid - elMid);
+        if (dist < closestDist) { closestDist = dist; closestId = id; }
+      }
+      setActive(closestId);
     };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => { observer.disconnect(); window.removeEventListener("scroll", handleScroll); };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    return () => window.removeEventListener("scroll", update);
   }, []);
 
   // Command palette items
@@ -826,7 +832,8 @@ export default function Home() {
         {/* ── Languages ── */}
         <FadeUp>
           <section id="languages">
-            <h2 className="text-xs font-semibold uppercase tracking-widest text-[#555] mb-6">{tr.sectionLanguages}</h2>
+            <h2 className="text-xs font-semibold uppercase tracking-widest text-[#555] mb-5">{tr.sectionLanguages}</h2>
+            <p className="text-sm leading-[1.85] text-[#888] mb-6">{tr.langsBio}</p>
             <div className="grid grid-cols-2 gap-x-8 gap-y-3 text-sm text-[#888]">
               {[
                 { name: tr.langSpanish,    level: tr.langNative,      cert: "#" },
