@@ -15,6 +15,8 @@ import {
   Briefcase,
   Code2,
   Mail,
+  Sun,
+  Moon,
 } from "lucide-react";
 import {
   SiNextdotjs,
@@ -270,7 +272,7 @@ const LANGUAGES: { code: Lang; flag: string; name: string }[] = [
 
 function Badge({ icon, children }: { icon: React.ReactNode; children: React.ReactNode }) {
   return (
-    <span className="inline-flex items-center gap-1.5 px-2 py-1 text-xs rounded-md border border-white/[0.08] bg-white/[0.04] text-[#e4e4e7] align-middle leading-none font-medium whitespace-nowrap">
+    <span className="inline-flex items-center gap-1.5 px-2 py-1 text-xs rounded-md border border-[var(--c-border)] bg-[var(--c-surface)] text-[var(--c-fg)] align-middle leading-none font-medium whitespace-nowrap">
       <span className="flex items-center opacity-90">{icon}</span>
       {children}
     </span>
@@ -279,7 +281,7 @@ function Badge({ icon, children }: { icon: React.ReactNode; children: React.Reac
 
 function FlagBadge({ flag, label, compact }: { flag: string; label: string; compact?: boolean }) {
   return (
-    <span className={`inline-flex items-center gap-1 ${compact ? "px-1.5 py-0.5" : "px-2 py-1"} text-xs rounded-md border border-white/[0.08] bg-white/[0.04] text-[#e4e4e7] align-middle leading-none font-medium whitespace-nowrap`}>
+    <span className={`inline-flex items-center gap-1 ${compact ? "px-1.5 py-0.5" : "px-2 py-1"} text-xs rounded-md border border-[var(--c-border)] bg-[var(--c-surface)] text-[var(--c-fg)] align-middle leading-none font-medium whitespace-nowrap`}>
       <span className="text-sm leading-none">{flag}</span>
       {label}
     </span>
@@ -287,7 +289,7 @@ function FlagBadge({ flag, label, compact }: { flag: string; label: string; comp
 }
 
 const TECH_ICONS: Record<string, { icon: React.ElementType; color: string }> = {
-  "Next.js":      { icon: SiNextdotjs,   color: "#e4e4e7" },
+  "Next.js":      { icon: SiNextdotjs,   color: "var(--c-fg)" },
   "FastAPI":      { icon: SiFastapi,     color: "#009688" },
   "LangGraph":    { icon: SiLangchain,   color: "#5eead4" },
   "LlamaIndex":   { icon: BrainCircuit,  color: "#a78bfa" },
@@ -299,7 +301,7 @@ const TECH_ICONS: Record<string, { icon: React.ElementType; color: string }> = {
   "rumps":        { icon: SiApple,       color: "#aaa"    },
   "pywebview":    { icon: SiPython,      color: "#4b8bbe" },
   "React Native": { icon: SiReact,       color: "#61DAFB" },
-  "Expo":         { icon: SiExpo,        color: "#e4e4e7" },
+  "Expo":         { icon: SiExpo,        color: "var(--c-fg)" },
   "TypeScript":   { icon: SiTypescript,  color: "#3178C6" },
 };
 
@@ -317,22 +319,22 @@ function TechBadge({ label }: { label: string }) {
 function SocialLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
     <a href={href} target="_blank" rel="noreferrer"
-      className="link-anim inline-flex items-center gap-1.5 text-[#888] hover:text-[#e4e4e7] text-sm pb-px">
+      className="link-anim inline-flex items-center gap-1.5 text-[var(--c-muted)] hover:text-[var(--c-fg)] text-sm pb-px">
       {children}
     </a>
   );
 }
 
 function Divider() {
-  return <div className="border-t border-white/[0.06] my-10" />;
+  return <div className="border-t border-[var(--c-border-thin)] my-10" />;
 }
 
 // Hover row — subtle left accent + bg tint, no layout shift
 function HoverRow({ children }: { children: React.ReactNode }) {
   return (
-    <div className="-mx-3 px-3 py-2 rounded-md transition-all duration-200 hover:bg-white/[0.02]"
+    <div className="-mx-3 px-3 py-2 rounded-md transition-all duration-200 hover:bg-[var(--c-surface)]"
       style={{ boxShadow: "inset 0 0 0 0 transparent" }}
-      onMouseEnter={e => (e.currentTarget.style.boxShadow = "inset 2px 0 0 rgba(255,255,255,0.09)")}
+      onMouseEnter={e => (e.currentTarget.style.boxShadow = "inset 2px 0 0 var(--c-border)")}
       onMouseLeave={e => (e.currentTarget.style.boxShadow = "inset 0 0 0 0 transparent")}>
       {children}
     </div>
@@ -371,7 +373,7 @@ function LanguageSwitcher({ lang, setLang }: { lang: Lang; setLang: (l: Lang) =>
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen((o) => !o)}
-        className="flex items-center gap-1.5 text-[#888] hover:text-[#e4e4e7] transition-colors text-xs font-medium px-2 py-1 rounded-md border border-white/[0.08] bg-white/[0.04] hover:bg-white/[0.07]"
+        className="flex items-center gap-1.5 text-[var(--c-muted)] hover:text-[var(--c-fg)] transition-colors text-xs font-medium px-2 py-1 rounded-md border border-[var(--c-border)] bg-[var(--c-surface)] hover:bg-[var(--c-surface-3)]"
       >
         <span className="text-sm leading-none">{current.flag}</span>
         <span className="uppercase tracking-wide">{current.code}</span>
@@ -383,14 +385,14 @@ function LanguageSwitcher({ lang, setLang }: { lang: Lang; setLang: (l: Lang) =>
           initial={{ opacity: 0, y: -6, scale: 0.97 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.15, ease: "easeOut" }}
-          className="absolute right-0 top-full mt-1.5 w-36 rounded-lg border border-white/[0.08] bg-[#1a1a1a] shadow-xl overflow-hidden z-50"
+          className="absolute right-0 top-full mt-1.5 w-36 rounded-lg border border-[var(--c-border)] bg-[var(--c-elevated)] shadow-xl overflow-hidden z-50"
         >
           {LANGUAGES.map((l) => (
             <button
               key={l.code}
               onClick={() => { setLang(l.code); setOpen(false); }}
               className={`w-full flex items-center gap-2.5 px-3 py-2 text-xs transition-colors text-left
-                ${l.code === lang ? "text-[#e4e4e7] bg-white/[0.06]" : "text-[#888] hover:text-[#e4e4e7] hover:bg-white/[0.04]"}`}
+                ${l.code === lang ? "text-[var(--c-fg)] bg-[var(--c-surface-2)]" : "text-[var(--c-muted)] hover:text-[var(--c-fg)] hover:bg-[var(--c-surface)]"}`}
             >
               <span className="text-sm">{l.flag}</span>
               {l.name}
@@ -421,12 +423,12 @@ function SectionIndicator({ active, sections }: { active: string; sections: { id
               className="block h-px transition-all duration-300"
               style={{
                 width: isActive ? "16px" : "8px",
-                backgroundColor: isActive ? "rgba(228,228,231,0.5)" : "rgba(228,228,231,0.12)",
+                backgroundColor: isActive ? "var(--c-active)" : "var(--c-inactive)",
               }}
             />
             <span
               className="text-[10px] uppercase tracking-widest font-medium transition-colors duration-300 whitespace-nowrap"
-              style={{ color: isActive ? "rgba(228,228,231,0.55)" : "rgba(228,228,231,0.15)" }}
+              style={{ color: isActive ? "var(--c-active-lbl)" : "var(--c-inactive-lbl)" }}
             >
               {s.label}
             </span>
@@ -475,12 +477,12 @@ function CommandPalette({ items, open, onClose }: { items: CmdItem[]; open: bool
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -8, scale: 0.97 }}
             transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-            className="relative w-full max-w-[400px] mx-4 rounded-xl border border-white/[0.1] bg-[#161616] shadow-2xl overflow-hidden"
+            className="relative w-full max-w-[400px] mx-4 rounded-xl border border-[var(--c-border-strong)] bg-[var(--c-elevated-2)] shadow-2xl overflow-hidden"
             onClick={e => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="px-4 pt-3 pb-2 border-b border-white/[0.06]">
-              <p className="text-[10px] uppercase tracking-widest text-[#444] font-medium">Navigate</p>
+            <div className="px-4 pt-3 pb-2 border-b border-[var(--c-border-thin)]">
+              <p className="text-[10px] uppercase tracking-widest text-[var(--c-dim)] font-medium">Navigate</p>
             </div>
 
             {/* Items */}
@@ -491,20 +493,20 @@ function CommandPalette({ items, open, onClose }: { items: CmdItem[]; open: bool
                   onClick={item.action}
                   onMouseEnter={() => setIdx(i)}
                   className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm transition-colors text-left
-                    ${i === idx ? "bg-white/[0.06] text-[#e4e4e7]" : "text-[#888] hover:text-[#e4e4e7]"}`}
+                    ${i === idx ? "bg-[var(--c-surface-2)] text-[var(--c-fg)]" : "text-[var(--c-muted)] hover:text-[var(--c-fg)]"}`}
                 >
                   <span className="flex items-center opacity-60">{item.icon}</span>
                   <span className="flex-1">{item.label}</span>
-                  {item.hint && <span className="text-[10px] text-[#444] font-mono">{item.hint}</span>}
+                  {item.hint && <span className="text-[10px] text-[var(--c-dim)] font-mono">{item.hint}</span>}
                 </button>
               ))}
             </div>
 
             {/* Footer */}
-            <div className="px-4 py-2 border-t border-white/[0.06] flex gap-4">
-              <span className="text-[10px] text-[#333]">↑↓ navigate</span>
-              <span className="text-[10px] text-[#333]">↵ select</span>
-              <span className="text-[10px] text-[#333]">esc close</span>
+            <div className="px-4 py-2 border-t border-[var(--c-border-thin)] flex gap-4">
+              <span className="text-[10px] text-[var(--c-deeper)]">↑↓ navigate</span>
+              <span className="text-[10px] text-[var(--c-deeper)]">↵ select</span>
+              <span className="text-[10px] text-[var(--c-deeper)]">esc close</span>
             </div>
           </motion.div>
         </motion.div>
@@ -522,12 +524,19 @@ export default function Home() {
   const [copied, setCopied]           = useState(false);
   const [cmdOpen, setCmdOpen]         = useState(false);
   const [activeSection, setActive]    = useState("intro");
+  const [theme, setTheme]             = useState<'dark' | 'light'>(() =>
+    (localStorage.getItem('nn-theme') as 'dark' | 'light') ?? 'dark'
+  );
+  const toggleTheme = () => setTheme(t => t === 'dark' ? 'light' : 'dark');
 
-  // Title + dark mode
+  // Title
   useEffect(() => {
     document.documentElement.classList.add("dark");
     document.title = "Neo Nuñez — AI Engineer";
   }, []);
+
+  // Persist theme
+  useEffect(() => { localStorage.setItem('nn-theme', theme); }, [theme]);
 
   // ⌘K / Ctrl+K toggle
   useEffect(() => {
@@ -601,7 +610,7 @@ export default function Home() {
   const nameChars = "Neo Nuñez".split("");
 
   return (
-    <div className="min-h-screen dot-bg text-[#e4e4e7] antialiased">
+    <div className={`min-h-screen dot-bg text-[var(--c-fg)] antialiased${theme === 'light' ? ' light' : ''}`}>
 
       {/* Grain */}
       <div className="pointer-events-none fixed inset-0 z-50 opacity-[0.025]"
@@ -618,38 +627,46 @@ export default function Home() {
 
       {/* Nav */}
       <div className="fixed top-0 left-0 right-0 z-40"
-        style={{ backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", backgroundColor: "rgba(18,18,18,0.75)" }}>
+        style={{ backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", backgroundColor: "var(--c-nav)" }}>
         <nav className="px-8 py-3.5 flex items-center justify-between max-w-[780px] mx-auto">
-          <a href="/" className="font-mono text-sm text-[#e4e4e7] opacity-80 hover:opacity-100 tracking-tight">nn_</a>
+          <a href="/" className="font-mono text-sm text-[var(--c-fg)] opacity-80 hover:opacity-100 tracking-tight">nn_</a>
           <div className="flex items-center gap-5">
-            <a href="#experience" className="link-anim text-[#888] hover:text-[#e4e4e7] pb-px flex items-center" aria-label={tr.navExperience}>
+            <a href="#experience" className="link-anim text-[var(--c-muted)] hover:text-[var(--c-fg)] pb-px flex items-center" aria-label={tr.navExperience}>
               <Briefcase size={15} className="md:hidden" />
               <span className="hidden md:inline text-sm">{tr.navExperience}</span>
             </a>
-            <a href="#projects" className="link-anim text-[#888] hover:text-[#e4e4e7] pb-px flex items-center" aria-label={tr.navProjects}>
+            <a href="#projects" className="link-anim text-[var(--c-muted)] hover:text-[var(--c-fg)] pb-px flex items-center" aria-label={tr.navProjects}>
               <Code2 size={15} className="md:hidden" />
               <span className="hidden md:inline text-sm">{tr.navProjects}</span>
             </a>
-            <a href="#contact" className="link-anim text-[#888] hover:text-[#e4e4e7] pb-px flex items-center" aria-label={tr.navContact}>
+            <a href="#contact" className="link-anim text-[var(--c-muted)] hover:text-[var(--c-fg)] pb-px flex items-center" aria-label={tr.navContact}>
               <Mail size={15} className="md:hidden" />
               <span className="hidden md:inline text-sm">{tr.navContact}</span>
             </a>
             <a href="https://github.com/neo-nunez" target="_blank" rel="noreferrer"
-              className="text-[#888] hover:text-[#e4e4e7] transition-colors" aria-label="GitHub">
+              className="text-[var(--c-muted)] hover:text-[var(--c-fg)] transition-colors" aria-label="GitHub">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
               </svg>
             </a>
             <a href="https://linkedin.com/in/neo-nunez" target="_blank" rel="noreferrer"
-              className="text-[#888] hover:text-[#e4e4e7] transition-colors" aria-label="LinkedIn">
+              className="text-[var(--c-muted)] hover:text-[var(--c-fg)] transition-colors" aria-label="LinkedIn">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
               </svg>
             </a>
+            {/* Theme toggle */}
+            <button
+              onClick={toggleTheme}
+              className="text-[var(--c-muted)] hover:text-[var(--c-fg)] transition-colors"
+              aria-label="Toggle theme"
+            >
+              {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
+            </button>
             {/* ⌘K hint */}
             <button
               onClick={() => setCmdOpen(true)}
-              className="hidden sm:flex items-center gap-1.5 text-[#444] hover:text-[#666] transition-colors text-[10px] font-mono border border-white/[0.05] rounded px-1.5 py-0.5"
+              className="hidden sm:flex items-center gap-1.5 text-[var(--c-dim)] hover:text-[var(--c-mid)] transition-colors text-[10px] font-mono border border-[var(--c-border-faint)] rounded px-1.5 py-0.5"
               aria-label="Open command palette"
             >
               <span>⌘K</span>
@@ -658,10 +675,10 @@ export default function Home() {
           </div>
         </nav>
         {/* Mobile: active section label — hidden on xl+ where sidebar is visible */}
-        <div className="xl:hidden border-t border-white/[0.04]">
+        <div className="xl:hidden border-t border-[var(--c-border-micro)]">
           <div className="max-w-[780px] mx-auto px-8 py-1.5 flex items-center gap-2">
-            <span className="block h-px w-3 bg-white/20" />
-            <span className="text-[9px] uppercase tracking-widest text-[#444] font-medium">
+            <span className="block h-px w-3 bg-[var(--c-line)]" />
+            <span className="text-[9px] uppercase tracking-widest text-[var(--c-dim)] font-medium">
               {sections.find(s => s.id === activeSection)?.label ?? ""}
             </span>
           </div>
@@ -675,7 +692,7 @@ export default function Home() {
         <div id="intro">
 
           {/* Name — character-by-character reveal */}
-          <h1 className="text-2xl font-semibold text-[#e4e4e7] mb-3 flex flex-wrap">
+          <h1 className="text-2xl font-semibold text-[var(--c-fg)] mb-3 flex flex-wrap">
             {nameChars.map((char, i) => (
               <motion.span
                 key={i}
@@ -692,7 +709,7 @@ export default function Home() {
           <motion.p
             initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, ease: [0.25, 0.1, 0.25, 1], delay: introDelay[0] }}
-            className="text-[#888] text-sm leading-relaxed mb-6">
+            className="text-[var(--c-muted)] text-sm leading-relaxed mb-6">
             {tr.tagline}
           </motion.p>
 
@@ -702,21 +719,21 @@ export default function Home() {
             transition={{ duration: 0.45, ease: [0.25, 0.1, 0.25, 1], delay: introDelay[1] }}
             className="space-y-2.5 text-sm leading-relaxed mb-6">
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-[#888]">{tr.workingAt}</span>
+              <span className="text-[var(--c-muted)]">{tr.workingAt}</span>
               <Badge icon={<Building2 size={11} className="text-[#60a5fa]" />}>Apply Latam</Badge>
             </div>
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-[#888]">{tr.building}</span>
+              <span className="text-[var(--c-muted)]">{tr.building}</span>
               <Badge icon={<BrainCircuit size={11} className="text-[#a78bfa]" />}>Enterprise RAG System</Badge>
               <Badge icon={<Mic size={11} className="text-[#34d399]" />}>VoiceFlow</Badge>
               <Badge icon={<LayoutGrid size={11} className="text-[#fb923c]" />}>FocusPad</Badge>
             </div>
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-[#888]">{tr.studyingAt}</span>
+              <span className="text-[var(--c-muted)]">{tr.studyingAt}</span>
               <Badge icon={<GraduationCap size={11} className="text-[#f472b6]" />}>UBA — Computer Science</Badge>
             </div>
             <div className="flex items-center gap-1 flex-wrap md:flex-nowrap">
-              <span className="text-[#888] shrink-0 mr-1">{tr.fluentIn}</span>
+              <span className="text-[var(--c-muted)] shrink-0 mr-1">{tr.fluentIn}</span>
               <FlagBadge flag="🇦🇷" label={tr.langSpanish} compact />
               <FlagBadge flag="🇬🇧" label={tr.langEnglish} compact />
               <FlagBadge flag="🇫🇷" label={tr.langFrench} compact />
@@ -730,11 +747,11 @@ export default function Home() {
           <motion.div
             initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, ease: [0.25, 0.1, 0.25, 1], delay: introDelay[2] }}
-            className="space-y-4 text-sm leading-[1.85] text-[#aaa]">
+            className="space-y-4 text-sm leading-[1.85] text-[var(--c-soft)]">
             <p>
               {tr.bio1.split("github.com/neo-nunez")[0]}
               <a href="https://github.com/neo-nunez" target="_blank" rel="noreferrer"
-                className="link-anim text-[#e4e4e7] pb-px">
+                className="link-anim text-[var(--c-fg)] pb-px">
                 github.com/neo-nunez
               </a>
               {tr.bio1.split("github.com/neo-nunez")[1]}
@@ -743,7 +760,7 @@ export default function Home() {
             <p>
               {tr.bio3}{" "}
               <a href="mailto:neonunez129@gmail.com"
-                className="link-anim text-[#e4e4e7] pb-px">
+                className="link-anim text-[var(--c-fg)] pb-px">
                 {tr.bio3Link}
               </a>.
             </p>
@@ -756,17 +773,17 @@ export default function Home() {
         {/* ── Experience ── */}
         <section id="experience">
           <FadeUp>
-            <h2 className="text-xs font-semibold uppercase tracking-widest text-[#555] mb-6">{tr.sectionExperience}</h2>
+            <h2 className="text-xs font-semibold uppercase tracking-widest text-[var(--c-faint)] mb-6">{tr.sectionExperience}</h2>
           </FadeUp>
           <div className="space-y-6">
             <FadeUp delay={0.05}>
               <HoverRow>
                 <div className="flex items-baseline justify-between gap-4 mb-1">
-                  <h3 className="text-sm font-medium text-[#e4e4e7]">{tr.exp1Title}</h3>
-                  <span className="text-xs text-[#555] whitespace-nowrap">{tr.exp1Period}</span>
+                  <h3 className="text-sm font-medium text-[var(--c-fg)]">{tr.exp1Title}</h3>
+                  <span className="text-xs text-[var(--c-faint)] whitespace-nowrap">{tr.exp1Period}</span>
                 </div>
-                <p className="text-xs text-[#666] mb-3">Apply Latam · Buenos Aires</p>
-                <ul className="space-y-1.5 text-sm text-[#888] leading-relaxed">
+                <p className="text-xs text-[var(--c-mid)] mb-3">Apply Latam · Buenos Aires</p>
+                <ul className="space-y-1.5 text-sm text-[var(--c-muted)] leading-relaxed">
                   <li>{tr.exp1p1}</li>
                   <li>{tr.exp1p2}</li>
                   <li>{tr.exp1p3}</li>
@@ -777,11 +794,11 @@ export default function Home() {
             <FadeUp delay={0.1}>
               <HoverRow>
                 <div className="flex items-baseline justify-between gap-4 mb-1">
-                  <h3 className="text-sm font-medium text-[#e4e4e7]">{tr.exp2Title}</h3>
-                  <span className="text-xs text-[#555] whitespace-nowrap">{tr.exp2Period}</span>
+                  <h3 className="text-sm font-medium text-[var(--c-fg)]">{tr.exp2Title}</h3>
+                  <span className="text-xs text-[var(--c-faint)] whitespace-nowrap">{tr.exp2Period}</span>
                 </div>
-                <p className="text-xs text-[#666] mb-3">Apply Latam · Buenos Aires</p>
-                <ul className="space-y-1.5 text-sm text-[#888] leading-relaxed">
+                <p className="text-xs text-[var(--c-mid)] mb-3">Apply Latam · Buenos Aires</p>
+                <ul className="space-y-1.5 text-sm text-[var(--c-muted)] leading-relaxed">
                   <li>{tr.exp2p1}</li>
                   <li>{tr.exp2p2}</li>
                 </ul>
@@ -795,7 +812,7 @@ export default function Home() {
         {/* ── Projects ── */}
         <section id="projects">
           <FadeUp>
-            <h2 className="text-xs font-semibold uppercase tracking-widest text-[#555] mb-6">{tr.sectionProjects}</h2>
+            <h2 className="text-xs font-semibold uppercase tracking-widest text-[var(--c-faint)] mb-6">{tr.sectionProjects}</h2>
           </FadeUp>
           <div className="space-y-4">
             {[
@@ -806,13 +823,13 @@ export default function Home() {
               <FadeUp key={p.name} delay={i * 0.06}>
                 <HoverRow>
                   <div className="flex items-baseline justify-between gap-4 mb-1">
-                    <h3 className="text-sm font-medium text-[#e4e4e7]">{p.name}</h3>
+                    <h3 className="text-sm font-medium text-[var(--c-fg)]">{p.name}</h3>
                     <a href="https://github.com/neo-nunez" target="_blank" rel="noreferrer"
-                      className="text-xs text-[#555] hover:text-[#888] transition-colors whitespace-nowrap">
+                      className="text-xs text-[var(--c-faint)] hover:text-[var(--c-muted)] transition-colors whitespace-nowrap">
                       {tr.inDevelopment}
                     </a>
                   </div>
-                  <p className="text-sm text-[#888] leading-relaxed mb-2">{p.desc}</p>
+                  <p className="text-sm text-[var(--c-muted)] leading-relaxed mb-2">{p.desc}</p>
                   <div className="flex flex-wrap gap-1.5">
                     {p.tags.map(label => <TechBadge key={label} label={label} />)}
                   </div>
@@ -827,8 +844,8 @@ export default function Home() {
         {/* ── Skills ── */}
         <FadeUp>
           <section id="skills">
-            <h2 className="text-xs font-semibold uppercase tracking-widest text-[#555] mb-6">{tr.sectionSkills}</h2>
-            <div className="space-y-3 text-sm text-[#888]">
+            <h2 className="text-xs font-semibold uppercase tracking-widest text-[var(--c-faint)] mb-6">{tr.sectionSkills}</h2>
+            <div className="space-y-3 text-sm text-[var(--c-muted)]">
               {[
                 { label: tr.skillLang,     value: "Python · JavaScript · TypeScript · Groovy · Jython · SQL · HTML · CSS" },
                 { label: "AI / ML",        value: "LangGraph · LlamaIndex · RAG · LLM orchestration · Gemini · Ollama · mlx-whisper · prompt engineering" },
@@ -838,7 +855,7 @@ export default function Home() {
                 { label: tr.skillLearning, value: "ML fundamentals · neural networks · fine-tuning · reinforcement learning" },
               ].map(row => (
                 <div key={row.label} className="grid gap-x-6" style={{ gridTemplateColumns: "7rem 1fr" }}>
-                  <span className="text-[#555] text-xs self-start pt-[3px] leading-relaxed">{row.label}</span>
+                  <span className="text-[var(--c-faint)] text-xs self-start pt-[3px] leading-relaxed">{row.label}</span>
                   <span className="leading-relaxed">{row.value}</span>
                 </div>
               ))}
@@ -851,9 +868,9 @@ export default function Home() {
         {/* ── Languages ── */}
         <FadeUp>
           <section id="languages">
-            <h2 className="text-xs font-semibold uppercase tracking-widest text-[#555] mb-5">{tr.sectionLanguages}</h2>
-            <p className="text-sm leading-[1.85] text-[#888] mb-6">{tr.langsBio}</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 text-sm text-[#888]">
+            <h2 className="text-xs font-semibold uppercase tracking-widest text-[var(--c-faint)] mb-5">{tr.sectionLanguages}</h2>
+            <p className="text-sm leading-[1.85] text-[var(--c-muted)] mb-6">{tr.langsBio}</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 text-sm text-[var(--c-muted)]">
               {[
                 { name: tr.langSpanish,    level: tr.langNative,      cert: "#" },
                 { name: tr.langPortuguese, level: tr.langNativeLevel,  cert: "#" },
@@ -867,7 +884,7 @@ export default function Home() {
                     href={cert}
                     target="_blank"
                     rel="noreferrer"
-                    className="group link-anim inline-flex items-center gap-1.5 text-[#e4e4e7] pb-px hover:text-white"
+                    className="group link-anim inline-flex items-center gap-1.5 text-[var(--c-fg)] pb-px hover:text-[var(--c-fg)]"
                   >
                     {name}
                     <ExternalLink
@@ -875,7 +892,7 @@ export default function Home() {
                       className="opacity-25 group-hover:opacity-60 transition-opacity shrink-0"
                     />
                   </a>
-                  <span className="text-[#555] text-xs shrink-0">{level}</span>
+                  <span className="text-[var(--c-faint)] text-xs shrink-0">{level}</span>
                 </div>
               ))}
             </div>
@@ -887,7 +904,7 @@ export default function Home() {
         {/* ── Contact ── */}
         <FadeUp>
           <section id="contact">
-            <h2 className="text-xs font-semibold uppercase tracking-widest text-[#555] mb-5">{tr.sectionFindMe}</h2>
+            <h2 className="text-xs font-semibold uppercase tracking-widest text-[var(--c-faint)] mb-5">{tr.sectionFindMe}</h2>
             <div className="flex flex-wrap gap-x-6 gap-y-3 mb-5">
               <SocialLink href="https://github.com/neo-nunez">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
@@ -902,7 +919,7 @@ export default function Home() {
                 LinkedIn
               </SocialLink>
             </div>
-            <p className="text-sm text-[#888]">
+            <p className="text-sm text-[var(--c-muted)]">
               {tr.orMailMe}{" "}
               <button
                 onClick={() => {
@@ -910,7 +927,7 @@ export default function Home() {
                   setCopied(true);
                   setTimeout(() => setCopied(false), 2000);
                 }}
-                className="link-anim inline-flex items-center gap-1.5 text-[#e4e4e7] cursor-pointer pb-px"
+                className="link-anim inline-flex items-center gap-1.5 text-[var(--c-fg)] cursor-pointer pb-px"
               >
                 {copied
                   ? <><Check size={12} className="text-[#34d399]" /><span className="text-[#34d399]">Copied!</span></>
@@ -918,10 +935,10 @@ export default function Home() {
                 }
               </button>
             </p>
-            <p className="text-sm text-[#555] mt-3">
+            <p className="text-sm text-[var(--c-faint)] mt-3">
               You can also{" "}
               <a href="/cv.pdf" download
-                className="link-anim text-[#888] hover:text-[#e4e4e7] pb-px inline-flex items-center gap-1"
+                className="link-anim text-[var(--c-muted)] hover:text-[var(--c-fg)] pb-px inline-flex items-center gap-1"
               >
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                 download my CV

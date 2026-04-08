@@ -6,11 +6,74 @@ html {
   scroll-behavior: smooth;
 }
 
+/* ── Theme tokens (dark default) ─────────────────────────────── */
+:root {
+  --c-bg:             #121212;
+  --c-fg:             #e4e4e7;
+  --c-muted:          #888888;
+  --c-faint:          #555555;
+  --c-dim:            #444444;
+  --c-deeper:         #333333;
+  --c-soft:           #aaaaaa;
+  --c-mid:            #666666;
+  --c-surface:        rgba(255,255,255,0.04);
+  --c-surface-2:      rgba(255,255,255,0.06);
+  --c-surface-3:      rgba(255,255,255,0.07);
+  --c-border:         rgba(255,255,255,0.08);
+  --c-border-thin:    rgba(255,255,255,0.06);
+  --c-border-faint:   rgba(255,255,255,0.05);
+  --c-border-micro:   rgba(255,255,255,0.04);
+  --c-border-strong:  rgba(255,255,255,0.10);
+  --c-nav:            rgba(18,18,18,0.80);
+  --c-elevated:       #1a1a1a;
+  --c-elevated-2:     #161616;
+  --c-dot:            rgba(30,58,138,0.28);
+  --c-active:         rgba(228,228,231,0.50);
+  --c-inactive:       rgba(228,228,231,0.12);
+  --c-active-lbl:     rgba(228,228,231,0.55);
+  --c-inactive-lbl:   rgba(228,228,231,0.15);
+  --c-line:           rgba(255,255,255,0.18);
+}
+.light {
+  --c-bg:             #f2f2f2;
+  --c-fg:             #111111;
+  --c-muted:          #666666;
+  --c-faint:          #999999;
+  --c-dim:            #888888;
+  --c-deeper:         #bbbbbb;
+  --c-soft:           #555555;
+  --c-mid:            #777777;
+  --c-surface:        rgba(0,0,0,0.04);
+  --c-surface-2:      rgba(0,0,0,0.06);
+  --c-surface-3:      rgba(0,0,0,0.08);
+  --c-border:         rgba(0,0,0,0.10);
+  --c-border-thin:    rgba(0,0,0,0.07);
+  --c-border-faint:   rgba(0,0,0,0.05);
+  --c-border-micro:   rgba(0,0,0,0.04);
+  --c-border-strong:  rgba(0,0,0,0.12);
+  --c-nav:            rgba(242,242,242,0.88);
+  --c-elevated:       #e8e8e8;
+  --c-elevated-2:     #ececec;
+  --c-dot:            rgba(30,58,138,0.14);
+  --c-active:         rgba(17,17,17,0.60);
+  --c-inactive:       rgba(17,17,17,0.15);
+  --c-active-lbl:     rgba(17,17,17,0.65);
+  --c-inactive-lbl:   rgba(17,17,17,0.20);
+  --c-line:           rgba(0,0,0,0.22);
+}
+
 /* Subtle dot-grid background */
 .dot-bg {
-  background-color: #121212;
-  background-image: radial-gradient(circle, rgba(30, 58, 138, 0.28) 1px, transparent 1px);
+  background-color: var(--c-bg);
+  background-image: radial-gradient(circle, var(--c-dot) 1px, transparent 1px);
   background-size: 24px 24px;
+  transition: background-color 0.35s ease, color 0.35s ease;
+}
+/* Smooth color transitions site-wide on theme switch */
+.dot-bg * {
+  transition-property: color, background-color, border-color, box-shadow;
+  transition-duration: 0.25s;
+  transition-timing-function: ease;
 }
 
 /* Only apply hover interactions on devices that support true hover (mouse/trackpad) */
