@@ -1,0 +1,14 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "yW_jovNHPMVg8StR28FrY"
+uri = "file://artifacts/portfolio/src/assets/hero-bg.png"
+type = "image"
+title = "Abstract AI themed visual"
+
+[[generated]]
+id = "MXKL0Qb70pW2hl8ufiKrj"
+uri = "file://artifacts/portfolio/src/assets/avatar.png"
+type = "image"
+title = "AI tech abstract avatar"
