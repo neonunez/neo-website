@@ -538,23 +538,44 @@ export default function Home() {
     return () => window.removeEventListener("keydown", handle);
   }, []);
 
-  // Section tracking — find which section midpoint is closest to viewport midpoint
+  // Section tracking — hybrid:
+  //   tall sections (intro/experience/projects): activate as soon as their top passes the navbar
+  //   short sections (skills/languages/contact):  midpoint-based (closest midpoint to viewport centre)
   useEffect(() => {
-    const ids = ["intro", "experience", "projects", "skills", "languages", "contact"];
+    const tallIds  = ["intro", "experience", "projects"];
+    const shortIds = ["skills", "languages", "contact"];
+    const NAV = 72; // navbar height px
+
     const update = () => {
-      const viewportMid = window.scrollY + window.innerHeight / 2;
-      let closestId = ids[0];
-      let closestDist = Infinity;
-      for (const id of ids) {
-        const el = document.getElementById(id);
-        if (!el) continue;
-        const elTop = window.scrollY + el.getBoundingClientRect().top;
-        const elMid = elTop + el.offsetHeight / 2;
-        const dist = Math.abs(viewportMid - elMid);
-        if (dist < closestDist) { closestDist = dist; closestId = id; }
+      // Are we in the short-section zone? (skills top has scrolled above the nav)
+      const skillsEl = document.getElementById("skills");
+      const inShortZone = skillsEl ? skillsEl.getBoundingClientRect().top <= NAV : false;
+
+      if (inShortZone) {
+        // Midpoint approach for skills / languages / contact
+        const mid = window.scrollY + window.innerHeight / 2;
+        let closest = shortIds[0];
+        let minDist = Infinity;
+        for (const id of shortIds) {
+          const el = document.getElementById(id);
+          if (!el) continue;
+          const elMid = window.scrollY + el.getBoundingClientRect().top + el.offsetHeight / 2;
+          const dist = Math.abs(mid - elMid);
+          if (dist < minDist) { minDist = dist; closest = id; }
+        }
+        setActive(closest);
+      } else {
+        // "Past the top" approach for intro / experience / projects
+        let active = tallIds[0];
+        for (let i = tallIds.length - 1; i >= 0; i--) {
+          const el = document.getElementById(tallIds[i]);
+          if (!el) continue;
+          if (el.getBoundingClientRect().top <= NAV) { active = tallIds[i]; break; }
+        }
+        setActive(active);
       }
-      setActive(closestId);
     };
+
     update();
     window.addEventListener("scroll", update, { passive: true });
     return () => window.removeEventListener("scroll", update);
