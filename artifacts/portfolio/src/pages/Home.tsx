@@ -8,6 +8,18 @@ import {
   GraduationCap,
   ChevronDown,
 } from "lucide-react";
+import {
+  SiNextdotjs,
+  SiFastapi,
+  SiSupabase,
+  SiPython,
+  SiReact,
+  SiExpo,
+  SiTypescript,
+  SiApple,
+  SiLangchain,
+  SiGooglegemini,
+} from "react-icons/si";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -245,6 +257,34 @@ function FlagBadge({ flag, label }: { flag: string; label: string }) {
   );
 }
 
+const TECH_ICONS: Record<string, { icon: React.ElementType; color: string }> = {
+  "Next.js":      { icon: SiNextdotjs,   color: "#e4e4e7" },
+  "FastAPI":      { icon: SiFastapi,     color: "#009688" },
+  "LangGraph":    { icon: SiLangchain,   color: "#5eead4" },
+  "LlamaIndex":   { icon: BrainCircuit,  color: "#a78bfa" },
+  "Supabase":     { icon: SiSupabase,    color: "#3ECF8E" },
+  "Gemini Flash": { icon: SiGooglegemini,color: "#4285F4" },
+  "Python":       { icon: SiPython,      color: "#4b8bbe" },
+  "mlx-whisper":  { icon: SiApple,       color: "#aaa"    },
+  "pyobjc":       { icon: SiApple,       color: "#aaa"    },
+  "rumps":        { icon: SiApple,       color: "#aaa"    },
+  "pywebview":    { icon: SiPython,      color: "#4b8bbe" },
+  "React Native": { icon: SiReact,       color: "#61DAFB" },
+  "Expo":         { icon: SiExpo,        color: "#e4e4e7" },
+  "TypeScript":   { icon: SiTypescript,  color: "#3178C6" },
+};
+
+function TechBadge({ label }: { label: string }) {
+  const tech = TECH_ICONS[label];
+  if (!tech) return <Badge icon={null}>{label}</Badge>;
+  const Icon = tech.icon;
+  return (
+    <Badge icon={<Icon size={11} style={{ color: tech.color, flexShrink: 0 }} />}>
+      {label}
+    </Badge>
+  );
+}
+
 function SocialLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
     <a href={href} target="_blank" rel="noreferrer"
@@ -346,7 +386,7 @@ export default function Home() {
         }} />
 
       {/* Nav — full-width blur wrapper */}
-      <div className="fixed top-0 left-0 right-0 z-40 border-b border-white/[0.05]"
+      <div className="fixed top-0 left-0 right-0 z-40"
         style={{ backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", backgroundColor: "rgba(18,18,18,0.75)" }}>
         <nav className="px-8 py-3.5 flex items-center justify-between max-w-[780px] mx-auto">
           <a href="/" className="font-mono text-sm text-[#e4e4e7] opacity-80 hover:opacity-100 tracking-tight">nn_</a>
@@ -495,28 +535,17 @@ export default function Home() {
               {
                 name: "Enterprise RAG System",
                 desc: tr.proj1Desc,
-                tags: [
-                  { label: "Next.js", color: "#60a5fa" }, { label: "FastAPI", color: "#60a5fa" },
-                  { label: "LangGraph", color: "#a78bfa" }, { label: "LlamaIndex", color: "#a78bfa" },
-                  { label: "Supabase", color: "#34d399" }, { label: "Gemini Flash", color: "#fb923c" },
-                ],
+                tags: ["Next.js", "FastAPI", "LangGraph", "LlamaIndex", "Supabase", "Gemini Flash"],
               },
               {
                 name: "VoiceFlow",
                 desc: tr.proj2Desc,
-                tags: [
-                  { label: "Python", color: "#60a5fa" }, { label: "mlx-whisper", color: "#a78bfa" },
-                  { label: "pyobjc", color: "#34d399" }, { label: "rumps", color: "#34d399" },
-                  { label: "pywebview", color: "#fb923c" },
-                ],
+                tags: ["Python", "mlx-whisper", "pyobjc", "rumps", "pywebview"],
               },
               {
                 name: "FocusPad",
                 desc: tr.proj3Desc,
-                tags: [
-                  { label: "React Native", color: "#60a5fa" }, { label: "Expo", color: "#34d399" },
-                  { label: "TypeScript", color: "#e4e4e7" },
-                ],
+                tags: ["React Native", "Expo", "TypeScript"],
               },
             ].map((p, i) => (
               <FadeUp key={p.name} delay={i * 0.06}>
@@ -530,12 +559,8 @@ export default function Home() {
                   </div>
                   <p className="text-sm text-[#888] leading-relaxed mb-2">{p.desc}</p>
                   <div className="flex flex-wrap gap-1.5">
-                    {p.tags.map((tag) => (
-                      <span key={tag.label}
-                        style={{ borderColor: `${tag.color}22`, color: tag.color }}
-                        className="inline-flex items-center px-2 py-0.5 text-xs rounded-md border bg-white/[0.03] font-medium whitespace-nowrap">
-                        {tag.label}
-                      </span>
+                    {p.tags.map((label) => (
+                      <TechBadge key={label} label={label} />
                     ))}
                   </div>
                 </div>
