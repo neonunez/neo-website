@@ -552,11 +552,16 @@ export default function Home() {
       const inShortZone = skillsEl ? skillsEl.getBoundingClientRect().top <= NAV : false;
 
       if (inShortZone) {
-        // Midpoint approach for skills / languages / contact
+        // Contact: only when fully scrolled to the very end
+        const atBottom =
+          window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4;
+        if (atBottom) { setActive("contact"); return; }
+
+        // Skills vs Languages: whichever midpoint is closer to viewport centre
         const mid = window.scrollY + window.innerHeight / 2;
-        let closest = shortIds[0];
+        let closest = "skills";
         let minDist = Infinity;
-        for (const id of shortIds) {
+        for (const id of ["skills", "languages"]) {
           const el = document.getElementById(id);
           if (!el) continue;
           const elMid = window.scrollY + el.getBoundingClientRect().top + el.offsetHeight / 2;
