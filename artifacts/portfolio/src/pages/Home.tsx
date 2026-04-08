@@ -715,7 +715,7 @@ export default function Home() {
               <span className="text-[#888]">{tr.studyingAt}</span>
               <Badge icon={<GraduationCap size={11} className="text-[#f472b6]" />}>UBA — Computer Science</Badge>
             </div>
-            <div className="flex items-center gap-1 flex-nowrap">
+            <div className="flex items-center gap-1 flex-wrap md:flex-nowrap">
               <span className="text-[#888] shrink-0 mr-1">{tr.fluentIn}</span>
               <FlagBadge flag="🇦🇷" label={tr.langSpanish} compact />
               <FlagBadge flag="🇬🇧" label={tr.langEnglish} compact />
@@ -853,7 +853,7 @@ export default function Home() {
           <section id="languages">
             <h2 className="text-xs font-semibold uppercase tracking-widest text-[#555] mb-5">{tr.sectionLanguages}</h2>
             <p className="text-sm leading-[1.85] text-[#888] mb-6">{tr.langsBio}</p>
-            <div className="grid grid-cols-2 gap-x-8 gap-y-3 text-sm text-[#888]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 text-sm text-[#888]">
               {[
                 { name: tr.langSpanish,    level: tr.langNative,      cert: "#" },
                 { name: tr.langPortuguese, level: tr.langNativeLevel,  cert: "#" },
