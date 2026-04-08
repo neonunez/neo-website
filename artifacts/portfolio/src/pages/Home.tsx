@@ -531,9 +531,9 @@ export default function Home() {
     return () => window.removeEventListener("keydown", handle);
   }, []);
 
-  // Section observer
+  // Section observer + end-of-page detection
   useEffect(() => {
-    const ids = ["intro", "experience", "projects", "contact"];
+    const ids = ["intro", "experience", "projects", "skills", "languages", "contact"];
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach(entry => {
@@ -546,7 +546,12 @@ export default function Home() {
       const el = document.getElementById(id);
       if (el) observer.observe(el);
     });
-    return () => observer.disconnect();
+    const handleScroll = () => {
+      const nearBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 80;
+      if (nearBottom) setActive("contact");
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => { observer.disconnect(); window.removeEventListener("scroll", handleScroll); };
   }, []);
 
   // Command palette items
@@ -570,6 +575,8 @@ export default function Home() {
     { id: "intro",      label: tr.sectionIntro },
     { id: "experience", label: tr.navExperience },
     { id: "projects",   label: tr.navProjects },
+    { id: "skills",     label: tr.sectionSkills },
+    { id: "languages",  label: tr.sectionLanguages },
     { id: "contact",    label: tr.navContact },
   ];
 
@@ -785,7 +792,7 @@ export default function Home() {
 
         {/* ── Skills ── */}
         <FadeUp>
-          <section>
+          <section id="skills">
             <h2 className="text-xs font-semibold uppercase tracking-widest text-[#555] mb-6">{tr.sectionSkills}</h2>
             <div className="space-y-3 text-sm text-[#888]">
               {[
@@ -809,7 +816,7 @@ export default function Home() {
 
         {/* ── Languages ── */}
         <FadeUp>
-          <section>
+          <section id="languages">
             <h2 className="text-xs font-semibold uppercase tracking-widest text-[#555] mb-6">{tr.sectionLanguages}</h2>
             <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm text-[#888]">
               <div className="flex justify-between"><span>{tr.langSpanish}</span><span className="text-[#555] text-xs">{tr.langNative}</span></div>
