@@ -47,8 +47,8 @@ export function HierarchyNav() {
           {CHILDREN.map((page, i) => {
             const active    = isActive(page.path);
             const isLast    = i === CHILDREN.length - 1;
-            // arm ├─/└─ is bright for every child at or before the active one
-            const armBright = activeIndex !== -1 && i <= activeIndex;
+            // arm ├─/└─ is bright ONLY for the active child itself
+            const armBright = active;
             // the │ AFTER row i (between i and i+1) is bright only while still heading toward active
             const postBright = activeIndex !== -1 && i < activeIndex;
 
