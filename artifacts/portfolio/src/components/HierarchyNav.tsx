@@ -37,7 +37,7 @@ export function HierarchyNav() {
           <Link
             href="/"
             className="transition-opacity duration-200 hover:opacity-40 uppercase"
-            style={isActive("/") ? activeStyle : inactiveStyle}
+            style={activeStyle}
           >
             overview
           </Link>
