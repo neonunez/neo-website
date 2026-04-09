@@ -9,6 +9,7 @@ import Experience from "@/pages/Experience";
 import Projects from "@/pages/Projects";
 import Skills from "@/pages/Skills";
 import Languages from "@/pages/Languages";
+import LanguageDetail from "@/pages/LanguageDetail";
 import ProjectRagSystem from "@/pages/ProjectRagSystem";
 import AboutMe from "@/pages/AboutMe";
 
@@ -24,6 +25,7 @@ function Router() {
       <Route path="/projects/rag-system" component={ProjectRagSystem} />
       <Route path="/skills" component={Skills} />
       <Route path="/languages" component={Languages} />
+      <Route path="/languages/:slug" component={LanguageDetail} />
       <Route component={NotFound} />
     </Switch>
   );
