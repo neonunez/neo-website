@@ -49,8 +49,8 @@ export function HierarchyNav() {
             const isLast    = i === CHILDREN.length - 1;
             // arm ├─/└─ is bright ONLY for the active child itself
             const armBright = active;
-            // the │ AFTER row i (between i and i+1) is bright only while still heading toward active
-            const postBright = activeIndex !== -1 && i < activeIndex;
+            // the │ AFTER row i is always dim — only the active arm brightens
+            const postBright = false;
 
             return (
               <Fragment key={page.path}>
