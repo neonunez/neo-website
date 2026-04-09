@@ -2,8 +2,9 @@ import { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useLocation, Link } from "wouter";
 
-const ARM_W  = 16;
-const INDENT = ARM_W + 4; // 20px — labels' paddingLeft
+const ARM_W    = 16;
+const LABEL_GAP = 4;
+const INDENT   = ARM_W + LABEL_GAP; // 20px — labels' paddingLeft
 
 const CHILDREN = [
   { path: "/about",      label: "about me"   },
@@ -112,7 +113,6 @@ export function HierarchyNav() {
                 fill="none"
                 stroke="var(--c-fg)"
                 strokeWidth="1"
-                strokeLinecap="square"
               />
             )}
 
@@ -124,7 +124,6 @@ export function HierarchyNav() {
                 fill="none"
                 stroke="var(--c-fg)"
                 strokeWidth="1"
-                strokeLinecap="square"
                 initial={{ pathLength: 0 }}
                 animate={{ pathLength: 1 }}
                 transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
@@ -138,7 +137,6 @@ export function HierarchyNav() {
                 fill="none"
                 stroke="var(--c-fg)"
                 strokeWidth="1"
-                strokeLinecap="square"
                 opacity="0.10"
               />
             )}
