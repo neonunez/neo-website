@@ -68,36 +68,6 @@ export default function Overview() {
           </div>
         </motion.div>
 
-        {/* Bio */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, ease: [0.25, 0.1, 0.25, 1], delay: introDelay[2] }}
-          className="space-y-4 text-sm leading-[1.85] text-[var(--c-soft)]"
-        >
-          <p>
-            {tr.bio1.split("github.com/neo-nunez")[0]}
-            <a
-              href="https://github.com/neo-nunez"
-              target="_blank"
-              rel="noreferrer"
-              className="link-anim text-[var(--c-fg)] pb-px"
-            >
-              github.com/neo-nunez
-            </a>
-            {tr.bio1.split("github.com/neo-nunez")[1]}
-          </p>
-          <p>{tr.bio2}</p>
-          <p>
-            {tr.bio3}{" "}
-            <a
-              href="mailto:neonunez129@gmail.com"
-              className="link-anim text-[var(--c-fg)] pb-px"
-            >
-              {tr.bio3Link}
-            </a>
-            .
-          </p>
-        </motion.div>
 
       </div>
     </Layout>

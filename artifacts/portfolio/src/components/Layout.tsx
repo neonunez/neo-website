@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sun, Moon, Briefcase, Code2, Mail, Copy, Check, ExternalLink, ChevronRight, ArrowUp } from "lucide-react";
+import { Sun, Moon, Briefcase, Code2, Mail, Copy, Check, ExternalLink, ChevronRight, ArrowUp, User } from "lucide-react";
 import { usePortfolio } from "@/context/PortfolioContext";
 import { HierarchyNav } from "./HierarchyNav";
 import { LanguageSwitcher, CommandPalette, type CmdItem, SocialLink } from "./shared";
@@ -90,6 +90,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
       action: () => { navigate("/"); setCmdOpen(false); },
     },
     {
+      label: tr.navAboutMe,
+      icon: <User size={13} />,
+      hint: "§0",
+      action: () => { navigate("/about"); setCmdOpen(false); },
+    },
+    {
       label: tr.navExperience,
       icon: <ChevronRight size={13} />,
       hint: "§1",
@@ -165,6 +171,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
             nn_
           </Link>
           <div className="flex items-center gap-5">
+            <Link href="/about" className="link-anim text-[var(--c-muted)] hover:text-[var(--c-fg)] pb-px flex items-center" aria-label={tr.navAboutMe}>
+              <User size={15} className="md:hidden" />
+              <span className="hidden md:inline text-sm">{tr.navAboutMe}</span>
+            </Link>
             <Link href="/experience" className="link-anim text-[var(--c-muted)] hover:text-[var(--c-fg)] pb-px flex items-center" aria-label={tr.navExperience}>
               <Briefcase size={15} className="md:hidden" />
               <span className="hidden md:inline text-sm">{tr.navExperience}</span>

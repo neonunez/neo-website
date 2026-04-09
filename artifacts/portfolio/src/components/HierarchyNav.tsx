@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import { useLocation, Link } from "wouter";
 
 const CHILDREN = [
+  { path: "/about",      label: "about me"   },
   { path: "/experience", label: "experience" },
   { path: "/projects",   label: "projects"   },
   { path: "/skills",     label: "skills"     },

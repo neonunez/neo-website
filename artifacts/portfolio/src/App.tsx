@@ -10,6 +10,7 @@ import Projects from "@/pages/Projects";
 import Skills from "@/pages/Skills";
 import Languages from "@/pages/Languages";
 import ProjectRagSystem from "@/pages/ProjectRagSystem";
+import AboutMe from "@/pages/AboutMe";
 
 const queryClient = new QueryClient();
 
@@ -17,6 +18,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Overview} />
+      <Route path="/about" component={AboutMe} />
       <Route path="/experience" component={Experience} />
       <Route path="/projects" component={Projects} />
       <Route path="/projects/rag-system" component={ProjectRagSystem} />

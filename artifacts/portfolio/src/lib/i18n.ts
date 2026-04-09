@@ -5,6 +5,7 @@ export interface Translations {
   navProjects: string;
   navContact: string;
   navOverview: string;
+  navAboutMe: string;
   sectionIntro: string;
   tagline: string;
   workingAt: string;
@@ -44,9 +45,9 @@ export interface Translations {
 
 export const t: Record<Lang, Translations> = {
   en: {
-    navExperience: "Experience", navProjects: "Projects", navContact: "Contact", navOverview: "Overview",
+    navExperience: "Experience", navProjects: "Projects", navContact: "Contact", navOverview: "Overview", navAboutMe: "About Me",
     sectionIntro: "Introduction",
-    tagline: "Hey! I'm Neo, an AI Engineer and Oracle Data Integration Developer based in Buenos Aires.",
+    tagline: "Hey! I'm Neo, a Computer Science student dedicated to Software/AI engineering based in Buenos Aires.",
     workingAt: "Working at", building: "Building", studyingAt: "Studying at", fluentIn: "Fluent in",
     bio1: "I have a deep interest in building production-grade AI systems — RAG pipelines, LLM orchestration, and automation tools. I enjoy bridging the gap between complex data architectures and cutting-edge AI methods. You can find my open-source work on github.com/neo-nunez.",
     bio2: "Outside of coding, I find that speaking six languages has shaped how I think about structure, pattern recognition, and ambiguity — skills that transfer directly to systems design. I'm deeply interested in software architecture, personal productivity, open-source tooling, and economics.",
@@ -74,9 +75,9 @@ export const t: Record<Lang, Translations> = {
     langsBio: "Growing up, I devoted myself to learning languages through dedicated classes and formal certifications — driven by a deep passion for multicultural environments and the belief that language is the most direct bridge between people.",
   },
   es: {
-    navExperience: "Experiencia", navProjects: "Proyectos", navContact: "Contacto", navOverview: "Resumen",
+    navExperience: "Experiencia", navProjects: "Proyectos", navContact: "Contacto", navOverview: "Resumen", navAboutMe: "Sobre Mí",
     sectionIntro: "Introducción",
-    tagline: "¡Hola! Soy Neo, Ingeniero de IA y Desarrollador de Integración de Datos Oracle en Buenos Aires.",
+    tagline: "¡Hola! Soy Neo, estudiante de Ciencias de la Computación dedicado a la ingeniería de Software/IA en Buenos Aires.",
     workingAt: "Trabajando en", building: "Construyendo", studyingAt: "Estudiando en", fluentIn: "Hablo",
     bio1: "Tengo un profundo interés en construir sistemas de IA de nivel productivo — pipelines RAG, orquestación de LLMs y herramientas de automatización. Me apasiona cerrar la brecha entre arquitecturas de datos complejas y los últimos avances en IA. Podés encontrar mi trabajo en github.com/neo-nunez.",
     bio2: "Más allá del código, hablar seis idiomas moldeó mi forma de pensar sobre la estructura, el reconocimiento de patrones y la ambigüedad — habilidades que se transfieren directamente al diseño de sistemas. Me interesan la arquitectura de software, la productividad personal, el open-source y la economía.",
@@ -104,9 +105,9 @@ export const t: Record<Lang, Translations> = {
     langsBio: "Desde pequeño, me dediqué a aprender idiomas a través de clases especializadas y certificaciones formales — motivado por una profunda pasión por los entornos multiculturales y la convicción de que el idioma es el puente más directo entre las personas.",
   },
   fr: {
-    navExperience: "Expérience", navProjects: "Projets", navContact: "Contact", navOverview: "Aperçu",
+    navExperience: "Expérience", navProjects: "Projets", navContact: "Contact", navOverview: "Aperçu", navAboutMe: "À propos",
     sectionIntro: "Introduction",
-    tagline: "Bonjour ! Je suis Neo, Ingénieur IA et Développeur d'Intégration de Données Oracle à Buenos Aires.",
+    tagline: "Bonjour ! Je suis Neo, étudiant en informatique dédié à l'ingénierie Software/IA à Buenos Aires.",
     workingAt: "Travaille chez", building: "En construction", studyingAt: "Étudie à", fluentIn: "Parle",
     bio1: "J'ai un intérêt profond pour la construction de systèmes d'IA de niveau production — pipelines RAG, orchestration de LLM et outils d'automatisation. J'aime combler le fossé entre les architectures de données complexes et les méthodes d'IA de pointe. Mon travail open-source se trouve sur github.com/neo-nunez.",
     bio2: "Au-delà du code, parler six langues a façonné ma façon de penser la structure, la reconnaissance de patterns et l'ambiguïté — des compétences directement transposables à la conception de systèmes. Je m'intéresse à l'architecture logicielle, la productivité personnelle, l'open-source et l'économie.",
@@ -134,9 +135,9 @@ export const t: Record<Lang, Translations> = {
     langsBio: "En grandissant, je me suis consacré à l'apprentissage des langues grâce à des cours spécialisés et des certifications formelles — animé par une passion profonde pour les environnements multiculturels et la conviction que la langue est le pont le plus direct entre les personnes.",
   },
   de: {
-    navExperience: "Erfahrung", navProjects: "Projekte", navContact: "Kontakt", navOverview: "Übersicht",
+    navExperience: "Erfahrung", navProjects: "Projekte", navContact: "Kontakt", navOverview: "Übersicht", navAboutMe: "Über mich",
     sectionIntro: "Einführung",
-    tagline: "Hallo! Ich bin Neo, KI-Ingenieur und Oracle Data Integration Entwickler aus Buenos Aires.",
+    tagline: "Hallo! Ich bin Neo, Informatikstudent mit Fokus auf Software/KI-Engineering aus Buenos Aires.",
     workingAt: "Arbeite bei", building: "Im Aufbau", studyingAt: "Studiere an", fluentIn: "Spreche",
     bio1: "Ich interessiere mich leidenschaftlich für den Aufbau produktionsreifer KI-Systeme — RAG-Pipelines, LLM-Orchestrierung und Automatisierungstools. Ich verbinde komplexe Datenarchitekturen mit modernster KI. Meine Open-Source-Arbeit gibt es auf github.com/neo-nunez.",
     bio2: "Außerhalb des Programmierens hat das Sprechen von sechs Sprachen mein Denken über Struktur, Mustererkennung und Mehrdeutigkeit geprägt — Fähigkeiten, die sich direkt auf Systemdesign übertragen. Ich interessiere mich für Softwarearchitektur, Produktivität, Open-Source und Wirtschaft.",
@@ -164,9 +165,9 @@ export const t: Record<Lang, Translations> = {
     langsBio: "Schon in meiner Kindheit widmete ich mich dem Sprachenlernen durch gezielte Kurse und formelle Zertifizierungen — angetrieben von einer tiefen Leidenschaft für multikulturelle Umgebungen und der Überzeugung, dass Sprache die direkteste Brücke zwischen Menschen ist.",
   },
   it: {
-    navExperience: "Esperienza", navProjects: "Progetti", navContact: "Contatto", navOverview: "Panoramica",
+    navExperience: "Esperienza", navProjects: "Progetti", navContact: "Contatto", navOverview: "Panoramica", navAboutMe: "Chi sono",
     sectionIntro: "Introduzione",
-    tagline: "Ciao! Sono Neo, Ingegnere AI e Sviluppatore Oracle Data Integration a Buenos Aires.",
+    tagline: "Ciao! Sono Neo, studente di Informatica dedito all'ingegneria Software/AI a Buenos Aires.",
     workingAt: "Lavoro presso", building: "Costruendo", studyingAt: "Studio a", fluentIn: "Parlo",
     bio1: "Ho un profondo interesse per la costruzione di sistemi AI di livello produttivo — pipeline RAG, orchestrazione di LLM e strumenti di automazione. Mi piace colmare il divario tra architetture dati complesse e metodi AI all'avanguardia. Il mio lavoro open-source si trova su github.com/neo-nunez.",
     bio2: "Al di là del codice, parlare sei lingue ha plasmato il mio modo di pensare alla struttura, al riconoscimento di pattern e all'ambiguità — competenze che si trasferiscono direttamente al design dei sistemi. Mi interessano l'architettura software, la produttività personale, l'open-source e l'economia.",
@@ -194,9 +195,9 @@ export const t: Record<Lang, Translations> = {
     langsBio: "Fin dall'infanzia, mi sono dedicato all'apprendimento delle lingue attraverso corsi specializzati e certificazioni formali — spinto da una profonda passione per gli ambienti multiculturali e dalla convinzione che la lingua sia il ponte più diretto tra le persone.",
   },
   pt: {
-    navExperience: "Experiência", navProjects: "Projetos", navContact: "Contato", navOverview: "Visão Geral",
+    navExperience: "Experiência", navProjects: "Projetos", navContact: "Contato", navOverview: "Visão Geral", navAboutMe: "Sobre Mim",
     sectionIntro: "Introdução",
-    tagline: "Olá! Sou Neo, Engenheiro de IA e Desenvolvedor de Integração de Dados Oracle em Buenos Aires.",
+    tagline: "Olá! Sou Neo, estudante de Ciência da Computação dedicado à engenharia de Software/IA em Buenos Aires.",
     workingAt: "Trabalhando em", building: "Construindo", studyingAt: "Estudando em", fluentIn: "Falo",
     bio1: "Tenho um profundo interesse em construir sistemas de IA de nível produtivo — pipelines RAG, orquestração de LLMs e ferramentas de automação. Gosto de conectar arquiteturas de dados complexas com os métodos mais avançados de IA. Você pode encontrar meu trabalho em github.com/neo-nunez.",
     bio2: "Além do código, falar seis idiomas moldou como penso sobre estrutura, reconhecimento de padrões e ambiguidade — habilidades que se transferem diretamente para o design de sistemas. Tenho interesse em arquitetura de software, produtividade pessoal, ferramentas open-source e economia.",
