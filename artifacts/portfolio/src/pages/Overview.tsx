@@ -1,8 +1,10 @@
 import { motion } from "framer-motion";
+import { Link } from "wouter";
 import { Building2, BrainCircuit, Mic, LayoutGrid, GraduationCap } from "lucide-react";
 import { usePortfolio } from "@/context/PortfolioContext";
 import { Layout } from "@/components/Layout";
 import { Badge, FlagBadge } from "@/components/shared";
+import { ChatPanel } from "@/components/ChatPanel";
 
 const nameChars = "Neo Nuñez".split("");
 const introDelay = [0.05, 0.12, 0.19, 0.26];
@@ -68,6 +70,39 @@ export default function Overview() {
           </div>
         </motion.div>
 
+        {/* AI Chat Panel */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1], delay: 0.35 }}
+        >
+          <ChatPanel />
+          <div className="mt-4">
+            <p className="text-[11px] text-[var(--c-deeper)] mb-2.5 leading-relaxed">
+              Or browse the old-fashioned way — everything is a click away.
+            </p>
+            <div className="flex flex-wrap gap-x-5 gap-y-1.5">
+              {[
+                { label: tr.navAboutMe,    href: "/about"      },
+                { label: tr.navExperience, href: "/experience"  },
+                { label: tr.navProjects,   href: "/projects"    },
+                { label: "Contact",        href: "#contact"     },
+              ].map(({ label, href }) =>
+                href.startsWith("#") ? (
+                  <a key={label} href={href}
+                    className="text-xs text-[var(--c-faint)] hover:text-[var(--c-muted)] transition-colors link-anim pb-px">
+                    {label}
+                  </a>
+                ) : (
+                  <Link key={label} href={href}
+                    className="text-xs text-[var(--c-faint)] hover:text-[var(--c-muted)] transition-colors link-anim pb-px">
+                    {label}
+                  </Link>
+                )
+              )}
+            </div>
+          </div>
+        </motion.div>
 
       </div>
     </Layout>

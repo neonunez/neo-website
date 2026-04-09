@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sun, Moon, Briefcase, Code2, Mail, Copy, Check, ExternalLink, ChevronRight, ArrowUp, User } from "lucide-react";
+import { Sun, Moon, Copy, Check, ExternalLink, ChevronRight, ArrowUp, User, Briefcase, Code2, Mail } from "lucide-react";
 import { usePortfolio } from "@/context/PortfolioContext";
 import { HierarchyNav } from "./HierarchyNav";
 import { LanguageSwitcher, CommandPalette, type CmdItem, SocialLink } from "./shared";
@@ -171,22 +171,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
             nn_
           </Link>
           <div className="flex items-center gap-5">
-            <Link href="/about" className="link-anim text-[var(--c-muted)] hover:text-[var(--c-fg)] pb-px flex items-center" aria-label={tr.navAboutMe}>
-              <User size={15} className="md:hidden" />
-              <span className="hidden md:inline text-sm">{tr.navAboutMe}</span>
-            </Link>
-            <Link href="/experience" className="link-anim text-[var(--c-muted)] hover:text-[var(--c-fg)] pb-px flex items-center" aria-label={tr.navExperience}>
-              <Briefcase size={15} className="md:hidden" />
-              <span className="hidden md:inline text-sm">{tr.navExperience}</span>
-            </Link>
-            <Link href="/projects" className="link-anim text-[var(--c-muted)] hover:text-[var(--c-fg)] pb-px flex items-center" aria-label={tr.navProjects}>
-              <Code2 size={15} className="md:hidden" />
-              <span className="hidden md:inline text-sm">{tr.navProjects}</span>
-            </Link>
-            <a href="#contact" className="link-anim text-[var(--c-muted)] hover:text-[var(--c-fg)] pb-px flex items-center" aria-label={tr.navContact}>
-              <Mail size={15} className="md:hidden" />
-              <span className="hidden md:inline text-sm">{tr.navContact}</span>
-            </a>
             {/* GitHub */}
             <a href="https://github.com/neo-nunez" target="_blank" rel="noreferrer"
               className="text-[var(--c-muted)] hover:text-[var(--c-fg)] transition-colors" aria-label="GitHub">
