@@ -104,22 +104,22 @@ export function HierarchyNav() {
               strokeWidth="1"
             />
 
-            {/* 2a. Bright spine: overview → active child (full opacity) */}
+            {/* 2a. Bright spine: overview → active child at x=ARM_W (full opacity) */}
             {activeMid != null && (
               <path
-                d={`M 0 ${geo.overviewMid} L 0 ${activeMid}`}
+                d={`M ${ARM_W} ${geo.overviewMid} L ${ARM_W} ${activeMid}`}
                 fill="none"
                 stroke="var(--c-fg)"
                 strokeWidth="1"
               />
             )}
 
-            {/* 2b. Dim spine: active child → last child (or full spine when on overview) */}
+            {/* 2b. Dim spine: active child → last child at x=ARM_W (or full spine on overview) */}
             <path
               d={
                 activeMid != null
-                  ? `M 0 ${activeMid} L 0 ${geo.lastChildMid}`
-                  : `M 0 ${geo.overviewMid} L 0 ${geo.lastChildMid}`
+                  ? `M ${ARM_W} ${activeMid} L ${ARM_W} ${geo.lastChildMid}`
+                  : `M ${ARM_W} ${geo.overviewMid} L ${ARM_W} ${geo.lastChildMid}`
               }
               fill="none"
               stroke="var(--c-fg)"
@@ -127,13 +127,13 @@ export function HierarchyNav() {
               opacity={DIM_SPINE}
             />
 
-            {/* 3. Dim horizontal arm for every inactive child */}
+            {/* 3. Dim horizontal arm for every inactive child (from x=ARM_W to x=ARM_W*2) */}
             {geo.childMids.map((mid, i) => {
               if (i === activeIndex) return null;
               return (
                 <path
                   key={i}
-                  d={`M 0 ${mid} L ${ARM_W} ${mid}`}
+                  d={`M ${ARM_W} ${mid} L ${ARM_W * 2} ${mid}`}
                   fill="none"
                   stroke="var(--c-fg)"
                   strokeWidth="1"
@@ -142,11 +142,11 @@ export function HierarchyNav() {
               );
             })}
 
-            {/* 4. Animated full-opacity arm for active child */}
+            {/* 4. Animated full-opacity arm for active child (from x=ARM_W to x=ARM_W*2) */}
             {activeMid != null && (
               <motion.path
                 key={activeIndex}
-                d={`M 0 ${activeMid} L ${ARM_W} ${activeMid}`}
+                d={`M ${ARM_W} ${activeMid} L ${ARM_W * 2} ${activeMid}`}
                 fill="none"
                 stroke="var(--c-fg)"
                 strokeWidth="1"
@@ -182,8 +182,8 @@ export function HierarchyNav() {
           </Link>
         </div>
 
-        {/* child pages — same indent */}
-        <div className="flex flex-col gap-[5px]" style={{ paddingLeft: INDENT }}>
+        {/* child pages — double-indented (children of overview) */}
+        <div className="flex flex-col gap-[5px]" style={{ paddingLeft: INDENT * 2 }}>
           {CHILDREN.map((page, i) => {
             const active = isActive(page.path);
             return (
