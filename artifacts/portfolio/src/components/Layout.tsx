@@ -11,7 +11,7 @@ function ContactFooter() {
   const [copied, setCopied] = useState(false);
 
   return (
-    <footer id="contact" className="border-t border-[var(--c-border-thin)] mt-16 pt-10 pb-16">
+    <footer id="contact" className="border-t border-[var(--c-border-thin)] pt-10 pb-16">
       <h2 className="text-xs font-semibold uppercase tracking-widest text-[var(--c-faint)] mb-5">
         {tr.sectionFindMe}
       </h2>
@@ -137,7 +137,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   ];
 
   return (
-    <div className={`min-h-screen dot-bg text-[var(--c-fg)] antialiased${theme === "light" ? " light" : ""}`}>
+    <div className={`min-h-screen flex flex-col dot-bg text-[var(--c-fg)] antialiased${theme === "light" ? " light" : ""}`}>
 
       {/* Grain overlay */}
       <div
@@ -220,12 +220,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -8 }}
           transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
-          className="pt-20 pb-4 px-8 max-w-[640px] mx-auto"
+          className="flex-grow pt-20 pb-4 px-8 max-w-[640px] mx-auto w-full"
         >
           {children}
-          <ContactFooter />
         </motion.main>
       </AnimatePresence>
+
+      {/* Persistent footer — outside animation so it never re-animates on navigation */}
+      <div className="px-8 max-w-[640px] mx-auto w-full">
+        <ContactFooter />
+      </div>
     </div>
   );
 }
