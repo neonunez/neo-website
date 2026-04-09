@@ -9,6 +9,7 @@ import Experience from "@/pages/Experience";
 import Projects from "@/pages/Projects";
 import Skills from "@/pages/Skills";
 import Languages from "@/pages/Languages";
+import ProjectRagSystem from "@/pages/ProjectRagSystem";
 
 const queryClient = new QueryClient();
 
@@ -18,6 +19,7 @@ function Router() {
       <Route path="/" component={Overview} />
       <Route path="/experience" component={Experience} />
       <Route path="/projects" component={Projects} />
+      <Route path="/projects/rag-system" component={ProjectRagSystem} />
       <Route path="/skills" component={Skills} />
       <Route path="/languages" component={Languages} />
       <Route component={NotFound} />
