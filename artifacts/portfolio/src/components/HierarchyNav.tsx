@@ -16,7 +16,7 @@ export function HierarchyNav() {
   const isActive = (path: string) =>
     path === "/" ? location === "/" || location === "" : location === path;
 
-  const activeStyle  = { color: "var(--c-fg)", opacity: 0.65 };
+  const activeStyle  = { color: "var(--c-fg)", opacity: 1.0 };
   const inactiveStyle = { color: "var(--c-fg)", opacity: 0.18 };
   const lineStyle    = { color: "var(--c-fg)", opacity: 0.10 };
   const rootStyle    = { color: "var(--c-fg)", opacity: 0.13 };

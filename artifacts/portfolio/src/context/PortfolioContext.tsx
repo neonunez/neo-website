@@ -15,12 +15,15 @@ interface PortfolioContextValue {
 const PortfolioContext = createContext<PortfolioContextValue | null>(null);
 
 export function PortfolioProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>(() =>
-    (localStorage.getItem("nn-theme") as Theme) ?? "dark"
-  );
-  const [lang, setLangState] = useState<Lang>(() =>
-    (localStorage.getItem("nn-lang") as Lang) ?? "en"
-  );
+  const [theme, setThemeState] = useState<Theme>(() => {
+    const stored = localStorage.getItem("nn-theme");
+    return stored === "light" || stored === "dark" ? stored : "dark";
+  });
+  const [lang, setLangState] = useState<Lang>(() => {
+    const stored = localStorage.getItem("nn-lang");
+    const valid: Lang[] = ["en", "es", "fr", "de", "it", "pt"];
+    return valid.includes(stored as Lang) ? (stored as Lang) : "en";
+  });
 
   const setTheme = (v: Theme) => setThemeState(v);
   const toggleTheme = () => setThemeState((prev) => (prev === "dark" ? "light" : "dark"));
