@@ -2,9 +2,12 @@ import { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useLocation, Link } from "wouter";
 
-const ARM_W    = 16;
+const ARM_W     = 16;
 const LABEL_GAP = 4;
-const INDENT   = ARM_W + LABEL_GAP; // 20px — labels' paddingLeft
+const INDENT    = ARM_W + LABEL_GAP; // 20px — labels' paddingLeft
+
+const DIM_ARM   = 0.15; // inactive child arm + label opacity
+const DIM_SPINE = 0.10; // spine below active child
 
 const CHILDREN = [
   { path: "/about",      label: "about me"   },
@@ -15,11 +18,12 @@ const CHILDREN = [
 ];
 
 interface Geo {
-  neoBottom:   number;
-  overviewMid: number;
-  childMids:   number[];
-  svgW:        number;
-  svgH:        number;
+  neoBottom:    number;
+  overviewMid:  number;
+  childMids:    number[];
+  lastChildMid: number;
+  svgW:         number;
+  svgH:         number;
 }
 
 export function HierarchyNav() {
@@ -46,11 +50,9 @@ export function HierarchyNav() {
       const o = overviewRef.current;
       if (!c || !n || !o) return;
 
-      const cRect  = c.getBoundingClientRect();
-      const cTop   = cRect.top;
-
-      const nRect  = n.getBoundingClientRect();
-      const oRect  = o.getBoundingClientRect();
+      const cTop  = c.getBoundingClientRect().top;
+      const nRect = n.getBoundingClientRect();
+      const oRect = o.getBoundingClientRect();
 
       const childMids = childRefs.current.map((el) => {
         if (!el) return 0;
@@ -58,12 +60,16 @@ export function HierarchyNav() {
         return (r.top + r.bottom) / 2 - cTop;
       });
 
+      const validMids = childMids.filter((m) => m > 0);
+      const lastChildMid = validMids.length > 0 ? validMids[validMids.length - 1] : (oRect.top + oRect.bottom) / 2 - cTop;
+
       setGeo({
-        neoBottom:   nRect.bottom - cTop,
-        overviewMid: (oRect.top + oRect.bottom) / 2 - cTop,
+        neoBottom:    nRect.bottom - cTop,
+        overviewMid:  (oRect.top + oRect.bottom) / 2 - cTop,
         childMids,
-        svgW: cRect.width,
-        svgH: cRect.height,
+        lastChildMid,
+        svgW: c.getBoundingClientRect().width,
+        svgH: c.getBoundingClientRect().height,
       });
     }
 
@@ -75,22 +81,6 @@ export function HierarchyNav() {
   }, []);
 
   const activeMid = geo && activeIndex !== -1 ? geo.childMids[activeIndex] : null;
-
-  const staticPath = geo
-    ? `M 0 ${geo.neoBottom} L 0 ${geo.overviewMid} L ${ARM_W} ${geo.overviewMid}`
-    : null;
-
-  const dynamicPath =
-    geo && activeMid != null
-      ? `M 0 ${geo.overviewMid} L 0 ${activeMid} L ${ARM_W} ${activeMid}`
-      : null;
-
-  const dimPath =
-    geo && activeMid != null
-      ? `M 0 ${activeMid} L 0 ${geo.svgH}`
-      : geo
-      ? `M 0 ${geo.overviewMid} L 0 ${geo.svgH}`
-      : null;
 
   return (
     <div className="fixed left-7 top-[80px] z-30 hidden xl:block py-6">
@@ -106,38 +96,63 @@ export function HierarchyNav() {
             height={geo.svgH}
             style={{ overflow: "visible" }}
           >
-            {/* Static L: neo → overview (always visible) */}
-            {staticPath && (
+            {/* 1. Static L: neo → overview (always full opacity) */}
+            <path
+              d={`M 0 ${geo.neoBottom} L 0 ${geo.overviewMid} L ${ARM_W} ${geo.overviewMid}`}
+              fill="none"
+              stroke="var(--c-fg)"
+              strokeWidth="1"
+            />
+
+            {/* 2a. Bright spine: overview → active child (full opacity) */}
+            {activeMid != null && (
               <path
-                d={staticPath}
+                d={`M 0 ${geo.overviewMid} L 0 ${activeMid}`}
                 fill="none"
                 stroke="var(--c-fg)"
                 strokeWidth="1"
               />
             )}
 
-            {/* Animated L: overview → active child */}
-            {dynamicPath && (
+            {/* 2b. Dim spine: active child → last child (or full spine when on overview) */}
+            <path
+              d={
+                activeMid != null
+                  ? `M 0 ${activeMid} L 0 ${geo.lastChildMid}`
+                  : `M 0 ${geo.overviewMid} L 0 ${geo.lastChildMid}`
+              }
+              fill="none"
+              stroke="var(--c-fg)"
+              strokeWidth="1"
+              opacity={DIM_SPINE}
+            />
+
+            {/* 3. Dim horizontal arm for every inactive child */}
+            {geo.childMids.map((mid, i) => {
+              if (i === activeIndex) return null;
+              return (
+                <path
+                  key={i}
+                  d={`M 0 ${mid} L ${ARM_W} ${mid}`}
+                  fill="none"
+                  stroke="var(--c-fg)"
+                  strokeWidth="1"
+                  opacity={DIM_ARM}
+                />
+              );
+            })}
+
+            {/* 4. Animated full-opacity arm for active child */}
+            {activeMid != null && (
               <motion.path
                 key={activeIndex}
-                d={dynamicPath}
+                d={`M 0 ${activeMid} L ${ARM_W} ${activeMid}`}
                 fill="none"
                 stroke="var(--c-fg)"
                 strokeWidth="1"
                 initial={{ pathLength: 0 }}
                 animate={{ pathLength: 1 }}
-                transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
-              />
-            )}
-
-            {/* Dim remainder: active child (or overview) → bottom */}
-            {dimPath && (
-              <path
-                d={dimPath}
-                fill="none"
-                stroke="var(--c-fg)"
-                strokeWidth="1"
-                opacity="0.10"
+                transition={{ duration: 0.45, ease: [0.25, 0.1, 0.25, 1] }}
               />
             )}
           </svg>
@@ -179,7 +194,7 @@ export function HierarchyNav() {
                 <Link
                   href={page.path}
                   className={`uppercase transition-colors duration-150${active ? " hover:underline underline-offset-2 decoration-[var(--c-fg)]/70" : ""}`}
-                  style={{ color: "var(--c-fg)", opacity: active ? 1 : 0.18 }}
+                  style={{ color: "var(--c-fg)", opacity: active ? 1 : DIM_ARM }}
                 >
                   {page.label}
                 </Link>
