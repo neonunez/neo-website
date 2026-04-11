@@ -1,6 +1,7 @@
 import { Link } from "wouter";
 import { usePortfolio } from "@/context/PortfolioContext";
 import { Layout } from "@/components/Layout";
+import { Globe } from "@/components/Globe";
 import { FadeUp } from "@/components/shared";
 
 export default function Languages() {
@@ -35,6 +36,9 @@ export default function Languages() {
                 <span className="text-[var(--c-faint)] text-xs shrink-0">{level}</span>
               </div>
             ))}
+          </div>
+          <div className="mt-10">
+            <Globe />
           </div>
         </FadeUp>
       </section>

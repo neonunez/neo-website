@@ -9,22 +9,34 @@ export default function Projects() {
 
   const projects = [
     {
+      name: "llm-academic-wiki",
+      desc: "Open source project. Details coming soon.",
+      tags: ["Python", "LLMs", "RAG"],
+      detailHref: "/projects/llm-academic-wiki",
+    },
+    {
+      name: "llm-server",
+      desc: "Open source project. Details coming soon.",
+      tags: ["FastAPI", "Python", "LLMs"],
+      detailHref: "/projects/llm-server",
+    },
+    {
+      name: "VoiceFlow",
+      desc: tr.proj2Desc,
+      tags: ["Python", "mlx-whisper", "pyobjc", "rumps", "pywebview"],
+      detailHref: "/projects/voiceflow",
+    },
+    {
       name: "Enterprise RAG System",
       desc: tr.proj1Desc,
       tags: ["Next.js", "FastAPI", "LangGraph", "LlamaIndex", "Supabase", "Gemini Flash"],
       detailHref: "/projects/rag-system",
     },
     {
-      name: "VoiceFlow",
-      desc: tr.proj2Desc,
-      tags: ["Python", "mlx-whisper", "pyobjc", "rumps", "pywebview"],
-      detailHref: null,
-    },
-    {
       name: "FocusPad",
       desc: tr.proj3Desc,
       tags: ["React Native", "Expo", "TypeScript"],
-      detailHref: null,
+      detailHref: "/projects/focuspad",
     },
   ];
 

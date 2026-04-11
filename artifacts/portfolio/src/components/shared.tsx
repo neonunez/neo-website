@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect } from "react";
+
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import {
   BrainCircuit,
@@ -18,13 +19,31 @@ import {
   SiGooglegemini,
 } from "react-icons/si";
 import { LANGUAGES, type Lang } from "@/lib/i18n";
+import { cn } from "@/lib/utils";
+
+// ─── Badge icon well (nested tile; matches Overview status badges) ───────────
+
+export function BadgeIconWell({ className, children }: { className?: string; children: React.ReactNode }) {
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center justify-center rounded-[6px] bg-white/[0.09] px-2 py-1.5",
+        "ring-1 ring-white/18 shadow-[0_2px_12px_-2px_rgba(0,0,0,0.55),inset_0_1px_0_rgba(255,255,255,0.12)]",
+        "[.light_&]:bg-black/[0.06] [.light_&]:ring-black/12 [.light_&]:shadow-[0_2px_10px_-2px_rgba(0,0,0,0.12),inset_0_1px_0_rgba(255,255,255,0.7)]",
+        className,
+      )}
+    >
+      {children}
+    </span>
+  );
+}
 
 // ─── Badge ────────────────────────────────────────────────────────────────────
 
 export function Badge({ icon, children }: { icon: React.ReactNode; children: React.ReactNode }) {
   return (
     <span className="inline-flex items-center gap-1.5 px-2 py-1 text-xs rounded-md border border-[var(--c-border)] bg-[var(--c-surface)] text-[var(--c-fg)] align-middle leading-none font-medium whitespace-nowrap">
-      <span className="flex items-center opacity-90">{icon}</span>
+      <span className="flex items-center">{icon}</span>
       {children}
     </span>
   );
@@ -33,9 +52,26 @@ export function Badge({ icon, children }: { icon: React.ReactNode; children: Rea
 // ─── FlagBadge ────────────────────────────────────────────────────────────────
 
 export function FlagBadge({ flag, label, compact }: { flag: string; label: string; compact?: boolean }) {
+  const tight = Boolean(compact);
   return (
-    <span className={`inline-flex items-center gap-1 ${compact ? "px-1.5 py-0.5" : "px-2 py-1"} text-xs rounded-md border border-[var(--c-border)] bg-[var(--c-surface)] text-[var(--c-fg)] align-middle leading-none font-medium whitespace-nowrap`}>
-      <span className="text-sm leading-none">{flag}</span>
+    <span
+      className={cn(
+        "inline-flex items-center gap-1.5 text-xs rounded-md border border-[var(--c-border)] bg-[var(--c-surface)] text-[var(--c-fg)] align-middle leading-none font-medium whitespace-nowrap",
+        tight ? "px-1.5 py-0.5" : "px-2 py-1",
+      )}
+    >
+      <span className="flex items-center shrink-0">
+        <BadgeIconWell
+          className={cn(
+            "box-border",
+            tight ? "min-h-[26px] min-w-[26px] px-1 py-0.5" : "min-h-[32px] min-w-[32px] px-1.5 py-1.5",
+          )}
+        >
+          <span className={cn("leading-none select-none", tight ? "text-[16px]" : "text-[20px]")} aria-hidden>
+            {flag}
+          </span>
+        </BadgeIconWell>
+      </span>
       {label}
     </span>
   );
@@ -82,10 +118,26 @@ export function SocialLink({ href, children }: { href: string; children: React.R
   );
 }
 
+// ─── AnimatedLine ─────────────────────────────────────────────────────────────
+
+export function AnimatedLine({ className = "", delay = 0.2 }: { className?: string; delay?: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-40px" });
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ scaleX: 0 }}
+      animate={inView ? { scaleX: 1 } : { scaleX: 0 }}
+      transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1], delay }}
+      className={`h-[1px] bg-[var(--c-border-thin)] origin-left ${className}`}
+    />
+  );
+}
+
 // ─── Divider ──────────────────────────────────────────────────────────────────
 
 export function Divider() {
-  return <div className="border-t border-[var(--c-border-thin)] my-10" />;
+  return <AnimatedLine className="my-10" />;
 }
 
 // ─── HoverRow ─────────────────────────────────────────────────────────────────

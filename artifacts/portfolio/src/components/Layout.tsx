@@ -1,17 +1,18 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sun, Moon, Copy, Check, ExternalLink, ChevronRight, ArrowUp, User, Briefcase, Code2, Mail } from "lucide-react";
+import { Sun, Moon, Copy, Check, ExternalLink, ChevronRight, ArrowUp, User, Briefcase, Code2, Mail, Menu, X } from "lucide-react";
 import { usePortfolio } from "@/context/PortfolioContext";
 import { HierarchyNav } from "./HierarchyNav";
-import { LanguageSwitcher, CommandPalette, type CmdItem, SocialLink } from "./shared";
+import { LanguageSwitcher, CommandPalette, type CmdItem, SocialLink, AnimatedLine } from "./shared";
 
 function ContactFooter() {
   const { tr } = usePortfolio();
   const [copied, setCopied] = useState(false);
 
   return (
-    <footer id="contact" className="border-t border-[var(--c-border-thin)] pt-10 pb-16">
+    <footer id="contact" className="relative pt-10 pb-16">
+      <AnimatedLine delay={0.4} className="absolute top-0 left-0 right-0" />
       <h2 className="text-xs font-semibold uppercase tracking-widest text-[var(--c-faint)] mb-5">
         {tr.sectionFindMe}
       </h2>
@@ -68,7 +69,12 @@ function ContactFooter() {
 export function Layout({ children }: { children: React.ReactNode }) {
   const { theme, toggleTheme, lang, setLang, tr } = usePortfolio();
   const [cmdOpen, setCmdOpen] = useState(false);
-  const [, navigate] = useLocation();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [location, navigate] = useLocation();
+
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [location]);
 
   // ⌘K / Ctrl+K
   useEffect(() => {
@@ -162,12 +168,22 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <CommandPalette items={cmdItems} open={cmdOpen} onClose={() => setCmdOpen(false)} />
 
       {/* Navbar */}
-      <div
-        className="fixed top-0 left-0 right-0 z-40"
-        style={{ backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", backgroundColor: "var(--c-nav)" }}
-      >
-        <nav className="px-8 py-3.5 flex items-center justify-between max-w-[780px] mx-auto">
-          <Link href="/" className="font-mono text-sm text-[var(--c-fg)] opacity-80 hover:opacity-100 tracking-tight">
+      {/* Desktop Logo */}
+      <div className="hidden xl:block fixed left-7 top-8 z-40">
+        <Link href="/" className="font-mono text-sm text-[var(--c-fg)] opacity-80 hover:opacity-100 tracking-tight">
+          nn_
+        </Link>
+      </div>
+
+      <div className="fixed xl:absolute top-0 left-0 right-0 z-40 xl:bg-transparent xl:backdrop-filter-none">
+        {/* Mobile background with blur */}
+        <div 
+          className="absolute inset-0 xl:hidden" 
+          style={{ backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", backgroundColor: "var(--c-nav)" }} 
+        />
+        
+        <nav className="relative px-8 py-3.5 xl:py-8 flex items-center justify-between xl:justify-end max-w-[780px] xl:max-w-none mx-auto">
+          <Link href="/" className="xl:hidden font-mono text-sm text-[var(--c-fg)] opacity-80 hover:opacity-100 tracking-tight">
             nn_
           </Link>
           <div className="flex items-center gap-5">
@@ -188,7 +204,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             {/* Theme toggle */}
             <button
               onClick={toggleTheme}
-              className="text-[var(--c-muted)] hover:text-[var(--c-fg)] transition-colors"
+              className="hidden xl:block text-[var(--c-muted)] hover:text-[var(--c-fg)] transition-colors"
               aria-label="Toggle theme"
             >
               {theme === "dark" ? <Sun size={15} /> : <Moon size={15} />}
@@ -202,9 +218,54 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <span>⌘K</span>
             </button>
             <LanguageSwitcher lang={lang} setLang={setLang} />
+            {/* Mobile Menu Toggle */}
+            <button
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="xl:hidden text-[var(--c-muted)] hover:text-[var(--c-fg)] transition-colors"
+              aria-label="Open mobile menu"
+            >
+              <Menu size={18} />
+            </button>
           </div>
         </nav>
       </div>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.15 }}
+            className="fixed top-0 left-0 right-0 z-50 bg-[var(--c-bg)] flex flex-col xl:hidden shadow-xl border-b border-[var(--c-border-faint)]"
+          >
+            <div className="flex items-center justify-between px-8 py-3.5">
+              <span className="font-mono text-sm tracking-tight text-[var(--c-fg)] opacity-80">nn_</span>
+              <div className="flex items-center gap-5">
+                <button
+                  onClick={toggleTheme}
+                  className="text-[var(--c-muted)] hover:text-[var(--c-fg)] transition-colors"
+                  aria-label="Toggle theme"
+                >
+                  {theme === "dark" ? <Sun size={15} /> : <Moon size={15} />}
+                </button>
+                <button
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-[var(--c-muted)] hover:text-[var(--c-fg)] transition-colors"
+                  aria-label="Close menu"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+            </div>
+            
+            <div className="px-4 pb-8">
+              <HierarchyNav isMobile={true} />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Page content */}
       <AnimatePresence mode="wait">

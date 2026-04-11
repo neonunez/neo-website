@@ -11,6 +11,10 @@ import Skills from "@/pages/Skills";
 import Languages from "@/pages/Languages";
 import LanguageDetail from "@/pages/LanguageDetail";
 import ProjectRagSystem from "@/pages/ProjectRagSystem";
+import ProjectLlmAcademicWiki from "@/pages/ProjectLlmAcademicWiki";
+import ProjectLlmServer from "@/pages/ProjectLlmServer";
+import ProjectVoiceFlow from "@/pages/ProjectVoiceFlow";
+import ProjectFocusPad from "@/pages/ProjectFocusPad";
 import AboutMe from "@/pages/AboutMe";
 
 const queryClient = new QueryClient();
@@ -22,7 +26,11 @@ function Router() {
       <Route path="/about" component={AboutMe} />
       <Route path="/experience" component={Experience} />
       <Route path="/projects" component={Projects} />
+      <Route path="/projects/llm-academic-wiki" component={ProjectLlmAcademicWiki} />
+      <Route path="/projects/llm-server" component={ProjectLlmServer} />
+      <Route path="/projects/voiceflow" component={ProjectVoiceFlow} />
       <Route path="/projects/rag-system" component={ProjectRagSystem} />
+      <Route path="/projects/focuspad" component={ProjectFocusPad} />
       <Route path="/skills" component={Skills} />
       <Route path="/languages" component={Languages} />
       <Route path="/languages/:slug" component={LanguageDetail} />

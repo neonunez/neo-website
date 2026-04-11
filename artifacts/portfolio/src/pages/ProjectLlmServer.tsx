@@ -4,15 +4,7 @@ import { ArrowLeft, GitBranch, Layers, Database, Zap, CheckCircle2, Clock } from
 import { Layout } from "@/components/Layout";
 import { FadeUp, TechBadge , AnimatedLine } from "@/components/shared";
 
-const techStack = [
-  "Next.js",
-  "FastAPI",
-  "LangGraph",
-  "LlamaIndex",
-  "Supabase",
-  "Gemini Flash",
-  "Python",
-];
+const techStack = ["FastAPI", "Python", "LLMs"];
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
@@ -30,15 +22,7 @@ function ContentBlock({ children, delay = 0 }: { children: React.ReactNode; dela
   );
 }
 
-function ArchCard({
-  icon,
-  title,
-  description,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-}) {
+function ArchCard({ icon, title, description }: { icon: React.ReactNode; title: string; description: string; }) {
   return (
     <div className="rounded-lg border border-[var(--c-border)] bg-[var(--c-surface)] p-4">
       <div className="flex items-center gap-2.5 mb-2">
@@ -50,12 +34,10 @@ function ArchCard({
   );
 }
 
-export default function ProjectRagSystem() {
+export default function ProjectLlmServer() {
   return (
     <Layout>
       <div className="py-6">
-
-        {/* Back nav */}
         <FadeUp delay={0}>
           <Link
             href="/projects"
@@ -69,12 +51,11 @@ export default function ProjectRagSystem() {
           </Link>
         </FadeUp>
 
-        {/* Hero */}
         <FadeUp delay={0.04}>
           <div className="mb-10">
             <div className="flex items-start justify-between gap-4 mb-2 flex-wrap">
               <h1 className="text-xl font-semibold text-[var(--c-fg)] leading-tight">
-                Enterprise RAG System
+                LLM Server
               </h1>
               <span className="inline-flex items-center gap-1.5 text-xs px-2 py-1 rounded-full border border-[var(--c-border)] bg-[var(--c-surface)] text-[var(--c-muted)] whitespace-nowrap">
                 <Clock size={10} className="text-[#fb923c]" />
@@ -82,83 +63,38 @@ export default function ProjectRagSystem() {
               </span>
             </div>
             <p className="text-[var(--c-muted)] text-sm leading-relaxed">
-              A production-grade Retrieval-Augmented Generation system built for employee onboarding,
-              surfacing accurate answers from Oracle EPM documentation through a natural language interface.
+              Open source project. Detailed project description coming soon...
             </p>
           </div>
         </FadeUp>
 
-        {/* Divider */}
         <AnimatedLine className="mb-10" />
 
-        {/* Problem */}
         <ContentBlock delay={0.08}>
           <SectionLabel>Problem</SectionLabel>
           <div className="space-y-3 text-sm leading-[1.85] text-[var(--c-soft)]">
-            <p>
-              Onboarding engineers to Oracle EPM environments is slow and costly. Documentation
-              is sprawling, version-fragmented, and hard to search — new hires routinely spend days
-              hunting down answers that a senior engineer would know in seconds.
-            </p>
-            <p>
-              The business needed a way to encode that institutional knowledge and serve it
-              reliably at scale, without requiring constant human intervention or expensive
-              fine-tuning on proprietary models.
-            </p>
+            <p>Details about the problem this project solves will be added here...</p>
           </div>
         </ContentBlock>
 
-        {/* Approach */}
         <ContentBlock delay={0.12}>
           <SectionLabel>Approach</SectionLabel>
           <div className="space-y-3 text-sm leading-[1.85] text-[var(--c-soft)]">
-            <p>
-              The system follows a classic RAG architecture: ingest, embed, retrieve, and
-              generate — but with several production-specific additions to improve faithfulness
-              and reduce hallucinations.
-            </p>
-            <p>
-              Documentation is chunked, embedded, and stored in a Supabase vector store with
-              rich metadata so the retrieval step can filter by document type, product version,
-              and topic area. Queries go through a LangGraph agent that decides whether to retrieve,
-              clarify, or escalate — rather than blindly generating against raw context.
-            </p>
-            <p>
-              LlamaIndex handles the document ingestion and indexing pipeline, keeping
-              the retrieval layer decoupled from the generation layer and easy to update
-              when documentation changes.
-            </p>
+            <p>Details about the technical approach will be documented here...</p>
           </div>
         </ContentBlock>
 
-        {/* Architecture */}
         <ContentBlock delay={0.16}>
           <SectionLabel>Architecture highlights</SectionLabel>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <ArchCard
               icon={<Database size={14} />}
-              title="Vector store"
-              description="Supabase pgvector with metadata filtering. Documents are chunked with overlap and tagged by product, version, and module."
-            />
-            <ArchCard
-              icon={<GitBranch size={14} />}
-              title="Agent graph"
-              description="LangGraph orchestrates the query flow — routing between direct retrieval, clarification prompts, and graceful fallbacks."
-            />
-            <ArchCard
-              icon={<Layers size={14} />}
-              title="Indexing pipeline"
-              description="LlamaIndex ingestion pipeline with incremental refresh — only changed documents are re-embedded on each update cycle."
-            />
-            <ArchCard
-              icon={<Zap size={14} />}
-              title="Generation"
-              description="Gemini Flash for latency-sensitive chat responses, with structured prompting that grounds answers in retrieved passages."
+              title="Placeholder System"
+              description="Architecture component description to be detailed soon."
             />
           </div>
         </ContentBlock>
 
-        {/* Tech stack */}
         <ContentBlock delay={0.20}>
           <SectionLabel>Tech stack</SectionLabel>
           <div className="flex flex-wrap gap-2">
@@ -168,16 +104,12 @@ export default function ProjectRagSystem() {
           </div>
         </ContentBlock>
 
-        {/* Outcomes */}
         <ContentBlock delay={0.24}>
           <SectionLabel>Outcomes &amp; status</SectionLabel>
           <div className="space-y-2.5">
             {[
-              "End-to-end RAG pipeline implemented — ingestion, embedding, retrieval, and generation.",
-              "LangGraph agent with multi-step reasoning reduces irrelevant retrievals.",
-              "Supabase vector store with metadata filtering in place.",
-              "Next.js chat interface with streaming responses connected to FastAPI backend.",
-              "Actively iterating on reranking and context compression to improve answer quality.",
+              "Outcomes and achievements placeholder 1",
+              "Outcomes and achievements placeholder 2",
             ].map((item, i) => (
               <motion.div
                 key={i}

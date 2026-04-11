@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import { Send, Loader } from "lucide-react";
+import { Send, Loader, Sparkles } from "lucide-react";
+import { AnimatedLine } from "@/components/shared";
 
 type Message = {
   role: "user" | "assistant";
@@ -90,11 +91,15 @@ export function ChatPanel() {
   }
 
   return (
-    <div className="mt-6">
+    <div className="mt-8 pt-8 relative">
+      <AnimatedLine className="absolute top-0 left-0 right-0" />
       {/* Label */}
-      <p className="text-sm font-medium text-[var(--c-fg)] mb-1">Ask Neo</p>
-      <p className="text-xs text-[var(--c-dim)] mb-3 leading-relaxed">
-        Curious about my work or background? Ask anything — answers are AI-generated.
+      <div className="flex items-center gap-2 mb-1.5">
+        <Sparkles size={14} className="text-[var(--c-fg)] opacity-80" />
+        <h3 className="text-base font-semibold text-[var(--c-fg)]">Ask Neo</h3>
+      </div>
+      <p className="text-sm text-[var(--c-muted)] mb-5 leading-relaxed max-w-lg">
+        Try this interactive AI agent to pull context directly from my projects, experience, and tech stack. It's an experimental feature designed to help you quickly navigate my background.
       </p>
 
       {/* Chat box */}
@@ -103,14 +108,14 @@ export function ChatPanel() {
         {/* Messages */}
         <div className="flex-1 min-h-0 overflow-y-auto px-4 py-3 space-y-3">
           {messages.length === 0 && (
-            <p className="text-[11px] text-[var(--c-deeper)] italic mt-1">Ask a question to get started.</p>
+            <p className="text-[11px] text-[var(--c-muted)] italic mt-1">Ask a question to get started.</p>
           )}
           {messages.map((msg, i) => (
             <div key={i} className={`flex gap-2.5 ${msg.role === "user" ? "flex-row-reverse" : ""}`}>
-              <span className={`text-[10px] font-mono shrink-0 mt-0.5 ${msg.role === "user" ? "text-[var(--c-faint)]" : "text-[var(--c-dim)]"}`}>
+              <span className={`text-[10px] font-mono shrink-0 mt-0.5 ${msg.role === "user" ? "text-[var(--c-muted)]" : "text-[var(--c-soft)]"}`}>
                 {msg.role === "user" ? "you" : "neo"}
               </span>
-              <p className={`text-xs leading-relaxed ${msg.role === "user" ? "text-[var(--c-muted)] text-right" : "text-[var(--c-soft)]"}`}>
+              <p className={`text-xs leading-relaxed ${msg.role === "user" ? "text-[var(--c-soft)] text-right" : "text-[var(--c-fg)]"}`}>
                 {msg.content}
                 {msg.role === "assistant" && streaming && i === messages.length - 1 && msg.content === "" && (
                   <Loader size={10} className="animate-spin inline ml-1 text-[var(--c-dim)]" />
@@ -122,13 +127,14 @@ export function ChatPanel() {
         </div>
 
         {/* Suggested pills — horizontal scroll */}
-        <div className="flex gap-1.5 px-4 py-2 overflow-x-auto border-t border-[var(--c-border-thin)]" style={{ scrollbarWidth: "none" }}>
+        <AnimatedLine delay={0.4} className="shrink-0" />
+        <div className="flex gap-1.5 px-4 py-2 overflow-x-auto" style={{ scrollbarWidth: "none" }}>
           {SUGGESTED.map((q) => (
             <button
               key={q}
               onClick={() => send(q)}
               disabled={streaming}
-              className="shrink-0 text-[10px] px-2.5 py-1 rounded-full border border-[var(--c-border)] text-[var(--c-dim)] hover:text-[var(--c-muted)] hover:border-[var(--c-border-strong)] transition-colors disabled:opacity-30 whitespace-nowrap"
+              className="shrink-0 text-[10px] px-2.5 py-1 rounded-full border border-[var(--c-border-strong)] text-[var(--c-soft)] hover:text-[var(--c-fg)] hover:border-[var(--c-border-strong)] transition-colors disabled:opacity-30 whitespace-nowrap"
             >
               {q}
             </button>
@@ -136,7 +142,8 @@ export function ChatPanel() {
         </div>
 
         {/* Input */}
-        <div className="flex items-center gap-3 px-4 py-2.5 border-t border-[var(--c-border-thin)]">
+        <AnimatedLine delay={0.5} className="shrink-0" />
+        <div className="flex items-center gap-3 px-4 py-2.5">
           <input
             ref={inputRef}
             value={input}
@@ -144,12 +151,12 @@ export function ChatPanel() {
             onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(input); } }}
             placeholder="Ask anything about Neo…"
             disabled={streaming}
-            className="flex-1 text-xs bg-transparent outline-none text-[var(--c-fg)] placeholder:text-[var(--c-deeper)] disabled:opacity-60"
+            className="flex-1 text-xs bg-transparent outline-none text-[var(--c-fg)] placeholder:text-[var(--c-muted)] disabled:opacity-60"
           />
           <button
             onClick={() => send(input)}
             disabled={streaming || !input.trim()}
-            className="text-[var(--c-dim)] hover:text-[var(--c-muted)] transition-colors disabled:opacity-30"
+            className="text-[var(--c-soft)] hover:text-[var(--c-fg)] transition-colors disabled:opacity-30"
           >
             {streaming ? <Loader size={12} className="animate-spin" /> : <Send size={12} />}
           </button>
