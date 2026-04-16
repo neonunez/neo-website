@@ -2,6 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useLocation, Link } from "wouter";
 import { usePortfolio } from "@/context/PortfolioContext";
+import { PROJECTS, LANGUAGES as LANG_INFO } from "@/lib/site-map";
 
 const ARM_W     = 16;
 const LABEL_GAP = 4;
@@ -9,14 +10,6 @@ const INDENT    = ARM_W + LABEL_GAP; // 20px — labels' paddingLeft
 
 const DIM_ARM   = 0.15; // inactive child arm + label opacity
 const DIM_SPINE = 0.10; // spine below active child
-
-const PROJECTS = [
-  { id: "llm-academic-wiki", label: "llm-academic-wiki", path: "/projects/llm-academic-wiki" },
-  { id: "llm-server",        label: "llm-server",        path: "/projects/llm-server" },
-  { id: "voiceflow",         label: "VoiceFlow",         path: "/projects/voiceflow" },
-  { id: "enterprise-rag",    label: "Enterprise RAG System", path: "/projects/rag-system" },
-  { id: "focuspad",          label: "FocusPad",          path: "/projects/focuspad" },
-];
 
 interface Geo {
   neoBottom:    number;
@@ -44,14 +37,8 @@ export function HierarchyNav({ isMobile }: { isMobile?: boolean } = {}) {
     { path: "/languages",  label: tr.sectionLanguages  },
   ];
 
-  const LANGUAGES = [
-    { id: "spanish",    label: tr.langSpanish,    path: "/languages/spanish" },
-    { id: "portuguese", label: tr.langPortuguese, path: "/languages/portuguese" },
-    { id: "english",    label: tr.langEnglish,    path: "/languages/english" },
-    { id: "french",     label: tr.langFrench,     path: "/languages/french" },
-    { id: "german",     label: tr.langGerman,     path: "/languages/german" },
-    { id: "italian",    label: tr.langItalian,    path: "/languages/italian" },
-  ];
+  const projectItems = PROJECTS.map((p) => ({ id: p.id, label: p.name, path: p.path }));
+  const languageItems = LANG_INFO.map((l) => ({ id: l.id, label: tr[l.nameKey], path: l.path }));
 
   const isActive = (path: string) =>
     location === path || location.startsWith(path + "/");
@@ -60,7 +47,7 @@ export function HierarchyNav({ isMobile }: { isMobile?: boolean } = {}) {
 
   const activeParentIsProjects = isActive("/projects");
   const activeParentIsLanguages = isActive("/languages");
-  const activeSubItems = activeParentIsProjects ? PROJECTS : activeParentIsLanguages ? LANGUAGES : [];
+  const activeSubItems = activeParentIsProjects ? projectItems : activeParentIsLanguages ? languageItems : [];
 
   const containerRef = useRef<HTMLDivElement>(null);
   const neoRef       = useRef<HTMLSpanElement>(null);

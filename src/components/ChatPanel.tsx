@@ -56,7 +56,7 @@ export function ChatPanel() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }, [messages]);
 
   async function send(text: string) {
@@ -143,12 +143,10 @@ export function ChatPanel() {
         Try this interactive AI agent to pull context directly from Neo's projects, experience, and tech stack — running on a self-hosted model.
       </p>
 
-      {/* Chat box */}
       <div
-        className="border border-[var(--c-border-strong)] rounded-lg overflow-hidden flex flex-col"
+        className="border border-[var(--c-border-thin)] bg-[var(--c-surface)] rounded-2xl overflow-hidden flex flex-col shadow-sm"
         style={{
           height: "280px",
-          boxShadow: "0 0 0 1px rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.3)",
         }}
       >
         {/* Messages */}

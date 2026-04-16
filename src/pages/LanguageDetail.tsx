@@ -1,44 +1,7 @@
 import { useParams } from "wouter";
 import { usePortfolio } from "@/context/PortfolioContext";
 import { Layout } from "@/components/Layout";
-
-const LANGUAGE_SLUGS = [
-  "spanish",
-  "portuguese",
-  "english",
-  "french",
-  "german",
-  "italian",
-] as const;
-
-type LanguageSlug = (typeof LANGUAGE_SLUGS)[number];
-
-function getLangName(
-  slug: LanguageSlug,
-  tr: ReturnType<typeof usePortfolio>["tr"]
-): string {
-  const map: Record<LanguageSlug, string> = {
-    spanish: tr.langSpanish,
-    portuguese: tr.langPortuguese,
-    english: tr.langEnglish,
-    french: tr.langFrench,
-    german: tr.langGerman,
-    italian: tr.langItalian,
-  };
-  return map[slug];
-}
-
-function getLangLevel(slug: LanguageSlug, tr: ReturnType<typeof usePortfolio>["tr"]): string {
-  const map: Record<LanguageSlug, string> = {
-    spanish: tr.langNative,
-    portuguese: tr.langNativeLevel,
-    english: "C1 · Cambridge",
-    french: "B2 · Alliance Fr.",
-    german: "B2 · Goethe",
-    italian: "B1 · Dante Aligh.",
-  };
-  return map[slug];
-}
+import { LANGUAGES, LANGUAGE_SLUGS, getLanguageLevel, type LanguageSlug } from "@/lib/site-map";
 
 export default function LanguageDetail() {
   const params = useParams<{ slug: string }>();
@@ -53,8 +16,9 @@ export default function LanguageDetail() {
     );
   }
 
-  const name = getLangName(slug, tr);
-  const level = getLangLevel(slug, tr);
+  const info = LANGUAGES.find((l) => l.slug === slug)!;
+  const name = tr[info.nameKey];
+  const level = getLanguageLevel(slug, tr);
 
   return (
     <Layout>

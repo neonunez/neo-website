@@ -3,31 +3,39 @@ import { Link } from "wouter";
 import { motion } from "framer-motion";
 import {
   ArrowLeft, GitBranch, Layers, Zap, CheckCircle2,
-  Terminal, Image, ExternalLink,
+  Terminal, Image, ChevronRight,
 } from "lucide-react";
 import { Layout } from "@/components/Layout";
-import { FadeUp, TechBadge, AnimatedLine } from "@/components/shared";
+import { FadeUp, TechBadge, AnimatedLine, GithubGlyph } from "@/components/shared";
+import { usePortfolio } from "@/context/PortfolioContext";
 
 const techStack = [
   "Python", "Claude Code", "Obsidian", "Git", "Markdown", "Bash", "YAML", "pdftotext",
 ];
 
 const SECTIONS = [
-  { id: "problem",       label: "The Problem" },
-  { id: "insight",       label: "The Insight" },
-  { id: "how-it-works",  label: "How It Works" },
-  { id: "architecture",  label: "Architecture" },
-  { id: "tech-stack",    label: "Tech Stack" },
-  { id: "outcomes",      label: "Outcomes" },
-  { id: "learnings",     label: "What I Learned" },
+  { id: "intro",         label: "intro" },
+  { id: "problem",       label: "problem" },
+  { id: "insight",       label: "insight" },
+  { id: "how-it-works",  label: "how-it-works" },
+  { id: "architecture",  label: "architecture" },
+  { id: "tech-stack",    label: "tech-stack" },
+  { id: "outcomes",      label: "outcomes" },
+  { id: "learnings",     label: "learnings" },
 ];
 
+const GITHUB_URL = "https://github.com/neo-nunez/llm-academic-wiki";
+
 /* ── Reading-progress nav (right side, xl+) ─────────────────── */
-function ReadingNav({ activeId }: { activeId: string }) {
+function ReadingNav({ activeId, labels }: { activeId: string; labels: Record<string, string> }) {
+  const activeIndex = SECTIONS.findIndex(s => s.id === activeId);
+  const progress = activeIndex / (SECTIONS.length - 1);
   return (
     <div className="hidden xl:flex fixed right-8 top-1/2 -translate-y-1/2 z-30 flex-col items-start gap-0 select-none">
-      {/* Vertical spine */}
-      <div className="absolute left-[5px] top-0 bottom-0 w-px bg-[var(--c-border)]" />
+      <div className="absolute left-[5px] top-[12.5px] bottom-[12.5px] w-px bg-[var(--c-border)]" />
+      <div className="absolute left-[5px] top-[12.5px] bottom-[12.5px] w-px overflow-hidden">
+        <div className="w-full bg-[var(--c-fg)] transition-all duration-300" style={{ height: `${progress * 100}%` }} />
+      </div>
       {SECTIONS.map((s) => {
         const isActive = s.id === activeId;
         return (
@@ -37,10 +45,13 @@ function ReadingNav({ activeId }: { activeId: string }) {
             className="relative flex items-center gap-3 py-[7px] group"
             onClick={(e) => {
               e.preventDefault();
-              document.getElementById(s.id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+              if (s.id === "intro") {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              } else {
+                document.getElementById(s.id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+              }
             }}
           >
-            {/* Dot */}
             <span
               className="relative z-10 w-[11px] h-[11px] rounded-full border flex-shrink-0 transition-all duration-200"
               style={{
@@ -49,7 +60,6 @@ function ReadingNav({ activeId }: { activeId: string }) {
                 transform: isActive ? "scale(1.15)" : "scale(1)",
               }}
             />
-            {/* Label */}
             <span
               className="text-[10px] font-medium tracking-wide whitespace-nowrap transition-all duration-200"
               style={{
@@ -58,12 +68,11 @@ function ReadingNav({ activeId }: { activeId: string }) {
                 transform: isActive ? "translateX(0)" : "translateX(-4px)",
               }}
             >
-              {s.label}
+              {labels[s.id]}
             </span>
-            {/* Hover label (for non-active) */}
             {!isActive && (
               <span className="absolute left-8 text-[10px] font-medium tracking-wide whitespace-nowrap text-[var(--c-muted)] opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none">
-                {s.label}
+                {labels[s.id]}
               </span>
             )}
           </a>
@@ -76,11 +85,11 @@ function ReadingNav({ activeId }: { activeId: string }) {
 /* ── Section label ───────────────────────────────────────────── */
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex items-center gap-3 mb-5">
-      <span className="w-4 h-px bg-[var(--c-line)] shrink-0" />
-      <h2 className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--c-fg)]">
+    <div className="mb-7">
+      <h2 className="text-3xl font-bold text-[var(--c-fg)] tracking-tight leading-snug">
         {children}
       </h2>
+      <AnimatedLine className="mt-3" delay={0} />
     </div>
   );
 }
@@ -149,23 +158,72 @@ function TechMarquee() {
   );
 }
 
+/* ── Scroll-triggered outcomes list ─────────────────────────── */
+function OutcomesList({ items }: { items: string[] }) {
+  const [visible, setVisible] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setVisible(true); obs.disconnect(); } },
+      { threshold: 0.1 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  return (
+    <div ref={ref} className="space-y-2.5">
+      {items.map((item, i) => (
+        <motion.div
+          key={i}
+          animate={visible ? { opacity: 1, x: 0 } : { opacity: 0, x: -8 }}
+          transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1], delay: i * 0.07 }}
+          className="flex items-start gap-2.5"
+        >
+          <CheckCircle2 size={13} className="text-[#34d399] mt-0.5 shrink-0" />
+          <span className="text-sm text-[var(--c-soft)] leading-relaxed">{item}</span>
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
 /* ── Page ────────────────────────────────────────────────────── */
 export default function ProjectLlmAcademicWiki() {
+  const { tr } = usePortfolio();
   const [activeId, setActiveId] = useState(SECTIONS[0].id);
   const observerRef = useRef<IntersectionObserver | null>(null);
+
+  const navLabels: Record<string, string> = {
+    "intro":        "LLM Academic Wiki",
+    "problem":      tr.llmWikiLabel_problem,
+    "insight":      tr.llmWikiLabel_insight,
+    "how-it-works": tr.llmWikiLabel_howItWorks,
+    "architecture": tr.llmWikiLabel_architecture,
+    "tech-stack":   tr.llmWikiLabel_techStack,
+    "outcomes":     tr.llmWikiLabel_outcomes,
+    "learnings":    tr.llmWikiLabel_learnings,
+  };
+
+  const relatedProjects = [
+    { name: "Enterprise RAG System", desc: tr.proj1Desc,        href: "/projects/rag-system" },
+    { name: "llm-server",            desc: tr.proj_llmServerDesc, href: "/projects/llm-server" },
+  ];
 
   useEffect(() => {
     const sectionEls = SECTIONS.map((s) => document.getElementById(s.id)).filter(Boolean) as HTMLElement[];
 
     observerRef.current = new IntersectionObserver(
       (entries) => {
-        // Pick the topmost intersecting section
         const visible = entries
           .filter((e) => e.isIntersecting)
-          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+          .sort((a, b) => b.boundingClientRect.top - a.boundingClientRect.top);
         if (visible.length > 0) setActiveId(visible[0].target.id);
       },
-      { rootMargin: "-20% 0px -60% 0px", threshold: 0 }
+      { rootMargin: "-15% 0px -75% 0px", threshold: 0 }
     );
 
     sectionEls.forEach((el) => observerRef.current!.observe(el));
@@ -174,7 +232,7 @@ export default function ProjectLlmAcademicWiki() {
 
   return (
     <Layout>
-      <ReadingNav activeId={activeId} />
+      <ReadingNav activeId={activeId} labels={navLabels} />
 
       <div className="py-6">
 
@@ -185,51 +243,68 @@ export default function ProjectLlmAcademicWiki() {
             className="inline-flex items-center gap-1.5 text-xs text-[var(--c-faint)] hover:text-[var(--c-muted)] transition-colors mb-8 group"
           >
             <ArrowLeft size={12} className="transition-transform duration-200 group-hover:-translate-x-0.5" />
-            Projects
+            {tr.navProjects}
           </Link>
         </FadeUp>
 
         {/* Hero */}
         <FadeUp delay={0.04}>
-          <div className="mb-6">
+          <div id="intro" className="mb-6">
             <div className="flex items-start justify-between gap-4 mb-3 flex-wrap">
               <h1 className="text-3xl font-bold text-[var(--c-fg)] leading-tight tracking-tight">
                 LLM Academic Wiki
               </h1>
               <span className="inline-flex items-center gap-1.5 text-xs px-2 py-1 rounded-full border border-[var(--c-border)] bg-[var(--c-surface)] text-[var(--c-muted)] whitespace-nowrap mt-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#34d399] shrink-0" />
-                Open Source
+                {tr.llmWikiHero_badge}
               </span>
             </div>
             <p className="text-[var(--c-muted)] text-sm leading-relaxed mb-5">
-              A personal knowledge system that uses Claude Code as the librarian —
-              so I can focus on actually learning.
+              {tr.llmWikiHero_tagline}
             </p>
             <ImagePlaceholder label="project screenshot / demo" />
           </div>
         </FadeUp>
 
-        <AnimatedLine className="mb-10" />
+        {/* TL;DR card */}
+        <FadeUp delay={0.07}>
+          <div className="mb-8 rounded-lg border border-[var(--c-border)] border-l-[3px] border-l-[#34d399] bg-[var(--c-surface-2)] p-5">
+            <div className="flex items-start justify-between gap-5 flex-wrap">
+              <div className="flex-1 min-w-0">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[var(--c-muted)] mb-3">
+                  {tr.llmWikiTldr_heading}
+                </p>
+                <ul className="space-y-2">
+                  {[tr.llmWikiTldr_b1, tr.llmWikiTldr_b2, tr.llmWikiTldr_b3].map((item, i) => (
+                    <li key={i} className="flex items-start gap-2.5 text-sm text-[var(--c-soft)] leading-relaxed">
+                      <span className="w-1 h-1 rounded-full bg-[#34d399] shrink-0 mt-[0.55em]" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <a
+                href={GITHUB_URL}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 text-xs font-medium px-3 py-2 rounded-md border border-[var(--c-border)] bg-[var(--c-surface-2)] text-[var(--c-fg)] hover:bg-[var(--c-surface-3)] hover:border-[var(--c-border-strong)] transition-all duration-150 whitespace-nowrap shrink-0 self-start"
+              >
+                <GithubGlyph size={13} />
+                {tr.llmWikiCta_btn}
+              </a>
+            </div>
+          </div>
+        </FadeUp>
+
 
         {/* The Problem */}
         <div id="problem">
           <ContentBlock delay={0.08}>
-            <SectionLabel>The Problem</SectionLabel>
+            <SectionLabel>{tr.llmWikiLabel_problem}</SectionLabel>
             <div className="space-y-3 text-sm leading-[1.85] text-[var(--c-soft)]">
-              <p>
-                Every university course dumps the same amount of material on you: lectures, practice guides,
-                past exams, community summaries. By the end of a semester, you're sitting on 50+ PDFs with
-                no unified way to navigate them, search across them, or understand how they relate to each other.
-              </p>
-              <p>
-                The naive fix — dumping everything into a chat window — doesn't scale. You burn tokens,
-                lose structure, and the model forgets what it read three PDFs ago. There had to be a better way.
-              </p>
-              <p>
-                What I actually needed was a system that understood <em>how I study</em>: exams are the north star,
-                practice guides are the training ground, and lectures are the reference. None of the off-the-shelf
-                tools (Notion, Anki, even manual Obsidian) understood that hierarchy.
-              </p>
+              <p>{tr.llmWikiProblem_p1}</p>
+              <p>{tr.llmWikiProblem_p2}</p>
+              <p>{tr.llmWikiProblem_p3}</p>
             </div>
           </ContentBlock>
         </div>
@@ -237,24 +312,11 @@ export default function ProjectLlmAcademicWiki() {
         {/* The Insight */}
         <div id="insight">
           <ContentBlock delay={0.12}>
-            <SectionLabel>The Insight</SectionLabel>
+            <SectionLabel>{tr.llmWikiLabel_insight}</SectionLabel>
             <div className="space-y-3 text-sm leading-[1.85] text-[var(--c-soft)]">
-              <p>
-                Inspired by Andrej Karpathy's "LLM Wiki" idea, I landed on a simple but powerful reframe:
-                instead of using the LLM as an oracle, use it as a <strong className="text-[var(--c-fg)] font-medium">maintainer</strong>.
-                Claude Code does the boring work — parsing PDFs, creating structured pages, cross-referencing exercises,
-                updating the log. I do the learning.
-              </p>
-              <p>
-                The result: a parse-once, query-many architecture. Every PDF is processed exactly one time
-                and stored as structured Markdown in an Obsidian vault. From that point on, all queries
-                work against clean, well-organized text — never against raw PDFs again.
-              </p>
-              <p>
-                And the most important design decision: <strong className="text-[var(--c-fg)] font-medium">ingest exams first</strong>.
-                Everything else (lectures, guides) is cross-referenced against them. That way, when you study
-                a topic, you already know which exercises appeared in which exams and how often.
-              </p>
+              <p>{tr.llmWikiInsight_p1}</p>
+              <p>{tr.llmWikiInsight_p2}</p>
+              <p>{tr.llmWikiInsight_p3}</p>
             </div>
           </ContentBlock>
         </div>
@@ -262,32 +324,18 @@ export default function ProjectLlmAcademicWiki() {
         {/* How It Works */}
         <div id="how-it-works">
           <ContentBlock delay={0.16}>
-            <SectionLabel>How It Works</SectionLabel>
+            <SectionLabel>{tr.llmWikiLabel_howItWorks}</SectionLabel>
             <div className="mb-5">
               <ImagePlaceholder label="system architecture diagram" aspectClass="aspect-[16/7]" />
             </div>
             <div className="space-y-3 text-sm leading-[1.85] text-[var(--c-soft)]">
+              <p>{tr.llmWikiHowItWorks_p1}</p>
               <p>
-                Each university subject gets its own isolated folder with a consistent structure: raw PDFs go in,
-                Markdown wiki pages come out. The system supports <strong className="text-[var(--c-fg)] font-medium">7 distinct page types</strong> —
-                theory extractions, practice sessions, guide exercises, analyzed exams, handwritten transcriptions,
-                exercise-type pattern pages, and synthesis notes.
+                {tr.llmWikiHowItWorks_p2a}
+                <code className="text-xs font-mono bg-[var(--c-surface)] px-1.5 py-0.5 rounded text-[var(--c-muted)]">pdftotext</code>
+                {tr.llmWikiHowItWorks_p2b}
               </p>
-              <p>
-                PDF extraction uses a dual strategy: <code className="text-xs font-mono bg-[var(--c-surface)] px-1.5 py-0.5 rounded text-[var(--c-muted)]">pdftotext</code> handles
-                LaTeX-compiled lecture slides fast and reliably. When it returns less than 500 characters on a
-                multi-page document — a reliable signal for scanned or handwritten content — it falls back to
-                Claude's vision capabilities. One command handles both cases transparently.
-              </p>
-              <p>
-                The whole lifecycle is driven by <strong className="text-[var(--c-fg)] font-medium">11 slash commands</strong> defined
-                as Markdown files in <code className="text-xs font-mono bg-[var(--c-surface)] px-1.5 py-0.5 rounded text-[var(--c-muted)]">.claude/commands/</code>.
-                They're version-controlled, readable, and easy to customize.{" "}
-                <code className="text-xs font-mono bg-[var(--c-surface)] px-1.5 py-0.5 rounded text-[var(--c-muted)]">/ingestar</code> parses a PDF,{" "}
-                <code className="text-xs font-mono bg-[var(--c-surface)] px-1.5 py-0.5 rounded text-[var(--c-muted)]">/resolver</code> works through pending exercises,{" "}
-                <code className="text-xs font-mono bg-[var(--c-surface)] px-1.5 py-0.5 rounded text-[var(--c-muted)]">/simular</code> generates exam-style practice problems,
-                and <code className="text-xs font-mono bg-[var(--c-surface)] px-1.5 py-0.5 rounded text-[var(--c-muted)]">/chuleta</code> assembles a consolidated cheat sheet on any topic.
-              </p>
+              <p>{tr.llmWikiHowItWorks_p3}</p>
             </div>
           </ContentBlock>
         </div>
@@ -295,28 +343,12 @@ export default function ProjectLlmAcademicWiki() {
         {/* Architecture Highlights */}
         <div id="architecture">
           <ContentBlock delay={0.20}>
-            <SectionLabel>Architecture highlights</SectionLabel>
+            <SectionLabel>{tr.llmWikiLabel_architecture}</SectionLabel>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <ArchCard
-                icon={<Zap size={14} />}
-                title="Dual parse pipeline"
-                description="pdftotext for LaTeX slides (fast, exact). Claude vision as automatic fallback for scanned exams and handwritten content — triggered by a <500 char heuristic."
-              />
-              <ArchCard
-                icon={<Layers size={14} />}
-                title="7-type page taxonomy"
-                description="Every page has a type, YAML frontmatter, and Obsidian cross-links. Content is structured for LLM retrieval first, human navigation second."
-              />
-              <ArchCard
-                icon={<Terminal size={14} />}
-                title="11 slash commands"
-                description="Full study lifecycle in code: ingest, resolve, lint, simulate, cheat-sheet. Each command is a Markdown file — readable, version-controlled, customizable."
-              />
-              <ArchCard
-                icon={<GitBranch size={14} />}
-                title="Exam-first design"
-                description="Past exams are ingested before anything else. Every exercise in lectures and guides is then flagged with its exam appearances, so patterns emerge naturally."
-              />
+              <ArchCard icon={<Zap size={14} />}      title={tr.llmWikiArch_1_title} description={tr.llmWikiArch_1_desc} />
+              <ArchCard icon={<Layers size={14} />}   title={tr.llmWikiArch_2_title} description={tr.llmWikiArch_2_desc} />
+              <ArchCard icon={<Terminal size={14} />} title={tr.llmWikiArch_3_title} description={tr.llmWikiArch_3_desc} />
+              <ArchCard icon={<GitBranch size={14} />} title={tr.llmWikiArch_4_title} description={tr.llmWikiArch_4_desc} />
             </div>
           </ContentBlock>
         </div>
@@ -324,65 +356,37 @@ export default function ProjectLlmAcademicWiki() {
         {/* Tech Stack */}
         <div id="tech-stack">
           <ContentBlock delay={0.24}>
-            <SectionLabel>Tech stack</SectionLabel>
-            <TechMarquee />
+            <SectionLabel>{tr.llmWikiLabel_techStack}</SectionLabel>
+            <div className="py-10">
+              <TechMarquee />
+            </div>
           </ContentBlock>
         </div>
 
         {/* Outcomes */}
         <div id="outcomes">
           <ContentBlock delay={0.28}>
-            <SectionLabel>Outcomes &amp; status</SectionLabel>
-            <div className="space-y-2.5">
-              {[
-                "51 PDFs processed — 36+ structured wiki pages generated across 10 algorithm topics.",
-                "13 exercise-type pattern pages capturing recurring exam structures (Master Theorem, exchange-argument proofs, flow modeling, etc.).",
-                "6 past exams fully analyzed with solutions, explanations, and cross-references.",
-                "11 slash commands covering the full study lifecycle, from raw PDF to exam simulation.",
-                "Pilot subject (Algorithms & Data Structures III) at 88% completion.",
-                "Architecture is fully reusable — adding a new subject is one new folder.",
-              ].map((item, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: -8 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1], delay: 0.28 + i * 0.06 }}
-                  className="flex items-start gap-2.5"
-                >
-                  <CheckCircle2 size={13} className="text-[#34d399] mt-0.5 shrink-0" />
-                  <span className="text-sm text-[var(--c-soft)] leading-relaxed">{item}</span>
-                </motion.div>
-              ))}
-            </div>
+            <SectionLabel>{tr.llmWikiLabel_outcomes}</SectionLabel>
+            <OutcomesList items={[
+              tr.llmWikiOutcome_1,
+              tr.llmWikiOutcome_2,
+              tr.llmWikiOutcome_3,
+              tr.llmWikiOutcome_4,
+              tr.llmWikiOutcome_5,
+              tr.llmWikiOutcome_6,
+            ]} />
           </ContentBlock>
         </div>
 
         {/* What I Learned */}
         <div id="learnings">
           <ContentBlock delay={0.32}>
-            <SectionLabel>What I learned</SectionLabel>
+            <SectionLabel>{tr.llmWikiLabel_learnings}</SectionLabel>
             <div className="space-y-3 text-sm leading-[1.85] text-[var(--c-soft)]">
-              <p>
-                The biggest shift was learning to <strong className="text-[var(--c-fg)] font-medium">design for LLM retrieval, not human browsing</strong>.
-                A well-structured wiki page isn't the same as a readable article. Focused, narrow pages
-                with explicit metadata outperform monolithic documents — even when the monolith "reads" better.
-              </p>
-              <p>
-                I also learned the value of <strong className="text-[var(--c-fg)] font-medium">separating phases of work</strong>.
-                Ingestion (parse, structure, link) and resolution (think, solve, synthesize) are cognitively
-                different tasks. Mixing them in one session leads to shallow output on both. The two-phase
-                guide workflow — ingest first, solve separately — produced dramatically better results.
-              </p>
-              <p>
-                Building slash commands as Markdown files taught me something about automation philosophy:
-                the best automations are the ones you can read, edit, and understand without running them first.
-                Treating commands as documentation meant they improved over time instead of becoming black boxes.
-              </p>
-              <p>
-                And finally — immutability matters. Never editing source PDFs, always re-processing,
-                always appending to the log: these constraints felt restrictive at first but made the system
-                trustworthy. I always knew exactly what state everything was in.
-              </p>
+              <p>{tr.llmWikiLearnings_p1}</p>
+              <p>{tr.llmWikiLearnings_p2}</p>
+              <p>{tr.llmWikiLearnings_p3}</p>
+              <p>{tr.llmWikiLearnings_p4}</p>
             </div>
           </ContentBlock>
         </div>
@@ -391,20 +395,40 @@ export default function ProjectLlmAcademicWiki() {
         <FadeUp delay={0.36}>
           <div className="border border-[var(--c-border)] rounded-lg p-5 flex items-center justify-between gap-4 bg-[var(--c-surface)]">
             <div>
-              <p className="text-sm font-medium text-[var(--c-fg)] mb-0.5">View the source</p>
-              <p className="text-xs text-[var(--c-muted)]">Full repo, slash commands, and CLAUDE.md on GitHub.</p>
+              <p className="text-sm font-medium text-[var(--c-fg)] mb-0.5">{tr.llmWikiCta_title}</p>
+              <p className="text-xs text-[var(--c-muted)]">{tr.llmWikiCta_desc}</p>
             </div>
             <a
-              href="https://github.com/neo-nunez/llm-academic-wiki"
+              href={GITHUB_URL}
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center gap-2 text-xs font-medium px-3 py-2 rounded-md border border-[var(--c-border)] bg-[var(--c-surface-2)] text-[var(--c-fg)] hover:bg-[var(--c-surface-3)] hover:border-[var(--c-border-strong)] transition-all duration-150 whitespace-nowrap shrink-0"
             >
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
-              </svg>
-              GitHub ↗
+              <GithubGlyph size={13} />
+              {tr.llmWikiCta_btn}
             </a>
+          </div>
+        </FadeUp>
+
+        {/* Related Projects */}
+        <FadeUp delay={0.40}>
+          <div className="mt-12 pt-8 border-t border-[var(--c-border)]">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[var(--c-muted)] mb-4">
+              {tr.llmWikiRelated_heading}
+            </p>
+            <div className="flex gap-3 overflow-x-auto pb-1 -mx-1 px-1 snap-x snap-mandatory scrollbar-none">
+              {relatedProjects.map((p) => (
+                <Link key={p.href} href={p.href} className="block group flex-none w-64 snap-start">
+                  <div className="rounded-lg border border-[var(--c-border)] bg-[var(--c-surface)] p-4 transition-all duration-200 hover:border-[var(--c-border-strong)] hover:bg-[var(--c-surface-2)] h-full">
+                    <div className="flex items-center justify-between mb-1.5">
+                      <p className="text-sm font-medium text-[var(--c-fg)]">{p.name}</p>
+                      <ChevronRight size={12} className="text-[var(--c-faint)] opacity-0 group-hover:opacity-100 transition-opacity duration-150 shrink-0" />
+                    </div>
+                    <p className="text-xs text-[var(--c-muted)] leading-relaxed">{p.desc}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
         </FadeUp>
 
