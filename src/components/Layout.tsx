@@ -171,24 +171,34 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
       {/* Navbar */}
       {/* Desktop Logo */}
-      <div className="hidden xl:block fixed left-7 top-8 z-40">
-        <Link href="/" className="inline-block">
+      <div className="hidden xl:block fixed left-7 top-8 z-50">
+        <Link
+          href="/"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="inline-block"
+          aria-label="Go to Overview"
+        >
           <AnimatedLogo />
         </Link>
       </div>
 
-      <div className="fixed top-0 left-0 right-0 z-40 xl:bg-transparent xl:backdrop-filter-none">
+      <div className="fixed top-0 left-0 right-0 z-40 xl:bg-transparent xl:backdrop-filter-none xl:pointer-events-none">
         {/* Mobile background with blur */}
-        <div 
-          className="absolute inset-0 xl:hidden" 
-          style={{ backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", backgroundColor: "var(--c-nav)" }} 
+        <div
+          className="absolute inset-0 xl:hidden"
+          style={{ backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", backgroundColor: "var(--c-nav)" }}
         />
-        
+
         <nav className="relative px-8 py-3.5 xl:py-8 flex items-center justify-between xl:justify-end max-w-[860px] xl:max-w-none mx-auto">
-          <Link href="/" className="xl:hidden inline-block">
+          <Link
+            href="/"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="xl:hidden inline-block pointer-events-auto"
+            aria-label="Go to Overview"
+          >
             <AnimatedLogo />
           </Link>
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-5 pointer-events-auto">
             {/* GitHub */}
             <a href="https://github.com/neo-nunez" target="_blank" rel="noreferrer"
               className="text-[var(--c-muted)] hover:text-[var(--c-fg)] transition-colors" aria-label="GitHub">
@@ -241,7 +251,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
             className="fixed top-0 left-0 right-0 z-50 bg-[var(--c-bg)] flex flex-col xl:hidden shadow-xl border-b border-[var(--c-border-faint)]"
           >
             <div className="flex items-center justify-between px-8 py-3.5">
-              <Link href="/" className="inline-block">
+              <Link
+                href="/"
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+                className="inline-block"
+                aria-label="Go to Overview"
+              >
                 <AnimatedLogo />
               </Link>
               <div className="flex items-center gap-5">

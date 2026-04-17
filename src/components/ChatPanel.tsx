@@ -189,7 +189,7 @@ export function ChatPanel() {
               key={q}
               onClick={() => send(q)}
               disabled={streaming}
-              className="shrink-0 text-[10px] px-2.5 py-1 rounded-full border border-[var(--c-border-strong)] text-[var(--c-soft)] hover:text-[var(--c-fg)] hover:border-[var(--c-border-strong)] transition-colors disabled:opacity-30 whitespace-nowrap"
+              className="shrink-0 text-[10px] px-2.5 py-1 rounded-full border border-[var(--c-border-strong)] text-[var(--c-soft)] hover:text-[var(--c-fg)] hover:bg-[var(--c-surface-2)] hover:border-[var(--c-dim)] transition-[background-color,border-color,color] duration-150 disabled:opacity-30 whitespace-nowrap"
             >
               {q}
             </button>

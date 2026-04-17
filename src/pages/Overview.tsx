@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { StickyNote, ArrowRight, ArrowUpRight } from "lucide-react";
@@ -5,6 +6,32 @@ import { usePortfolio } from "@/context/PortfolioContext";
 import { Layout } from "@/components/Layout";
 import { Badge, FlagBadge, AnimatedLine } from "@/components/shared";
 import { ChatPanel } from "@/components/ChatPanel";
+
+function NavCard({ label, href }: { label: string; href: string }) {
+  const [hovered, setHovered] = useState(false);
+  const handlers = {
+    onMouseEnter: () => setHovered(true),
+    onMouseLeave: () => setHovered(false),
+  };
+  const classes = "flex items-center px-4 py-3 rounded-xl border border-[var(--c-border-strong)] bg-[var(--c-surface)] hover:border-[var(--c-dim)] hover:bg-[var(--c-surface-3)] hover:shadow-md transition-[background-color,border-color,box-shadow] duration-200 shadow-sm";
+  const inner = (
+    <>
+      <span className="text-sm font-medium text-[var(--c-fg)]">{label}</span>
+      <motion.div
+        className="ml-auto"
+        animate={{ x: hovered ? 4 : 0, color: hovered ? "var(--c-fg)" : "var(--c-muted)" }}
+        transition={{ type: "spring", stiffness: 500, damping: 30 }}
+      >
+        <ArrowRight size={14} />
+      </motion.div>
+    </>
+  );
+  return href.startsWith("#") ? (
+    <a href={href} className={classes} {...handlers}>{inner}</a>
+  ) : (
+    <Link href={href} className={classes} {...handlers}>{inner}</Link>
+  );
+}
 
 const nameChars = "Neo Nuñez".split("");
 const introDelay = [0.05, 0.12, 0.19, 0.26];
@@ -139,28 +166,13 @@ export default function Overview() {
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {[
-                { label: tr.navAboutMe,    href: "/about"      },
-                { label: tr.navExperience, href: "/experience"  },
-                { label: tr.navProjects,   href: "/projects"    },
-                { label: "Contact",        href: "#contact"     },
-              ].map(({ label, href }) => {
-                const inner = (
-                  <>
-                    <span className="text-sm font-medium text-[var(--c-fg)]">{label}</span>
-                    <ArrowRight size={14} className="text-[var(--c-muted)] group-hover:text-[var(--c-fg)] group-hover:translate-x-1 transition-all ml-auto" />
-                  </>
-                );
-                const classes = "group flex items-center px-4 py-3 rounded-xl border border-[var(--c-border-strong)] bg-[var(--c-surface)] hover:border-[var(--c-dim)] hover:bg-[var(--c-surface-2)] transition-all shadow-sm";
-                return href.startsWith("#") ? (
-                  <a key={label} href={href} className={classes}>
-                    {inner}
-                  </a>
-                ) : (
-                  <Link key={label} href={href} className={classes}>
-                    {inner}
-                  </Link>
-                );
-              })}
+                { label: tr.navAboutMe,     href: "/about"      },
+                { label: tr.navExperience,  href: "/experience"  },
+                { label: tr.navProjects,    href: "/projects"    },
+                { label: tr.sectionLanguages, href: "/languages" },
+              ].map(({ label, href }) => (
+                <NavCard key={label} label={label} href={href} />
+              ))}
             </div>
           </div>
         </motion.div>
