@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { StickyNote, ArrowRight } from "lucide-react";
+import { StickyNote, ArrowRight, ArrowUpRight } from "lucide-react";
 import { usePortfolio } from "@/context/PortfolioContext";
 import { Layout } from "@/components/Layout";
 import { Badge, FlagBadge, AnimatedLine } from "@/components/shared";
@@ -38,7 +38,13 @@ export default function Overview() {
           transition={{ duration: 0.45, ease: [0.25, 0.1, 0.25, 1], delay: introDelay[0] }}
           className="text-[var(--c-muted)] text-sm leading-relaxed mb-6"
         >
-          {tr.tagline}
+          {tr.overviewIntro}
+          <Link
+            href="/about"
+            className="link-anim text-[var(--c-fg)] pb-px whitespace-nowrap"
+          >
+            {tr.overviewIntroLink}<ArrowUpRight size={10} className="inline-block opacity-60 ml-[3px] align-[-1px]" />
+          </Link>
         </motion.p>
 
         {/* Status lines */}
