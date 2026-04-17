@@ -41,7 +41,7 @@ export default function Overview() {
           {tr.overviewIntro}
           <Link
             href="/about"
-            className="link-anim text-[var(--c-fg)] pb-px whitespace-nowrap"
+            className="link-anim text-[var(--c-fg)] pb-px"
           >
             {tr.overviewIntroLink}<ArrowUpRight size={10} className="inline-block opacity-60 ml-[3px] align-[-1px]" />
           </Link>
