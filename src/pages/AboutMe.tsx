@@ -30,6 +30,16 @@ const SECTIONS = [
   { id: "personal", icon: Smile },
 ];
 
+const SCROLL_OFFSET_DESKTOP = 20; // px above section title on desktop — increase to show more space above
+const SCROLL_OFFSET_MOBILE  = 100; // px above section title on mobile
+
+function scrollToSection(id: string, offset: number) {
+  if (id === SECTIONS[0].id) { window.scrollTo({ top: 0, behavior: "smooth" }); return; }
+  const el = document.getElementById(id);
+  if (!el) return;
+  window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - offset, behavior: "smooth" });
+}
+
 /* ── Reading Navigation ────────────────────────────────────────── */
 function ReadingNav({ activeId }: { activeId: string | null }) {
   const { tr } = usePortfolio();
@@ -45,53 +55,92 @@ function ReadingNav({ activeId }: { activeId: string | null }) {
   const progress = activeIndex < 0 ? 0 : activeIndex / (SECTIONS.length - 1);
 
   return (
-    <div className="hidden xl:flex fixed right-8 top-1/2 -translate-y-1/2 z-30 flex-col items-start gap-0 select-none">
-      <div className="absolute left-[5px] top-[12.5px] bottom-[12.5px] w-px bg-[var(--c-border)]" />
-      <div className="absolute left-[5px] top-[12.5px] bottom-[12.5px] w-px overflow-hidden">
-        <div className="w-full bg-[var(--c-fg)] transition-all duration-300" style={{ height: `${progress * 100}%` }} />
-      </div>
-      {SECTIONS.map((s) => {
-        const isActive = activeId === s.id;
-        const labelText = labels[s.id] || s.id;
+    <>
+      {/* Desktop: vertical right-side nav */}
+      <div className="hidden xl:flex fixed right-8 top-1/2 -translate-y-1/2 z-30 flex-col items-start gap-0 select-none">
+        <div className="absolute left-[5px] top-[12.5px] bottom-[12.5px] w-px bg-[var(--c-border)]" />
+        <div className="absolute left-[5px] top-[12.5px] bottom-[12.5px] w-px overflow-hidden">
+          <div className="w-full bg-[var(--c-fg)] transition-all duration-300" style={{ height: `${progress * 100}%` }} />
+        </div>
+        {SECTIONS.map((s) => {
+          const isActive = activeId === s.id;
+          const labelText = labels[s.id] || s.id;
 
-        return (
-          <a
-            key={s.id}
-            href={`#${s.id}`}
-            className="relative flex items-center gap-3 py-[7px] group"
-            onClick={(e) => {
-              e.preventDefault();
-              const el = document.getElementById(s.id);
-              if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-            }}
-          >
-            <span
-              className="relative z-10 w-[11px] h-[11px] rounded-full border flex-shrink-0 transition-all duration-200"
-              style={{
-                borderColor: isActive ? "var(--c-fg)" : "var(--c-border-strong)",
-                backgroundColor: isActive ? "var(--c-fg)" : "transparent",
-                transform: isActive ? "scale(1.15)" : "scale(1)",
-              }}
-            />
-            <span
-              className="text-[10px] font-medium tracking-wide whitespace-nowrap transition-all duration-200"
-              style={{
-                color: isActive ? "var(--c-fg)" : "var(--c-faint)",
-                opacity: isActive ? 1 : 0,
-                transform: isActive ? "translateX(0)" : "translateX(-4px)",
-              }}
+          return (
+            <a
+              key={s.id}
+              href={`#${s.id}`}
+              className="relative flex items-center gap-3 py-[7px] group"
+              onClick={(e) => { e.preventDefault(); scrollToSection(s.id, SCROLL_OFFSET_DESKTOP); }}
             >
-              {labelText}
-            </span>
-            {!isActive && (
-              <span className="absolute left-8 text-[10px] font-medium tracking-wide whitespace-nowrap text-[var(--c-muted)] opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none">
+              <span
+                className="relative z-10 w-[11px] h-[11px] rounded-full border flex-shrink-0 transition-all duration-200"
+                style={{
+                  borderColor: isActive ? "var(--c-fg)" : "var(--c-border-strong)",
+                  backgroundColor: isActive ? "var(--c-fg)" : "transparent",
+                  transform: isActive ? "scale(1.15)" : "scale(1)",
+                }}
+              />
+              <span
+                className="text-[10px] font-medium tracking-wide whitespace-nowrap transition-all duration-200"
+                style={{
+                  color: isActive ? "var(--c-fg)" : "var(--c-faint)",
+                  opacity: isActive ? 1 : 0,
+                  transform: isActive ? "translateX(0)" : "translateX(-4px)",
+                }}
+              >
                 {labelText}
               </span>
-            )}
-          </a>
-        );
-      })}
-    </div>
+              {!isActive && (
+                <span className="absolute left-8 text-[10px] font-medium tracking-wide whitespace-nowrap text-[var(--c-muted)] opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none">
+                  {labelText}
+                </span>
+              )}
+            </a>
+          );
+        })}
+      </div>
+
+      {/* Mobile: horizontal bottom bar */}
+      <div className="xl:hidden fixed bottom-6 left-0 right-0 flex justify-center z-30 select-none pointer-events-none">
+        <div className="pointer-events-auto relative flex items-center gap-5 px-5 py-[10px] rounded-full border shadow-[0_4px_24px_rgba(0,0,0,0.5)]" style={{ backgroundColor: "var(--c-bg)", borderColor: "var(--c-border-strong)" }}>
+          <div className="absolute inset-x-[26px] top-1/2 -translate-y-1/2 h-px bg-[var(--c-border)]" />
+          <div
+            className="absolute left-[26px] top-1/2 -translate-y-1/2 h-px bg-[var(--c-fg)] transition-all duration-300 origin-left"
+            style={{ width: `calc((100% - 52px) * ${progress})` }}
+          />
+          {SECTIONS.map((s) => {
+            const isActive = activeId === s.id;
+            const labelText = labels[s.id] || s.id;
+            return (
+              <a
+                key={s.id}
+                href={`#${s.id}`}
+                onClick={(e) => { e.preventDefault(); scrollToSection(s.id, SCROLL_OFFSET_MOBILE); }}
+                className="relative z-10 flex flex-col items-center touch-manipulation"
+              >
+                {isActive && (
+                  <span
+                    className="absolute bottom-full mb-2 text-[9px] font-medium tracking-wide whitespace-nowrap"
+                    style={{ color: "var(--c-fg)" }}
+                  >
+                    {labelText}
+                  </span>
+                )}
+                <span
+                  className="block w-[11px] h-[11px] rounded-full border transition-all duration-200"
+                  style={{
+                    borderColor: isActive ? "var(--c-fg)" : "var(--c-border-strong)",
+                    backgroundColor: isActive ? "var(--c-fg)" : "transparent",
+                    transform: isActive ? "scale(1.15)" : "scale(1)",
+                  }}
+                />
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    </>
   );
 }
 
@@ -203,23 +252,39 @@ export default function AboutMe() {
     restDelta: 0.001
   });
 
-  // Active section tracking
+  // Active section tracking — rAF-throttled, reading-line based
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        // Find the entry with the largest intersection ratio
-        const visible = entries.filter(e => e.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible) setActiveId(visible.target.id);
-      },
-      { threshold: [0.1, 0.5, 0.8], rootMargin: "-10% 0px -40% 0px" }
-    );
+    let rafId: number | null = null;
 
-    SECTIONS.forEach((s) => {
-      const el = document.getElementById(s.id);
-      if (el) observer.observe(el);
-    });
+    function detect() {
+      rafId = null;
+      const readingLine = window.innerHeight * 0.25;
+      let current = SECTIONS[0].id;
 
-    return () => observer.disconnect();
+      for (const s of SECTIONS) {
+        const el = document.getElementById(s.id);
+        if (!el) continue;
+        const { top, bottom } = el.getBoundingClientRect();
+        if (top <= readingLine && bottom > readingLine) {
+          current = s.id;
+          break;
+        }
+        if (top <= readingLine) current = s.id;
+      }
+
+      setActiveId(current);
+    }
+
+    function onScroll() {
+      if (rafId === null) rafId = requestAnimationFrame(detect);
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    detect();
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (rafId !== null) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   return (
