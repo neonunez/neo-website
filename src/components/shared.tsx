@@ -432,3 +432,38 @@ export function ZoomableImage({ src, alt }: { src: string; alt: string }) {
     </>
   );
 }
+
+export function DevelopmentIndicator({ accentColor = "#fb923c" }: { accentColor?: string }) {
+  return (
+    <div className="relative w-full max-w-2xl mx-auto my-12 py-20 px-4 overflow-hidden border border-[var(--c-border-thin)] rounded-xl bg-[var(--c-surface-faint)] flex flex-col items-center justify-center">
+      {/* Background decoration */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 blur-[80px] rounded-full pointer-events-none opacity-10" style={{ backgroundColor: accentColor }} />
+
+      <div className="relative w-16 h-16">
+        {/* Outer rotating ring */}
+        <motion.div
+          className="absolute inset-0 rounded-full border-2 border-[var(--c-border)]"
+          style={{ borderTopColor: accentColor }}
+          animate={{ rotate: 360 }}
+          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+        />
+        
+        {/* Inner pulsing core */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <motion.div 
+            className="w-1.5 h-1.5 rounded-full"
+            style={{ backgroundColor: accentColor }}
+            animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          />
+        </div>
+      </div>
+      
+      <div className="mt-10 text-center">
+        <p className="text-[10px] font-mono tracking-[0.3em] uppercase font-bold" style={{ color: accentColor }}>
+          Project in Development
+        </p>
+      </div>
+    </div>
+  );
+}

@@ -31,9 +31,21 @@ export default function LanguageDetail() {
           </span>
         </h2>
 
-        {slug === "german" ? (
+        {slug === "english" ? (
+          <div className="max-w-lg mx-auto">
+            <ZoomableImage src="/languages-certificates/english-certificate.png" alt="English C1 certificate" />
+          </div>
+        ) : slug === "german" ? (
           <div className="max-w-lg mx-auto">
             <ZoomableImage src="/languages-certificates/german-certificate.png" alt="German B2 Goethe certificate" />
+          </div>
+        ) : slug === "french" ? (
+          <div className="max-w-lg mx-auto">
+            <ZoomableImage src="/languages-certificates/french-certificate.png" alt="French B2 certificate" />
+          </div>
+        ) : slug === "italian" ? (
+          <div className="max-w-2xl mx-auto">
+            <ZoomableImage src="/languages-certificates/italian-certificate.png" alt="Italian B1 certificate" />
           </div>
         ) : (
           <div

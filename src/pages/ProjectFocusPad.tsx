@@ -1,7 +1,8 @@
 import { Link } from "wouter";
+import { motion } from "framer-motion";
 import { ArrowLeft, Clock, FileText, CheckSquare, Bell, ClipboardList, TrendingUp, Calendar, ChevronRight } from "lucide-react";
 import { Layout } from "@/components/Layout";
-import { FadeUp, TechBadge, AnimatedLine } from "@/components/shared";
+import { FadeUp, TechBadge, AnimatedLine, DevelopmentIndicator } from "@/components/shared";
 import { usePortfolio } from "@/context/PortfolioContext";
 
 const techStack = [
@@ -18,125 +19,6 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   );
 }
 
-function ConstructionSVG() {
-  // Winding path: total length = 70+25+100+45+80+30+70 = 420px
-  const pathD = "M 20,45 H 90 V 20 H 190 V 65 H 270 V 35 H 340";
-  const totalLen = 420;
-
-  const cornerNodes = [
-    { cx: 90, cy: 45 }, { cx: 90, cy: 20 },
-    { cx: 190, cy: 20 }, { cx: 190, cy: 65 },
-    { cx: 270, cy: 65 }, { cx: 270, cy: 35 },
-  ];
-
-  return (
-    <svg
-      viewBox="0 0 360 95"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className="w-full max-w-sm mx-auto my-6"
-    >
-      {/* Faint background guide — always visible */}
-      <path d={pathD} stroke="var(--c-border)" strokeWidth="1.5" fill="none" />
-
-      {/* Soft orange glow behind the trace */}
-      <path
-        d={pathD}
-        stroke="#fb923c"
-        strokeWidth="8"
-        fill="none"
-        strokeLinecap="round"
-        strokeDasharray={totalLen}
-        strokeDashoffset={totalLen}
-      >
-        <animate
-          attributeName="stroke-dashoffset"
-          values={`${totalLen};0;0;${totalLen};${totalLen}`}
-          keyTimes="0;0.5;0.65;0.66;1"
-          dur="6s"
-          repeatCount="indefinite"
-          calcMode="linear"
-        />
-        <animate
-          attributeName="opacity"
-          values="0;0.12;0.12;0;0"
-          keyTimes="0;0.5;0.62;0.66;1"
-          dur="6s"
-          repeatCount="indefinite"
-        />
-      </path>
-
-      {/* Main animated orange trace */}
-      <path
-        d={pathD}
-        stroke="#fb923c"
-        strokeWidth="2"
-        fill="none"
-        strokeLinecap="round"
-        strokeDasharray={totalLen}
-        strokeDashoffset={totalLen}
-      >
-        <animate
-          attributeName="stroke-dashoffset"
-          values={`${totalLen};0;0;${totalLen};${totalLen}`}
-          keyTimes="0;0.5;0.65;0.66;1"
-          dur="6s"
-          repeatCount="indefinite"
-          calcMode="linear"
-        />
-        <animate
-          attributeName="opacity"
-          values="1;1;0;0;1"
-          keyTimes="0;0.62;0.66;0.99;1"
-          dur="6s"
-          repeatCount="indefinite"
-        />
-      </path>
-
-      {/* Corner nodes */}
-      {cornerNodes.map((n, i) => (
-        <circle
-          key={i}
-          cx={n.cx}
-          cy={n.cy}
-          r="4"
-          fill="var(--c-surface-2)"
-          stroke="var(--c-border-strong)"
-          strokeWidth="1.5"
-        />
-      ))}
-
-      {/* Start node */}
-      <circle cx="20" cy="45" r="4" fill="var(--c-surface-2)" stroke="var(--c-border-strong)" strokeWidth="1.5" />
-
-      {/* End node — base */}
-      <circle cx="340" cy="35" r="4" fill="var(--c-surface-2)" stroke="var(--c-border-strong)" strokeWidth="1.5" />
-      {/* End node — orange ring appears when trace arrives */}
-      <circle cx="340" cy="35" r="4" fill="none" stroke="#fb923c" strokeWidth="2" opacity="0">
-        <animate
-          attributeName="opacity"
-          values="0;0;1;1;0;0"
-          keyTimes="0;0.49;0.5;0.62;0.66;1"
-          dur="6s"
-          repeatCount="indefinite"
-        />
-      </circle>
-
-      {/* Three pulsing dots — building indicator */}
-      {[0, 1, 2].map((i) => (
-        <circle key={i} cx={172 + i * 11} cy={85} r="2.5" fill="var(--c-border-strong)" opacity="0">
-          <animate
-            attributeName="opacity"
-            values="0;0.65;0"
-            dur="1.5s"
-            begin={`${i * 0.4}s`}
-            repeatCount="indefinite"
-          />
-        </circle>
-      ))}
-    </svg>
-  );
-}
 
 export default function ProjectFocusPad() {
   const { tr } = usePortfolio();
@@ -185,9 +67,9 @@ export default function ProjectFocusPad() {
           </div>
         </FadeUp>
 
-        {/* Construction SVG */}
+        {/* Development Loading Circle */}
         <FadeUp delay={0.05}>
-          <ConstructionSVG />
+          <DevelopmentIndicator accentColor="#fb923c" />
         </FadeUp>
 
         <AnimatedLine className="mb-8 mt-6" />
