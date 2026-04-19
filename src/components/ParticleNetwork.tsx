@@ -64,19 +64,22 @@ export function ParticleNetwork() {
     if (!ctx) return;
 
     let particles: Particle[] = [];
-    const particleCount = Math.floor((window.innerWidth * window.innerHeight) / 12000); // Dynamic count based on screen size
     let animationFrameId: number;
     let mouseX: number | null = null;
     let mouseY: number | null = null;
 
     // Set colors based on theme
     const dotColor = theme === "dark" ? "rgba(255, 255, 255, 0.4)" : "rgba(0, 0, 0, 0.3)";
-    const getLineColor = (opacity: number) => 
+    const getLineColor = (opacity: number) =>
       theme === "dark" ? `rgba(255, 255, 255, ${opacity})` : `rgba(0, 0, 0, ${opacity})`;
+
+    const isMobile = () => window.innerWidth < 768;
 
     const handleResize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
+      const rawCount = Math.floor((canvas.width * canvas.height) / 12000);
+      const particleCount = isMobile() ? Math.min(rawCount, 20) : rawCount;
       particles = [];
       for (let i = 0; i < particleCount; i++) {
         particles.push(new Particle(canvas.width, canvas.height));
@@ -133,7 +136,7 @@ export function ParticleNetwork() {
           const dMouseX = particles[i].x - mouseX;
           const dMouseY = particles[i].y - mouseY;
           const distanceToMouse = Math.sqrt(dMouseX * dMouseX + dMouseY * dMouseY);
-          
+
           if (distanceToMouse < 150) {
             const opacity = (1 - distanceToMouse / 150) * 0.3;
             ctx.beginPath();

@@ -56,7 +56,7 @@ export const PROJECTS: readonly ProjectInfo[] = [
 
 // ─── Languages ───────────────────────────────────────────────────────────────
 
-export const LANGUAGE_SLUGS = ["spanish", "portuguese", "english", "french", "german", "italian"] as const;
+export const LANGUAGE_SLUGS = ["spanish", "english", "german", "french", "italian", "portuguese"] as const;
 export type LanguageSlug = (typeof LANGUAGE_SLUGS)[number];
 
 export interface LanguageInfo {
@@ -68,17 +68,17 @@ export interface LanguageInfo {
 
 export const LANGUAGES: readonly LanguageInfo[] = [
   { id: "spanish",    slug: "spanish",    path: "/languages/spanish",    nameKey: "langSpanish" },
-  { id: "portuguese", slug: "portuguese", path: "/languages/portuguese", nameKey: "langPortuguese" },
   { id: "english",    slug: "english",    path: "/languages/english",    nameKey: "langEnglish" },
-  { id: "french",     slug: "french",     path: "/languages/french",     nameKey: "langFrench" },
   { id: "german",     slug: "german",     path: "/languages/german",     nameKey: "langGerman" },
+  { id: "french",     slug: "french",     path: "/languages/french",     nameKey: "langFrench" },
   { id: "italian",    slug: "italian",    path: "/languages/italian",    nameKey: "langItalian" },
+  { id: "portuguese", slug: "portuguese", path: "/languages/portuguese", nameKey: "langPortuguese" },
 ];
 
 export function getLanguageLevel(slug: LanguageSlug, tr: Translations): string {
   switch (slug) {
     case "spanish":    return tr.langNative;
-    case "portuguese": return tr.langNativeLevel;
+    case "portuguese": return "A2 · Learning";
     case "english":    return "C1 · Cambridge";
     case "french":     return "B2 · Alliance Fr.";
     case "german":     return "B2 · Goethe";

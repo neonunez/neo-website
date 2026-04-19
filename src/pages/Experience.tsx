@@ -20,7 +20,7 @@ export default function Experience() {
                 <h3 className="text-sm font-medium text-[var(--c-fg)]">{tr.exp1Title}</h3>
                 <span className="text-xs text-[var(--c-faint)] whitespace-nowrap">{tr.exp1Period}</span>
               </div>
-              <p className="text-xs text-[var(--c-mid)] mb-3">Apply Latam · Buenos Aires</p>
+              <p className="text-xs text-[var(--c-mid)] mb-3">{tr.exp1Company}</p>
               <ul className="space-y-1.5 text-sm text-[var(--c-muted)] leading-relaxed">
                 <li>{tr.exp1p1}</li>
                 <li>{tr.exp1p2}</li>
@@ -35,7 +35,7 @@ export default function Experience() {
                 <h3 className="text-sm font-medium text-[var(--c-fg)]">{tr.exp2Title}</h3>
                 <span className="text-xs text-[var(--c-faint)] whitespace-nowrap">{tr.exp2Period}</span>
               </div>
-              <p className="text-xs text-[var(--c-mid)] mb-3">Apply Latam · Buenos Aires</p>
+              <p className="text-xs text-[var(--c-mid)] mb-3">{tr.exp2Company}</p>
               <ul className="space-y-1.5 text-sm text-[var(--c-muted)] leading-relaxed">
                 <li>{tr.exp2p1}</li>
                 <li>{tr.exp2p2}</li>

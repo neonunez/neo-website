@@ -40,15 +40,15 @@ function ContactFooter() {
           className="link-anim inline-flex items-center gap-1.5 text-[var(--c-fg)] cursor-pointer pb-px"
         >
           {copied
-            ? <><Check size={12} className="text-[#34d399]" /><span className="text-[#34d399]">Copied!</span></>
+            ? <><Check size={12} className="text-[#34d399]" /><span className="text-[#34d399]">{tr.copied}</span></>
             : "neonunez129@gmail.com"
           }
         </button>
       </p>
       <p className="text-sm text-[var(--c-faint)] mt-3">
-        You can also{" "}
+        {tr.downloadCvAlso}{" "}
         <a
-          href="/cv.pdf"
+          href="/cv/neo-nunez-cv.pdf"
           download
           className="link-anim text-[var(--c-muted)] hover:text-[var(--c-fg)] pb-px inline-flex items-center gap-1"
         >
@@ -57,7 +57,7 @@ function ContactFooter() {
             <polyline points="7 10 12 15 17 10" />
             <line x1="12" y1="15" x2="12" y2="3" />
           </svg>
-          download my CV
+          {tr.downloadCvLink}
         </a>
         .
       </p>

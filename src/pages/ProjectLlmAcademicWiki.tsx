@@ -3,10 +3,10 @@ import { Link } from "wouter";
 import { motion } from "framer-motion";
 import {
   ArrowLeft, GitBranch, Layers, Zap, CheckCircle2,
-  Terminal, Image, ChevronRight,
+  Terminal, ChevronRight,
 } from "lucide-react";
 import { Layout } from "@/components/Layout";
-import { FadeUp, TechBadge, AnimatedLine, GithubGlyph } from "@/components/shared";
+import { FadeUp, TechBadge, AnimatedLine, GithubGlyph, ZoomableImage } from "@/components/shared";
 import { usePortfolio } from "@/context/PortfolioContext";
 
 const techStack = [
@@ -163,14 +163,6 @@ function ArchCard({ icon, title, description }: { icon: React.ReactNode; title: 
   );
 }
 
-function ImagePlaceholder({ label, aspectClass = "aspect-video" }: { label: string; aspectClass?: string }) {
-  return (
-    <div className={`w-full ${aspectClass} rounded-lg border border-[var(--c-border)] bg-[var(--c-surface)] flex flex-col items-center justify-center gap-2`}>
-      <Image size={18} className="text-[var(--c-faint)]" />
-      <span className="text-xs text-[var(--c-faint)] font-mono">{label}</span>
-    </div>
-  );
-}
 
 function TechMarquee() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -326,7 +318,7 @@ export default function ProjectLlmAcademicWiki() {
             <p className="text-[var(--c-muted)] text-sm leading-relaxed mb-5">
               {tr.llmWikiHero_tagline}
             </p>
-            <ImagePlaceholder label="project screenshot / demo" />
+            <ZoomableImage src="/project-uis/llm-wiki-ui.png" alt="LLM Academic Wiki UI" />
           </div>
         </FadeUp>
 
@@ -390,7 +382,7 @@ export default function ProjectLlmAcademicWiki() {
           <ContentBlock delay={0.16}>
             <SectionLabel>{tr.llmWikiLabel_howItWorks}</SectionLabel>
             <div className="mb-5">
-              <ImagePlaceholder label="system architecture diagram" aspectClass="aspect-[16/7]" />
+              <ZoomableImage src="/project-diagrams/llm-wiki-diagram.png" alt="LLM Academic Wiki architecture" />
             </div>
             <div className="space-y-3 text-sm leading-[1.85] text-[var(--c-soft)]">
               <p>{tr.llmWikiHowItWorks_p1}</p>

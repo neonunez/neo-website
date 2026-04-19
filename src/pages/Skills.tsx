@@ -7,39 +7,23 @@ import { AIAgentSkills } from "@/components/AIAgentSkills";
 import { MessageSquare, Brain, Compass, Target, ChevronRight, ChevronDown } from "lucide-react";
 
 export default function Skills() {
-  const [openSkill, setOpenSkill] = useState<string | null>(null);
+  const [openSkill, setOpenSkill] = useState<number | null>(null);
   const { tr } = usePortfolio();
 
   const categories = [
-    { label: tr.skillLang,  delay: 0.1, items: ["Python", "JavaScript", "TypeScript", "Groovy", "Jython", "SQL", "HTML", "CSS"] },
-    { label: "AI / ML",     delay: 0.2, items: ["LangGraph", "LlamaIndex", "RAG", "LLM orchestration", "Gemini", "Ollama", "mlx-whisper", "prompt engineering"] },
-    { label: "Frameworks",  delay: 0.3, items: ["FastAPI", "Next.js", "React Native", "Expo"] },
-    { label: tr.skillData,  delay: 0.4, items: ["Oracle ODI", "ETL/ELT", "Supabase", "data warehousing"] },
-    { label: tr.skillTools, delay: 0.5, items: ["Git", "Docker", "Cursor", "Google Workspace"] },
+    { label: tr.skillLang,      delay: 0.1, items: ["Python", "JavaScript", "TypeScript", "Groovy", "Jython", "SQL", "HTML", "CSS", "Bash"] },
+    { label: tr.skillAiMl,      delay: 0.2, items: ["LangGraph", "Docling", "RAG", "LLM orchestration", "Gemini", "Ollama", "mlx-whisper", "prompt engineering", "Groq", "Deepgram", "AssemblyAI", "llama.cpp", "LangSmith"] },
+    { label: tr.skillFrameworks, delay: 0.3, items: ["FastAPI", "Next.js", "React Native", "Expo", "Svelte", "Zustand", "Vite"] },
+    { label: tr.skillData,  delay: 0.4, items: ["Oracle ODI", "ETL/ELT", "Supabase", "data warehousing", "pgvector", "SQLite"] },
+    { label: tr.skillTools, delay: 0.5, items: ["Git", "Docker", "Cursor", "Google Workspace", "Nginx", "Cloudflare", "Claude Code"] },
     { label: tr.skillLearning, delay: 0.6, items: ["ML fundamentals", "neural networks", "fine-tuning", "reinforcement learning"] },
   ];
 
   const softSkills = [
-    { 
-      title: "Cross-functional Communication", 
-      desc: "Effectively translating complex technical concepts to non-technical stakeholders and vice-versa.",
-      icon: MessageSquare 
-    },
-    { 
-      title: "Analytical Problem Solving", 
-      desc: "Deconstructing ambiguous challenges into systematic, manageable engineering tasks.",
-      icon: Brain 
-    },
-    { 
-      title: "Adaptability & Ambiguity", 
-      desc: "Thriving in fast-paced environments where requirements shift and new technologies emerge rapidly.",
-      icon: Compass 
-    },
-    { 
-      title: "End-to-end Ownership", 
-      desc: "Taking full accountability for product delivery, from initial architecture to post-deployment monitoring.",
-      icon: Target 
-    },
+    { title: tr.softSkill1Title, desc: tr.softSkill1Desc, icon: MessageSquare },
+    { title: tr.softSkill2Title, desc: tr.softSkill2Desc, icon: Brain },
+    { title: tr.softSkill3Title, desc: tr.softSkill3Desc, icon: Compass },
+    { title: tr.softSkill4Title, desc: tr.softSkill4Desc, icon: Target },
   ];
 
   return (
@@ -91,20 +75,20 @@ export default function Skills() {
           {/* Soft Skills Section */}
           <div>
             <h2 className="text-2xl font-bold text-[var(--c-fg)] mb-8">
-              Soft Skills
+              {tr.sectionSoftSkills}
             </h2>
             <div className="space-y-3">
-              {softSkills.map((skill) => {
+              {softSkills.map((skill, i) => {
                 const Icon = skill.icon;
-                const isOpen = openSkill === skill.title;
-                
+                const isOpen = openSkill === i;
+
                 return (
-                  <div 
-                    key={skill.title} 
+                  <div
+                    key={i}
                     className="overflow-hidden rounded-2xl border border-[var(--c-border-thin)] bg-[var(--c-surface)] hover:border-[var(--c-dim)] hover:bg-[var(--c-surface-2)] transition-all duration-300 shadow-sm group"
                   >
-                    <button 
-                      onClick={() => setOpenSkill(isOpen ? null : skill.title)}
+                    <button
+                      onClick={() => setOpenSkill(isOpen ? null : i)}
                       className="w-full flex items-center justify-between p-5 sm:p-6 text-left focus:outline-none"
                     >
                       <div className="flex items-center gap-4">
@@ -146,7 +130,7 @@ export default function Skills() {
           {/* AI Agent Skills Section */}
           <div>
             <h2 className="text-2xl font-bold text-[var(--c-fg)] mb-8">
-              AI Agent Skills
+              {tr.sectionAiAgentSkills}
             </h2>
             <AIAgentSkills />
           </div>

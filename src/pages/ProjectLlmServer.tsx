@@ -2,10 +2,10 @@ import { useState, useEffect, useRef } from "react";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import {
-  ArrowLeft, Server, Shield, Cpu, Workflow, CheckCircle2, Image, ChevronRight,
+  ArrowLeft, Server, Shield, Cpu, Workflow, CheckCircle2, ChevronRight,
 } from "lucide-react";
 import { Layout } from "@/components/Layout";
-import { FadeUp, TechBadge, AnimatedLine, GithubGlyph } from "@/components/shared";
+import { FadeUp, TechBadge, AnimatedLine, GithubGlyph, ZoomableImage } from "@/components/shared";
 import { usePortfolio } from "@/context/PortfolioContext";
 
 const techStack = [
@@ -162,14 +162,6 @@ function ArchCard({ icon, title, description }: { icon: React.ReactNode; title: 
   );
 }
 
-function ImagePlaceholder({ label, aspectClass = "aspect-video" }: { label: string; aspectClass?: string }) {
-  return (
-    <div className={`w-full ${aspectClass} rounded-lg border border-[var(--c-border)] bg-[var(--c-surface)] flex flex-col items-center justify-center gap-2`}>
-      <Image size={18} className="text-[var(--c-faint)]" />
-      <span className="text-xs text-[var(--c-faint)] font-mono">{label}</span>
-    </div>
-  );
-}
 
 function TechMarquee() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -322,7 +314,7 @@ export default function ProjectLlmServer() {
             <p className="text-[var(--c-muted)] text-sm leading-relaxed mb-5">
               {tr.llmSrvHero_tagline}
             </p>
-            <ImagePlaceholder label="project screenshot / demo" />
+            <ZoomableImage src="/project-uis/llm-server-ui.png" alt="LLM Server UI" />
           </div>
         </FadeUp>
 
@@ -343,15 +335,6 @@ export default function ProjectLlmServer() {
                   ))}
                 </ul>
               </div>
-              <a
-                href={GITHUB_URL}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 text-xs font-medium px-3 py-2 rounded-md border border-[var(--c-border)] bg-[var(--c-surface-2)] text-[var(--c-fg)] hover:bg-[var(--c-surface-3)] hover:border-[var(--c-border-strong)] transition-all duration-150 whitespace-nowrap shrink-0 self-start"
-              >
-                <GithubGlyph size={13} />
-                {tr.llmSrvCta_btn}
-              </a>
             </div>
           </div>
         </FadeUp>
@@ -387,7 +370,7 @@ export default function ProjectLlmServer() {
           <ContentBlock delay={0.16}>
             <SectionLabel>{tr.llmSrvLabel_howItWorks}</SectionLabel>
             <div className="mb-5">
-              <ImagePlaceholder label="request flow diagram" aspectClass="aspect-[16/7]" />
+              <ZoomableImage src="/project-diagrams/llm-server-diagram.png" alt="LLM Server request flow" />
             </div>
             <div className="space-y-3 text-sm leading-[1.85] text-[var(--c-soft)] border-l border-[var(--c-border)] pl-4">
               <p>{tr.llmSrvHowItWorks_p1}</p>
@@ -452,24 +435,6 @@ export default function ProjectLlmServer() {
           </ContentBlock>
         </div>
 
-        {/* GitHub CTA */}
-        <FadeUp delay={0.36}>
-          <div className="border border-[var(--c-border)] rounded-lg p-5 flex items-center justify-between gap-4 bg-[var(--c-surface)]">
-            <div>
-              <p className="text-sm font-medium text-[var(--c-fg)] mb-0.5">{tr.llmSrvCta_title}</p>
-              <p className="text-xs text-[var(--c-muted)]">{tr.llmSrvCta_desc}</p>
-            </div>
-            <a
-              href={GITHUB_URL}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 text-xs font-medium px-3 py-2 rounded-md border border-[var(--c-border)] bg-[var(--c-surface-2)] text-[var(--c-fg)] hover:bg-[var(--c-surface-3)] hover:border-[var(--c-border-strong)] transition-all duration-150 whitespace-nowrap shrink-0"
-            >
-              <GithubGlyph size={13} />
-              {tr.llmSrvCta_btn}
-            </a>
-          </div>
-        </FadeUp>
 
         {/* Related Projects */}
         <FadeUp delay={0.40}>

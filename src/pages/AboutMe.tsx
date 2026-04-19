@@ -258,6 +258,15 @@ export default function AboutMe() {
 
     function detect() {
       rafId = null;
+
+      // Near-bottom shortcut: last section can't always cross the reading line
+      const nearBottom =
+        window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 80;
+      if (nearBottom) {
+        setActiveId(SECTIONS[SECTIONS.length - 1].id);
+        return;
+      }
+
       const readingLine = window.innerHeight * 0.25;
       let current = SECTIONS[0].id;
 

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { StickyNote, ArrowRight, ArrowUpRight } from "lucide-react";
+import { StickyNote, ArrowRight, ArrowUpRight, Server, BookOpen } from "lucide-react";
 import { usePortfolio } from "@/context/PortfolioContext";
 import { Layout } from "@/components/Layout";
 import { Badge, FlagBadge, AnimatedLine } from "@/components/shared";
@@ -97,17 +97,17 @@ export default function Overview() {
           </div>
           <div className="flex items-center gap-2.5 flex-wrap">
             <span className="text-[var(--c-fg)] opacity-90">{tr.building}</span>
-            <Badge
-              icon={
-                <img
-                  src={iconUrl("apply-logo.svg")}
-                  alt=""
-                  className="h-[14px] w-auto max-h-[14px] object-contain object-left shrink-0"
-                  aria-hidden
-                />
-              }
-            >
-              Enterprise RAG System
+            <Badge icon={<StickyNote size={14} className="text-[#fb923c]" />}>
+              FocusPad
+            </Badge>
+          </div>
+          <div className="flex items-center gap-2.5 flex-wrap">
+            <span className="text-[var(--c-fg)] opacity-90">{tr.built}</span>
+            <Badge icon={<BookOpen size={14} className="text-[#60a5fa]" />}>
+              LLM Academic Wiki
+            </Badge>
+            <Badge icon={<Server size={14} className="text-[var(--c-muted)]" />}>
+              LLM Server
             </Badge>
             <Badge
               icon={
@@ -121,8 +121,17 @@ export default function Overview() {
             >
               VoiceFlow
             </Badge>
-            <Badge icon={<StickyNote size={14} className="text-[#fb923c]" />}>
-              FocusPad
+            <Badge
+              icon={
+                <img
+                  src={iconUrl("apply-logo.svg")}
+                  alt=""
+                  className="h-[14px] w-auto max-h-[14px] object-contain object-left shrink-0"
+                  aria-hidden
+                />
+              }
+            >
+              Enterprise RAG System
             </Badge>
           </div>
           <div className="flex items-center gap-2.5 flex-wrap">
@@ -144,8 +153,8 @@ export default function Overview() {
             <span className="text-[var(--c-fg)] opacity-90 shrink-0 mr-0.5">{tr.fluentIn}</span>
             <FlagBadge flag="🇦🇷" label={tr.langSpanish} />
             <FlagBadge flag="🇬🇧" label={tr.langEnglish} />
-            <FlagBadge flag="🇫🇷" label={tr.langFrench} />
             <FlagBadge flag="🇩🇪" label={tr.langGerman} />
+            <FlagBadge flag="🇫🇷" label={tr.langFrench} />
             <FlagBadge flag="🇮🇹" label={tr.langItalian} />
             <FlagBadge flag="🇧🇷" label={tr.langPortuguese} />
           </div>

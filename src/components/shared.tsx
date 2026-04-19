@@ -5,6 +5,19 @@ import {
   BrainCircuit,
   ChevronDown,
   ExternalLink,
+  X,
+  Database,
+  Server,
+  Cpu,
+  Mic,
+  FileText,
+  Search,
+  MessageSquare,
+  Workflow,
+  Box,
+  Code2,
+  Sliders,
+  Repeat2,
 } from "lucide-react";
 import {
   SiNextdotjs,
@@ -23,6 +36,16 @@ import {
   SiGit,
   SiDocker,
   SiOllama,
+  SiApachegroovy,
+  SiGnubash,
+  SiSvelte,
+  SiVite,
+  SiSqlite,
+  SiNginx,
+  SiCloudflare,
+  SiPostgresql,
+  SiMeta,
+  SiDeepgram,
 } from "react-icons/si";
 import { LANGUAGES, type Lang } from "@/lib/i18n";
 
@@ -56,6 +79,7 @@ export function FlagBadge({ flag, label }: { flag: string; label: string }) {
 // ─── TechBadge ────────────────────────────────────────────────────────────────
 
 export const TECH_ICONS: Record<string, { icon: React.ElementType; color: string }> = {
+  // — already used across project pages —
   "Next.js":      { icon: SiNextdotjs,    color: "var(--c-fg)" },
   "FastAPI":      { icon: SiFastapi,      color: "#009688" },
   "LangGraph":    { icon: SiLangchain,    color: "#5eead4" },
@@ -64,7 +88,6 @@ export const TECH_ICONS: Record<string, { icon: React.ElementType; color: string
   "Gemini Flash": { icon: SiGooglegemini, color: "#4285F4" },
   "Gemini":       { icon: SiGooglegemini, color: "#4285F4" },
   "Python":       { icon: SiPython,       color: "#4b8bbe" },
-  "mlx-whisper":  { icon: SiApple,        color: "#aaa"    },
   "pyobjc":       { icon: SiApple,        color: "#aaa"    },
   "rumps":        { icon: SiApple,        color: "#aaa"    },
   "pywebview":    { icon: SiPython,       color: "#4b8bbe" },
@@ -77,6 +100,48 @@ export const TECH_ICONS: Record<string, { icon: React.ElementType; color: string
   "Git":          { icon: SiGit,          color: "#F05032" },
   "Docker":       { icon: SiDocker,       color: "#2496ED" },
   "Ollama":       { icon: SiOllama,       color: "var(--c-fg)" },
+
+  // — Languages —
+  "Groovy":       { icon: SiApachegroovy, color: "#4298B8" },
+  "Jython":       { icon: SiPython,       color: "#4b8bbe" },
+  "SQL":          { icon: Database,        color: "#64748b" },
+  "Bash":         { icon: SiGnubash,      color: "#4EAA25" },
+
+  // — AI / ML —
+  "LangSmith":          { icon: SiLangchain,    color: "#5eead4" },
+  "Docling":            { icon: FileText,        color: "#94a3b8" },
+  "Groq":               { icon: Cpu,             color: "#f97316" },
+  "Deepgram":           { icon: SiDeepgram,      color: "#7c3aed" },
+  "AssemblyAI":         { icon: Mic,             color: "#6366f1" },
+  "llama.cpp":          { icon: SiMeta,          color: "#0082FB" },
+  "LLM orchestration":  { icon: BrainCircuit,    color: "#a78bfa" },
+  "prompt engineering": { icon: MessageSquare,   color: "#94a3b8" },
+  "RAG":                { icon: Search,          color: "#94a3b8" },
+
+  // — Frameworks —
+  "Svelte":   { icon: SiSvelte, color: "#FF3E00" },
+  "Vite":     { icon: SiVite,   color: "#646CFF" },
+  "Zustand":  { icon: Box,      color: "#94a3b8" },
+
+  // — Data —
+  "Oracle ODI":      { icon: Database,      color: "#F80000" },
+  "ETL/ELT":         { icon: Workflow,      color: "#64748b" },
+  "pgvector":        { icon: SiPostgresql,  color: "#336791" },
+  "SQLite":          { icon: SiSqlite,      color: "#003B57" },
+  "data warehousing":{ icon: Server,        color: "#64748b" },
+
+  // — Tools —
+  "Nginx":            { icon: SiNginx,      color: "#009639" },
+  "Cloudflare":       { icon: SiCloudflare, color: "#F38020" },
+  "Google Workspace": { icon: SiGooglegemini, color: "#4285F4" },
+  "Cursor":           { icon: Code2,        color: "#94a3b8" },
+  "Claude Code":      { icon: BrainCircuit, color: "#d97757" },
+
+  // — Currently Learning —
+  "ML fundamentals":       { icon: BrainCircuit, color: "#a78bfa" },
+  "neural networks":       { icon: BrainCircuit, color: "#a78bfa" },
+  "fine-tuning":           { icon: Sliders,      color: "#a78bfa" },
+  "reinforcement learning":{ icon: Repeat2,      color: "#a78bfa" },
 };
 
 export function TechBadge({ label }: { label: string }) {
@@ -136,12 +201,20 @@ export function Divider() {
 // ─── HoverRow ─────────────────────────────────────────────────────────────────
 
 export function HoverRow({ children }: { children: React.ReactNode }) {
+  const [touched, setTouched] = useState(false);
+  const active = touched;
   return (
     <div
       className="-mx-3 px-3 py-2 rounded-md transition-all duration-200 hover:bg-[var(--c-surface)]"
-      style={{ boxShadow: "inset 0 0 0 0 transparent" }}
+      style={{
+        boxShadow: active ? "inset 2px 0 0 var(--c-border)" : "inset 0 0 0 0 transparent",
+        backgroundColor: active ? "var(--c-surface)" : undefined,
+      }}
       onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "inset 2px 0 0 var(--c-border)")}
       onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "inset 0 0 0 0 transparent")}
+      onTouchStart={() => setTouched(true)}
+      onTouchEnd={() => setTimeout(() => setTouched(false), 400)}
+      onTouchCancel={() => setTouched(false)}
     >
       {children}
     </div>
@@ -305,5 +378,57 @@ export function AnimatedLogo({ className = "" }: { className?: string }) {
         nn_
       </motion.span>
     </div>
+  );
+}
+
+export function ZoomableImage({ src, alt }: { src: string; alt: string }) {
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [open]);
+
+  return (
+    <>
+      <img
+        src={src}
+        alt={alt}
+        onClick={() => setOpen(true)}
+        className="w-full rounded-lg border border-[var(--c-border)] bg-[var(--c-elevated)] cursor-zoom-in"
+      />
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            className="fixed inset-0 z-[70] flex items-center justify-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={() => setOpen(false)}
+          >
+            <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
+            <button
+              onClick={() => setOpen(false)}
+              className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 flex items-center justify-center transition-colors duration-150"
+            >
+              <X size={15} className="text-white/80" />
+            </button>
+            <motion.img
+              src={src}
+              alt={alt}
+              className="relative z-10 max-w-[90vw] max-h-[90vh] object-contain rounded-lg shadow-2xl cursor-zoom-out"
+              initial={{ scale: 0.92, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.92, opacity: 0 }}
+              transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
+              onClick={(e) => e.stopPropagation()}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

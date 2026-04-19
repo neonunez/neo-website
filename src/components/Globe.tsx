@@ -6,10 +6,10 @@ import { usePortfolio } from "@/context/PortfolioContext";
 
 const markers = [
   { id: "ar", code: "ar", language: "Spanish", level: "Native", lat: -38.4161, lon: -63.6167 },
-  { id: "br", code: "br", language: "Portuguese", level: "Native-level", lat: -14.235, lon: -51.9253 },
   { id: "gb", code: "gb-eng", language: "English", level: "C1 · Cambridge", lat: 55.0, lon: -4.0 },
-  { id: "fr", code: "fr", language: "French", level: "B2 · Alliance Fr.", lat: 43.0, lon: -2.0 },
   { id: "de", code: "de", language: "German", level: "B2 · Goethe", lat: 53.0, lon: 14.0 },
+  { id: "fr", code: "fr", language: "French", level: "B2 · Alliance Fr.", lat: 43.0, lon: -2.0 },
+  { id: "br", code: "br", language: "Portuguese", level: "A2 · Learning", lat: -14.235, lon: -51.9253 },
   { id: "it", code: "it", language: "Italian", level: "B1 · Dante Aligh.", lat: 39.0, lon: 16.0 },
   { id: "us", code: "us", language: "English", level: "I can adapt to the accent ;)", lat: 37.0902, lon: -95.7129 },
   { id: "au", code: "au", language: "English", level: "I can adapt to the accent mate ;)", lat: -25.2744, lon: 133.7751 },

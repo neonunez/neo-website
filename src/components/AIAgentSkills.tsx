@@ -2,12 +2,11 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 
 const aiSkills = [
-  { slug: "prompt-engineering", type: "capability", meta: "~188 tok" },
-  { slug: "agentic-workflows",  type: "orchestration", meta: "~124 tok" },
-  { slug: "rag-pipeline",       type: "retrieval", meta: "~215 tok" },
-  { slug: "ai-coding",          type: "workflow", meta: "~108 tok" },
-  { slug: "llm-orchestration",  type: "framework", meta: "~256 tok" },
-  { slug: "local-inference",    type: "deployment", meta: "~302 tok" },
+  { slug: "prompt-engineering",     type: "capability",  meta: "~188 tok" },
+  { slug: "karpathy-guidelines",    type: "guidelines",  meta: "~142 tok" },
+  { slug: "didactic-docs",          type: "writing",     meta: "~97 tok"  },
+  { slug: "writing-linkedin-posts", type: "content",     meta: "~115 tok" },
+  { slug: "context-engineering",    type: "engineering", meta: "~231 tok" },
 ];
 
 export function AIAgentSkills() {

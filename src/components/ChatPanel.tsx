@@ -1,24 +1,17 @@
 import { useState, useRef, useEffect } from "react";
-import { Send, Loader, Sparkles, Server } from "lucide-react";
+import { Send, Loader, Sparkles, Server, ExternalLink } from "lucide-react";
 import { Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { AnimatedLine } from "@/components/shared";
+import { usePortfolio } from "@/context/PortfolioContext";
 
 type Message = {
   role: "user" | "assistant";
   content: string;
 };
 
-const SUGGESTED = [
-  "What is Neo building?",
-  "His tech stack?",
-  "Open to opportunities?",
-  "Languages he speaks?",
-  "Tell me about Neo",
-  "His current job?",
-];
-
-function InitialState() {
+function InitialState({ title, desc, seeProject }: { title: string; desc: string; seeProject: string }) {
+  const [before, after] = desc.split("qwen3-8b");
   return (
     <motion.div
       key="initial"
@@ -31,29 +24,30 @@ function InitialState() {
         <Server size={14} className="text-[var(--c-muted)]" />
       </div>
       <div className="space-y-1.5">
-        <p className="text-xs font-medium text-[var(--c-fg)]">Running on a self-hosted LLM</p>
+        <p className="text-xs font-medium text-[var(--c-fg)]">{title}</p>
         <p className="text-[11px] text-[var(--c-muted)] leading-relaxed max-w-[280px]">
-          This chat is powered by <span className="text-[var(--c-soft)]">qwen3-8b</span> running
-          on Neo's private LLM Server — an open-source project exposing local models via an
-          OpenAI-compatible API.
+          {before}<span className="text-[var(--c-soft)]">qwen3-8b</span>{after}
         </p>
       </div>
       <Link
         href="/projects/llm-server"
         className="text-[10px] text-[var(--c-faint)] hover:text-[var(--c-muted)] transition-colors"
       >
-        See the project →
+        {seeProject}
       </Link>
     </motion.div>
   );
 }
 
 export function ChatPanel() {
+  const { tr } = usePortfolio();
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [streaming, setStreaming] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const SUGGESTED = [tr.chat_q1, tr.chat_q2, tr.chat_q3, tr.chat_q4, tr.chat_q5, tr.chat_q6];
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
@@ -130,17 +124,21 @@ export function ChatPanel() {
       <div className="flex items-center justify-between mb-1.5">
         <div className="flex items-center gap-2">
           <Sparkles size={14} className="text-[var(--c-fg)] opacity-80" />
-          <h3 className="text-base font-semibold text-[var(--c-fg)]">Ask Neo's Agent</h3>
+          <h3 className="text-base font-semibold text-[var(--c-fg)]">{tr.chat_heading}</h3>
         </div>
         <Link
           href="/projects/llm-server"
           className="text-[10px] text-[var(--c-faint)] hover:text-[var(--c-muted)] transition-colors font-mono"
         >
-          powered by llm-server ↗
+          {tr.chat_poweredBy}
         </Link>
       </div>
-      <p className="text-sm text-[var(--c-muted)] mb-5 leading-relaxed max-w-lg">
-        Try this interactive AI agent to pull context directly from Neo's projects, experience, and tech stack — running on a self-hosted model.
+      <p className="text-sm text-[var(--c-muted)] mb-5 leading-relaxed">
+        {tr.chat_desc.split("LLM Server").map((part, i, arr) =>
+          i < arr.length - 1
+            ? <span key={i}>{part}<Link href="/projects/llm-server" className="link-anim inline-flex items-center gap-0.5 text-[var(--c-soft)] hover:text-[var(--c-fg)] transition-colors pb-px">LLM Server<ExternalLink size={10} className="shrink-0 mb-px" /></Link></span>
+            : <span key={i}>{part}</span>
+        )}
       </p>
 
       <div
@@ -153,7 +151,7 @@ export function ChatPanel() {
         <div className="flex-1 min-h-0 overflow-y-auto px-4 py-3 space-y-3 relative">
           <AnimatePresence mode="wait">
             {messages.length === 0 ? (
-              <InitialState key="initial" />
+              <InitialState key="initial" title={tr.chat_initialTitle} desc={tr.chat_initialDesc} seeProject={tr.chat_seeProject} />
             ) : (
               <motion.div
                 key="messages"
@@ -165,7 +163,7 @@ export function ChatPanel() {
                 {messages.map((msg, i) => (
                   <div key={i} className={`flex gap-2.5 ${msg.role === "user" ? "flex-row-reverse" : ""}`}>
                     <span className={`text-[10px] font-mono shrink-0 mt-0.5 ${msg.role === "user" ? "text-[var(--c-muted)]" : "text-[var(--c-soft)]"}`}>
-                      {msg.role === "user" ? "you" : "agent"}
+                      {msg.role === "user" ? tr.chat_labelYou : tr.chat_labelAgent}
                     </span>
                     <p className={`text-xs leading-relaxed ${msg.role === "user" ? "text-[var(--c-soft)] text-right" : "text-[var(--c-fg)]"}`}>
                       {msg.content}
@@ -204,7 +202,7 @@ export function ChatPanel() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(input); } }}
-            placeholder="Ask me anything about Neo…"
+            placeholder={tr.chat_placeholder}
             disabled={streaming}
             className="flex-1 text-xs bg-transparent outline-none text-[var(--c-fg)] placeholder:text-[var(--c-muted)] disabled:opacity-60"
           />
