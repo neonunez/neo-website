@@ -30,7 +30,7 @@ export default function Projects() {
                       />
                     </h3>
                     <span className="text-xs text-[var(--c-faint)] whitespace-nowrap">
-                      {tr.inDevelopment}
+                      {tr[p.statusKey]}
                     </span>
                   </div>
                   <p className="text-sm text-[var(--c-muted)] leading-relaxed mb-2">{tr[p.descKey]}</p>

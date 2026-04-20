@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from "react";
 import { Send, Loader, Sparkles, Server, ExternalLink } from "lucide-react";
 import { Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { AnimatedLine } from "@/components/shared";
 import { usePortfolio } from "@/context/PortfolioContext";
 
@@ -165,12 +167,20 @@ export function ChatPanel() {
                     <span className={`text-[10px] font-mono shrink-0 mt-0.5 ${msg.role === "user" ? "text-[var(--c-muted)]" : "text-[var(--c-soft)]"}`}>
                       {msg.role === "user" ? tr.chat_labelYou : tr.chat_labelAgent}
                     </span>
-                    <p className={`text-xs leading-relaxed ${msg.role === "user" ? "text-[var(--c-soft)] text-right" : "text-[var(--c-fg)]"}`}>
-                      {msg.content}
+                    <div className={`text-xs leading-relaxed ${msg.role === "user" ? "text-[var(--c-soft)] text-right" : "text-[var(--c-fg)]"}`}>
+                      {msg.role === "assistant" ? (
+                        <div className="prose prose-sm prose-invert max-w-none prose-p:leading-relaxed prose-p:my-0 prose-pre:bg-[var(--c-surface-2)] prose-pre:border prose-pre:border-[var(--c-border-thin)] prose-code:text-[var(--c-soft)] prose-code:bg-[var(--c-surface-2)] prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-strong:text-[var(--c-fg)] prose-strong:font-bold">
+                          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                            {msg.content}
+                          </ReactMarkdown>
+                        </div>
+                      ) : (
+                        msg.content
+                      )}
                       {msg.role === "assistant" && streaming && i === messages.length - 1 && msg.content === "" && (
                         <Loader size={10} className="animate-spin inline ml-1 text-[var(--c-dim)]" />
                       )}
-                    </p>
+                    </div>
                   </div>
                 ))}
                 <div ref={bottomRef} />

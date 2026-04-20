@@ -23,17 +23,17 @@ Neo Nuñez is a Computer Science student at UBA (Universidad de Buenos Aires) ba
 
 ## Projects
 
+**FocusPad** (in development — current focus)
+Personal iOS productivity app that replaces Apple Notes, Apple Reminders, Apple Calendar, and random to-do apps with one unified tool. Reminders, notes, tasks, calendar, planner, and habit tracker — all connected. Built from scratch for personal use.
+
+**LLM Academic Wiki** (open source — current focus)
+A personal knowledge system built on Obsidian and Claude Code. 51 university PDFs turned into 36+ structured Markdown wiki pages across 10 algorithm topics. 11 slash commands covering the full study lifecycle: ingest, resolve, simulate, synthesize. Parse-once, query-many architecture — Claude Code acts as the librarian.
+
 **Enterprise RAG System** (completed)
 Production-grade Retrieval-Augmented Generation pipeline for employee onboarding with Oracle EPM documentation. 8-node LangGraph pipeline: image grounding → query expansion → hybrid retrieval → reranking → generation. Answers questions in Spanish and cites its sources. Built as a proof of concept to make the internal case for a production version.
 
 **VoiceFlow** (in development)
 macOS menu bar speech-to-text app — a free, self-hosted alternative to Wispr Flow. Transcribes voice and pastes polished text at the cursor. Runs local models via MLX (mlx-whisper), uses pyobjc and rumps for system-level integration, and pywebview for the UI.
-
-**FocusPad** (in development)
-Personal iOS productivity app that replaces Apple Notes, Apple Reminders, Apple Calendar, and random to-do apps with one unified tool. Reminders, notes, tasks, calendar, planner, and habit tracker — all connected. Built from scratch for personal use.
-
-**LLM Academic Wiki** (open source)
-A personal knowledge system built on Obsidian and Claude Code. 51 university PDFs turned into 36+ structured Markdown wiki pages across 10 algorithm topics. 11 slash commands covering the full study lifecycle: ingest, resolve, simulate, synthesize. Parse-once, query-many architecture — Claude Code acts as the librarian.
 
 **LLM Server** (open source)
 A self-hosted LLM inference server running on a home PC. Exposes an OpenAI-compatible API globally via Cloudflare tunnel (with Nginx reverse proxy). Runs Qwen3-8B via llama.cpp with Vulkan GPU acceleration. Features automatic gaming mode: when a game (e.g. a game process) is detected, the GPU is freed so games run at full performance. Managed as a Windows service via NSSM. This very chat is powered by it.

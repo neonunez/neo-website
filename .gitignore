@@ -51,9 +51,3 @@ Thumbs.db
 # Vercel
 .vercel/
 .vercel
-
-# Local asset folders (binaries/media, not versioned)
-public/cv/
-public/languages-certificates/
-public/project-diagrams/
-public/project-uis/

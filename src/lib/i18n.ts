@@ -155,6 +155,9 @@ export interface Translations {
   focusPadStack_heading: string;
   focusPadStatus_heading: string; focusPadStatus_desc: string;
   focusPadRelated_heading: string;
+  // Language Proof sections
+  langSpanishProofTitle: string; langSpanishProofDesc: string; langNativeBuenosAires: string;
+  langPortugueseProofTitle: string; langPortugueseProofDesc: string; langCurrentlyLearning: string;
 }
 
 export const t: Record<Lang, Translations> = {
@@ -432,6 +435,13 @@ export const t: Record<Lang, Translations> = {
     focusPadStatus_heading: "Currently building",
     focusPadStatus_desc: "The app is fully greenfield as of April 2026. All 11 build phases are planned and documented. No GitHub repo yet — this page will update as the project ships.",
     focusPadRelated_heading: "Related projects",
+    // Language Proof sections
+    langSpanishProofTitle: "Latino Proof",
+    langSpanishProofDesc: "If we jump on a call, I can prove my Latino roots to you faster than you can say 'mate'.",
+    langNativeBuenosAires: "Native from Buenos Aires",
+    langPortugueseProofTitle: "Portuñol Specialist",
+    langPortugueseProofDesc: "No certificate yet, but as an Argentine, I've already mastered the art of Portuñol. Now reaching for a true B2.",
+    langCurrentlyLearning: "Currently learning",
   },
   es: {
     navExperience: "Experiencia", navProjects: "Proyectos", navOverview: "Resumen", navAboutMe: "Sobre Mí",
@@ -485,7 +495,7 @@ export const t: Record<Lang, Translations> = {
     cmdCopyEmail: "Copiar email",
     langsBio: "Desde pequeño, me dediqué a aprender idiomas a través de clases especializadas y certificaciones formales — motivado por una profunda pasión por los entornos multiculturales y la convicción de que el idioma es el puente más directo entre las personas.",
     // LLM Academic Wiki
-    llmWikiHero_badge: "Open Source",
+    llmWikiHero_badge: "Código Abierto",
     llmWikiHero_tagline: "Un sistema personal de conocimiento que usa Claude Code como bibliotecario — para poder concentrarme en aprender.",
     llmWikiTldr_heading: "TL;DR",
     llmWikiTldr_b1: "51 PDFs procesados en más de 36 páginas Markdown estructuradas sobre 10 temas de algoritmos.",
@@ -531,7 +541,7 @@ export const t: Record<Lang, Translations> = {
     llmWikiCta_btn: "GitHub ↗",
     llmWikiRelated_heading: "Proyectos relacionados",
     // VoiceFlow
-    voiceFlowHero_badge: "Open Source",
+    voiceFlowHero_badge: "Código Abierto",
     voiceFlowHero_tagline: "Una app multiplataforma en la barra de menú que transcribe tu voz y pega texto pulido en el cursor — una alternativa gratuita y self-hosted a Wispr Flow.",
     voiceFlowTldr_heading: "TL;DR",
     voiceFlowTldr_b1: "Presioná un atajo en cualquier app, hablá, y el texto limpio aparece en tu cursor — sin cambiar de ventana.",
@@ -577,7 +587,7 @@ export const t: Record<Lang, Translations> = {
     voiceFlowCta_btn: "GitHub ↗",
     voiceFlowRelated_heading: "Proyectos relacionados",
     // LLM Server
-    llmSrvHero_badge: "Active",
+    llmSrvHero_badge: "Activo",
     llmSrvHero_tagline: "Un servidor de inferencia LLM self-hosted corriendo en una PC hogareña — API compatible con OpenAI expuesta globalmente vía Cloudflare, con modo gaming automático que libera la GPU cuando se detectan juegos.",
     llmSrvTldr_heading: "En resumen",
     llmSrvTldr_b1: "~33 tok/s en una AMD RX 5500 XT vía llama.cpp Vulkan — 26–80% más rápido que Ollama en el mismo hardware.",
@@ -707,6 +717,13 @@ export const t: Record<Lang, Translations> = {
     focusPadStatus_heading: "En construcción",
     focusPadStatus_desc: "La app está completamente en fase inicial desde abril de 2026. Las 11 fases de construcción están planificadas y documentadas. Aún no hay repositorio en GitHub — esta página se actualizará a medida que el proyecto avance.",
     focusPadRelated_heading: "Proyectos relacionados",
+    // Language Proof sections
+    langSpanishProofTitle: "Prueba de Latino",
+    langSpanishProofDesc: "Si nos sumamos a una llamada, puedo demostrarte mis raíces latinas más rápido de lo que decís 'mate'.",
+    langNativeBuenosAires: "Nativo de Buenos Aires",
+    langPortugueseProofTitle: "Especialista en Portuñol",
+    langPortugueseProofDesc: "Sin certificado aún, pero como argentino, ya domino el arte del Portuñol. Ahora voy por un B2 real.",
+    langCurrentlyLearning: "Aprendiendo actualmente",
   },
   fr: {
     navExperience: "Expérience", navProjects: "Projets", navOverview: "Aperçu", navAboutMe: "À propos",
@@ -852,7 +869,7 @@ export const t: Record<Lang, Translations> = {
     voiceFlowCta_btn: "GitHub ↗",
     voiceFlowRelated_heading: "Projets connexes",
     // LLM Server
-    llmSrvHero_badge: "Active",
+    llmSrvHero_badge: "Actif",
     llmSrvHero_tagline: "Un serveur d'inférence LLM auto-hébergé tournant sur un PC domestique — API compatible OpenAI exposée globalement via Cloudflare, avec un mode gaming automatique qui libère le GPU quand des jeux sont détectés.",
     llmSrvTldr_heading: "En bref",
     llmSrvTldr_b1: "~33 tok/s sur une AMD RX 5500 XT via llama.cpp Vulkan — 26–80 % plus rapide qu'Ollama sur le même matériel.",
@@ -982,6 +999,13 @@ export const t: Record<Lang, Translations> = {
     focusPadStatus_heading: "En cours de construction",
     focusPadStatus_desc: "L'app est entièrement en phase initiale depuis avril 2026. Les 11 phases de construction sont planifiées et documentées. Pas encore de dépôt GitHub — cette page sera mise à jour au fil de l'avancement du projet.",
     focusPadRelated_heading: "Projets connexes",
+    // Language Proof sections
+    langSpanishProofTitle: "Preuve Latino",
+    langSpanishProofDesc: "Si nous passons un appel, je peux vous prouver mes racines latines plus vite que vous ne pouvez dire 'mate'.",
+    langNativeBuenosAires: "Natif de Buenos Aires",
+    langPortugueseProofTitle: "Spécialiste en Portuñol",
+    langPortugueseProofDesc: "Pas encore de certificat, mais en tant qu'Argentin, je maîtrise déjà l'art du Portuñol. Je vise maintenant un vrai B2.",
+    langCurrentlyLearning: "Actuellement en train d'apprendre",
   },
   de: {
     navExperience: "Erfahrung", navProjects: "Projekte", navOverview: "Übersicht", navAboutMe: "Über mich",
@@ -1127,7 +1151,7 @@ export const t: Record<Lang, Translations> = {
     voiceFlowCta_btn: "GitHub ↗",
     voiceFlowRelated_heading: "Verwandte Projekte",
     // LLM Server
-    llmSrvHero_badge: "Active",
+    llmSrvHero_badge: "Aktiv",
     llmSrvHero_tagline: "Ein selbst gehosteter LLM-Inferenzserver auf einem Heim-PC — OpenAI-kompatible API weltweit über Cloudflare zugänglich, mit automatischem Gaming-Modus der die GPU freigibt wenn Spiele erkannt werden.",
     llmSrvTldr_heading: "Kurzfassung",
     llmSrvTldr_b1: "~33 tok/s auf einer AMD RX 5500 XT via llama.cpp Vulkan — 26–80 % schneller als Ollama auf derselben Hardware.",
@@ -1257,6 +1281,13 @@ export const t: Record<Lang, Translations> = {
     focusPadStatus_heading: "In Konstruktion",
     focusPadStatus_desc: "Die App befindet sich seit April 2026 vollständig in der Anfangsphase. Alle 11 Build-Phasen sind geplant und dokumentiert. Noch kein GitHub-Repository — diese Seite wird aktualisiert, wenn das Projekt Fortschritte macht.",
     focusPadRelated_heading: "Verwandte Projekte",
+    // Language Proof sections
+    langSpanishProofTitle: "Latino-Beweis",
+    langSpanishProofDesc: "Wenn wir telefonieren, kann ich Ihnen meine lateinamerikanischen Wurzeln schneller beweisen, als Sie 'Mate' sagen können.",
+    langNativeBuenosAires: "Einheimisch aus Buenos Aires",
+    langPortugueseProofTitle: "Portuñol-Spezialist",
+    langPortugueseProofDesc: "Noch kein Zertifikat, aber als Argentinier beherrsche ich die Kunst des Portuñol bereits. Jetzt strebe ich ein echtes B2 an.",
+    langCurrentlyLearning: "Derzeit am Lernen",
   },
   it: {
     navExperience: "Esperienza", navProjects: "Progetti", navOverview: "Panoramica", navAboutMe: "Chi sono",
@@ -1402,7 +1433,7 @@ export const t: Record<Lang, Translations> = {
     voiceFlowCta_btn: "GitHub ↗",
     voiceFlowRelated_heading: "Progetti correlati",
     // LLM Server
-    llmSrvHero_badge: "Active",
+    llmSrvHero_badge: "Attivo",
     llmSrvHero_tagline: "Un server di inferenza LLM self-hosted su un PC domestico — API compatibile OpenAI esposta globalmente via Cloudflare, con modalità gaming automatica che libera la GPU quando vengono rilevati giochi.",
     llmSrvTldr_heading: "In breve",
     llmSrvTldr_b1: "~33 tok/s su una AMD RX 5500 XT via llama.cpp Vulkan — 26–80% più veloce di Ollama sullo stesso hardware.",
@@ -1532,6 +1563,13 @@ export const t: Record<Lang, Translations> = {
     focusPadStatus_heading: "In costruzione",
     focusPadStatus_desc: "L'app è completamente in fase iniziale da aprile 2026. Tutte le 11 fasi di sviluppo sono pianificate e documentate. Ancora nessun repository GitHub — questa pagina si aggiornerà man mano che il progetto avanza.",
     focusPadRelated_heading: "Progetti correlati",
+    // Language Proof sections
+    langSpanishProofTitle: "Prova Latino",
+    langSpanishProofDesc: "Se facciamo una chiamata, posso dimostrarti le mie radici latine più velocemente di quanto tu possa dire 'mate'.",
+    langNativeBuenosAires: "Nativo di Buenos Aires",
+    langPortugueseProofTitle: "Specialista in Portuñol",
+    langPortugueseProofDesc: "Ancora nessun certificato, ma come argentino domino già l'arte del Portuñol. Ora punto a un vero B2.",
+    langCurrentlyLearning: "Attualmente in fase di apprendimento",
   },
   pt: {
     navExperience: "Experiência", navProjects: "Projetos", navOverview: "Visão Geral", navAboutMe: "Sobre Mim",
@@ -1585,7 +1623,7 @@ export const t: Record<Lang, Translations> = {
     cmdCopyEmail: "Copiar email",
     langsBio: "Desde a infância, dediquei-me ao aprendizado de idiomas por meio de aulas especializadas e certificações formais — movido por uma profunda paixão por ambientes multiculturais e pela crença de que o idioma é a ponte mais direta entre as pessoas.",
     // LLM Academic Wiki
-    llmWikiHero_badge: "Open Source",
+    llmWikiHero_badge: "Código Aberto",
     llmWikiHero_tagline: "Um sistema de conhecimento pessoal que usa o Claude Code como bibliotecário — para focar no aprendizado de verdade.",
     llmWikiTldr_heading: "Resumo",
     llmWikiTldr_b1: "51 PDFs processados em 36+ páginas Markdown estruturadas sobre 10 tópicos de algoritmos.",
@@ -1631,7 +1669,7 @@ export const t: Record<Lang, Translations> = {
     llmWikiCta_btn: "GitHub ↗",
     llmWikiRelated_heading: "Projetos relacionados",
     // VoiceFlow
-    voiceFlowHero_badge: "Open Source",
+    voiceFlowHero_badge: "Código Aberto",
     voiceFlowHero_tagline: "Um app multiplataforma na barra de menu que transcreve sua voz e cola texto refinado no cursor — uma alternativa gratuita e self-hosted ao Wispr Flow.",
     voiceFlowTldr_heading: "Resumo",
     voiceFlowTldr_b1: "Pressione um atalho em qualquer lugar do sistema, fale, e o texto limpo aparece no cursor — sem trocar de janela.",
@@ -1677,7 +1715,7 @@ export const t: Record<Lang, Translations> = {
     voiceFlowCta_btn: "GitHub ↗",
     voiceFlowRelated_heading: "Projetos relacionados",
     // LLM Server
-    llmSrvHero_badge: "Active",
+    llmSrvHero_badge: "Ativo",
     llmSrvHero_tagline: "Um servidor de inferência LLM auto-hospedado rodando em um PC doméstico — API compatível com OpenAI exposta globalmente via Cloudflare, com modo gaming automático que libera a GPU quando jogos são detectados.",
     llmSrvTldr_heading: "Resumindo",
     llmSrvTldr_b1: "~33 tok/s em uma AMD RX 5500 XT via llama.cpp Vulkan — 26–80% mais rápido que o Ollama no mesmo hardware.",
@@ -1807,14 +1845,21 @@ export const t: Record<Lang, Translations> = {
     focusPadStatus_heading: "Em construção",
     focusPadStatus_desc: "O app está completamente em fase inicial desde abril de 2026. Todas as 11 fases de desenvolvimento estão planejadas e documentadas. Ainda sem repositório no GitHub — esta página será atualizada conforme o projeto avança.",
     focusPadRelated_heading: "Projetos relacionados",
+    // Language Proof sections
+    langSpanishProofTitle: "Prova de Latino",
+    langSpanishProofDesc: "Se entrarmos numa chamada, posso provar minhas raízes latinas mais rápido do que você diz 'mate'.",
+    langNativeBuenosAires: "Nativo de Buenos Aires",
+    langPortugueseProofTitle: "Especialista em Portunhol",
+    langPortugueseProofDesc: "Ainda sem certificado, mas como argentino, já domino a arte do Portunhol. Agora em busca de um B2 real.",
+    langCurrentlyLearning: "Aprendendo atualmente",
   },
 };
 
-export const LANGUAGES: { code: Lang; flag: string; name: string }[] = [
-  { code: "en", flag: "🇬🇧", name: "English" },
-  { code: "es", flag: "🇦🇷", name: "Español" },
-  { code: "fr", flag: "🇫🇷", name: "Français" },
-  { code: "de", flag: "🇩🇪", name: "Deutsch" },
-  { code: "it", flag: "🇮🇹", name: "Italiano" },
-  { code: "pt", flag: "🇧🇷", name: "Português" },
+export const LANGUAGES: { code: Lang; flag: string; name: string; slug: string }[] = [
+  { code: "en", flag: "🇬🇧", name: "English", slug: "english" },
+  { code: "es", flag: "🇦🇷", name: "Español", slug: "spanish" },
+  { code: "fr", flag: "🇫🇷", name: "Français", slug: "french" },
+  { code: "de", flag: "🇩🇪", name: "Deutsch", slug: "german" },
+  { code: "it", flag: "🇮🇹", name: "Italiano", slug: "italian" },
+  { code: "pt", flag: "🇧🇷", name: "Português", slug: "portuguese" },
 ];

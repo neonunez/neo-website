@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 
 import { motion, AnimatePresence, useInView } from "framer-motion";
+import { Link } from "wouter";
 import {
   BrainCircuit,
   ChevronDown,
@@ -18,6 +19,7 @@ import {
   Code2,
   Sliders,
   Repeat2,
+  ArrowUpRight,
 } from "lucide-react";
 import {
   SiNextdotjs,
@@ -62,8 +64,8 @@ export function Badge({ icon, children }: { icon: React.ReactNode; children: Rea
 
 // ─── FlagBadge ────────────────────────────────────────────────────────────────
 
-export function FlagBadge({ flag, label }: { flag: string; label: string }) {
-  return (
+export function FlagBadge({ flag, label, href }: { flag: string; label: string; href?: string }) {
+  const content = (
     <Badge
       icon={
         <span className="text-[13px] leading-none select-none translate-y-px" aria-hidden>
@@ -74,6 +76,16 @@ export function FlagBadge({ flag, label }: { flag: string; label: string }) {
       {label}
     </Badge>
   );
+
+  if (href) {
+    return (
+      <Link href={href} className="hover:opacity-80 transition-opacity">
+        {content}
+      </Link>
+    );
+  }
+
+  return content;
 }
 
 // ─── TechBadge ────────────────────────────────────────────────────────────────
@@ -274,15 +286,20 @@ export function LanguageSwitcher({ lang, setLang }: { lang: Lang; setLang: (l: L
           {LANGUAGES.map((l) => (
             <button
               key={l.code}
-              onClick={() => { setLang(l.code); setOpen(false); }}
-              className={`w-full flex items-center gap-2.5 px-3 py-2 text-xs transition-colors text-left
-                ${l.code === lang
-                  ? "text-[var(--c-fg)] bg-[var(--c-surface-2)]"
-                  : "text-[var(--c-muted)] hover:text-[var(--c-fg)] hover:bg-[var(--c-surface)]"
-                }`}
+              className={`w-full flex items-center gap-3 px-3 py-2.5 text-xs transition-colors ${
+                lang === l.code
+                  ? "bg-[var(--c-surface-3)] text-[var(--c-fg)]"
+                  : "text-[var(--c-muted)] hover:bg-[var(--c-surface-2)] hover:text-[var(--c-fg)]"
+              }`}
+              onClick={() => {
+                setLang(l.code);
+                setOpen(false);
+              }}
             >
-              <span className="text-sm leading-none">{l.flag}</span>
-              <span>{l.name}</span>
+              <span className="text-sm shrink-0" aria-hidden>
+                {l.flag}
+              </span>
+              <span className="font-medium">{l.name}</span>
             </button>
           ))}
         </motion.div>

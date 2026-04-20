@@ -9,6 +9,7 @@ export interface ProjectInfo {
   path: string;
   tags: readonly string[];
   descKey: keyof Translations;
+  statusKey: keyof Translations;
 }
 
 export const PROJECTS: readonly ProjectInfo[] = [
@@ -19,6 +20,7 @@ export const PROJECTS: readonly ProjectInfo[] = [
     path: "/projects/llm-academic-wiki",
     tags: ["Python", "LLMs", "RAG"],
     descKey: "proj_llmWikiDesc",
+    statusKey: "llmWikiHero_badge",
   },
   {
     id: "llm-server",
@@ -27,6 +29,7 @@ export const PROJECTS: readonly ProjectInfo[] = [
     path: "/projects/llm-server",
     tags: ["FastAPI", "Python", "LLMs"],
     descKey: "proj_llmServerDesc",
+    statusKey: "llmSrvHero_badge",
   },
   {
     id: "voiceflow",
@@ -35,6 +38,7 @@ export const PROJECTS: readonly ProjectInfo[] = [
     path: "/projects/voiceflow",
     tags: ["Python", "mlx-whisper", "pyobjc", "rumps", "pywebview"],
     descKey: "proj2Desc",
+    statusKey: "voiceFlowHero_badge",
   },
   {
     id: "enterprise-rag",
@@ -43,6 +47,7 @@ export const PROJECTS: readonly ProjectInfo[] = [
     path: "/projects/rag-system",
     tags: ["Next.js", "FastAPI", "LangGraph", "LlamaIndex", "Supabase", "Gemini Flash"],
     descKey: "proj1Desc",
+    statusKey: "ragSystemHero_badge",
   },
   {
     id: "focuspad",
@@ -51,6 +56,7 @@ export const PROJECTS: readonly ProjectInfo[] = [
     path: "/projects/focuspad",
     tags: ["React Native", "Expo", "TypeScript"],
     descKey: "proj3Desc",
+    statusKey: "inDevelopment",
   },
 ];
 

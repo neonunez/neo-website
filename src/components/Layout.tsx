@@ -18,7 +18,7 @@ function ContactFooter() {
         {tr.sectionFindMe}
       </h2>
       <div className="flex flex-wrap gap-x-6 gap-y-3 mb-5">
-        <SocialLink href="https://github.com/neo-nunez">
+        <SocialLink href="https://github.com/neonunez">
           <GithubGlyph />
           GitHub
         </SocialLink>
@@ -128,7 +128,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       label: "GitHub",
       icon: <ExternalLink size={13} />,
       hint: "↗",
-      action: () => { window.open("https://github.com/neo-nunez", "_blank"); setCmdOpen(false); },
+      action: () => { window.open("https://github.com/neonunez", "_blank"); setCmdOpen(false); },
     },
     {
       label: "LinkedIn",
@@ -200,7 +200,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </Link>
           <div className="flex items-center gap-5 pointer-events-auto">
             {/* GitHub */}
-            <a href="https://github.com/neo-nunez" target="_blank" rel="noreferrer"
+            <a href="https://github.com/neonunez" target="_blank" rel="noreferrer"
               className="text-[var(--c-muted)] hover:text-[var(--c-fg)] transition-colors" aria-label="GitHub">
               <GithubGlyph size={16} />
             </a>

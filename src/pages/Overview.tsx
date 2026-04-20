@@ -151,12 +151,12 @@ export default function Overview() {
           </div>
           <div className="flex items-center gap-2.5 flex-wrap md:flex-nowrap">
             <span className="text-[var(--c-fg)] opacity-90 shrink-0 mr-0.5">{tr.fluentIn}</span>
-            <FlagBadge flag="🇦🇷" label={tr.langSpanish} />
-            <FlagBadge flag="🇬🇧" label={tr.langEnglish} />
-            <FlagBadge flag="🇩🇪" label={tr.langGerman} />
-            <FlagBadge flag="🇫🇷" label={tr.langFrench} />
-            <FlagBadge flag="🇮🇹" label={tr.langItalian} />
-            <FlagBadge flag="🇧🇷" label={tr.langPortuguese} />
+            <FlagBadge flag="🇦🇷" label={tr.langSpanish} href="/languages/spanish" />
+            <FlagBadge flag="🇬🇧" label={tr.langEnglish} href="/languages/english" />
+            <FlagBadge flag="🇩🇪" label={tr.langGerman} href="/languages/german" />
+            <FlagBadge flag="🇫🇷" label={tr.langFrench} href="/languages/french" />
+            <FlagBadge flag="🇮🇹" label={tr.langItalian} href="/languages/italian" />
+            <FlagBadge flag="🇧🇷" label={tr.langPortuguese} href="/languages/portuguese" />
           </div>
         </motion.div>
 
