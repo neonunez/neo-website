@@ -5,7 +5,9 @@ import { StickyNote, ArrowRight, ArrowUpRight, Server, BookOpen } from "lucide-r
 import { usePortfolio } from "@/context/PortfolioContext";
 import { Layout } from "@/components/Layout";
 import { Badge, FlagBadge, AnimatedLine } from "@/components/shared";
-import { ChatPanel } from "@/components/ChatPanel";
+import { Suspense, lazy } from "react";
+
+const ChatPanel = lazy(() => import("@/components/ChatPanel").then(module => ({ default: module.ChatPanel })));
 
 function NavCard({ label, href }: { label: string; href: string }) {
   const [hovered, setHovered] = useState(false);
@@ -166,7 +168,9 @@ export default function Overview() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1], delay: 0.35 }}
         >
-          <ChatPanel />
+          <Suspense fallback={<div className="h-[200px] w-full bg-[var(--c-surface)] animate-pulse rounded-xl border border-[var(--c-border-thin)] flex items-center justify-center text-[var(--c-dim)] font-mono text-[10px] uppercase tracking-widest">Initializing AI Agent...</div>}>
+            <ChatPanel />
+          </Suspense>
           <div className="mt-8 pt-6 relative">
             <AnimatedLine delay={0.4} className="absolute top-0 left-0 right-0" />
             <h4 className="text-sm font-medium text-[var(--c-fg)] mb-1">Site Navigation</h4>

@@ -192,6 +192,8 @@ export function Globe({ className }: { className?: string }) {
         ref={canvasRef}
         className="w-full h-full cursor-grab touch-pan-y"
         style={{ contain: "layout paint size" }}
+        role="img"
+        aria-label="Interactive 3D globe showing Neo's multi-lingual proficiency and planned travels"
       />
       {markers.map((marker, i) => (
         <div

@@ -75,6 +75,29 @@ export function Layout({ children }: { children: React.ReactNode }) {
     setIsMobileMenuOpen(false);
   }, [location]);
 
+  useEffect(() => {
+    const routeTitles: Record<string, string> = {
+      "/": "Overview",
+      "/about": "About Me",
+      "/experience": "Experience",
+      "/projects": "Projects",
+      "/skills": "Skills",
+      "/languages": "Languages",
+    };
+
+    let pageTitle = "Portfolio";
+    if (location === "/") {
+      pageTitle = "Neo Nuñez · AI Systems & Software Engineer";
+    } else {
+      const baseKey = Object.keys(routeTitles).find(k => location.startsWith(k));
+      if (baseKey) {
+        pageTitle = `${routeTitles[baseKey]} · Neo Nuñez`;
+      }
+    }
+
+    document.title = pageTitle;
+  }, [location]);
+
   // ⌘K / Ctrl+K
   useEffect(() => {
     const handle = (e: KeyboardEvent) => {
