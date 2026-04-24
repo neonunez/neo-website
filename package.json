@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --config vite.config.ts",
-    "build": "tsc -p tsconfig.json --noEmit && vite build --config vite.config.ts",
+    "build": "node scripts/generate-sitemap.mjs && tsc -p tsconfig.json --noEmit && vite build --config vite.config.ts && node scripts/prerender-meta.mjs",
     "preview": "vite preview --config vite.config.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },

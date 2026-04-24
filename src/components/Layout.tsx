@@ -3,6 +3,7 @@ import { Link, useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sun, Moon, Copy, Check, ExternalLink, ChevronRight, ArrowUp, User, Briefcase, Code2, Mail, Menu, X } from "lucide-react";
 import { usePortfolio } from "@/context/PortfolioContext";
+import { setMetaTags } from "@/lib/seo";
 import { HierarchyNav } from "./HierarchyNav";
 import { LanguageSwitcher, CommandPalette, type CmdItem, SocialLink, AnimatedLine, AnimatedLogo, GithubGlyph } from "./shared";
 import { ParticleNetwork } from "./ParticleNetwork";
@@ -76,26 +77,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   }, [location]);
 
   useEffect(() => {
-    const routeTitles: Record<string, string> = {
-      "/": "Overview",
-      "/about": "About Me",
-      "/experience": "Experience",
-      "/projects": "Projects",
-      "/skills": "Skills",
-      "/languages": "Languages",
-    };
-
-    let pageTitle = "Portfolio";
-    if (location === "/") {
-      pageTitle = "Neo Nuñez · AI Systems & Software Engineer";
-    } else {
-      const baseKey = Object.keys(routeTitles).find(k => location.startsWith(k));
-      if (baseKey) {
-        pageTitle = `${routeTitles[baseKey]} · Neo Nuñez`;
-      }
-    }
-
-    document.title = pageTitle;
+    setMetaTags(location);
   }, [location]);
 
   // ⌘K / Ctrl+K

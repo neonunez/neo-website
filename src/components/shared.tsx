@@ -411,10 +411,6 @@ export function ZoomableImage(props: ZoomableImageProps) {
 
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState(0);
-  const [loadedMap, setLoadedMap] = useState<Record<number, boolean>>({});
-
-  const current = slides[index];
-  const loaded = !!loadedMap[index];
 
   const next = () => setIndex((i) => (i + 1) % slides.length);
   const prev = () => setIndex((i) => (i - 1 + slides.length) % slides.length);
@@ -429,9 +425,6 @@ export function ZoomableImage(props: ZoomableImageProps) {
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
   }, [open, hasMultiple, slides.length]);
-
-  const markLoaded = (i: number) =>
-    setLoadedMap((m) => (m[i] ? m : { ...m, [i]: true }));
 
   const ArrowButton = ({ side, onClick, inModal = false }: { side: "left" | "right"; onClick: (e: ReactMouseEvent) => void; inModal?: boolean }) => (
     <button
@@ -472,8 +465,6 @@ export function ZoomableImage(props: ZoomableImageProps) {
     </div>
   );
 
-  const anyLoaded = slides.some((_, i) => loadedMap[i]);
-
   return (
     <>
       <div className="relative w-full grid rounded-lg overflow-hidden border border-[var(--c-border)] bg-[var(--c-elevated)]">
@@ -483,16 +474,16 @@ export function ZoomableImage(props: ZoomableImageProps) {
             src={s.src}
             alt={s.alt}
             loading={i === 0 ? "eager" : "lazy"}
+            fetchPriority={i === 0 ? "high" : undefined}
             decoding="async"
-            onLoad={() => markLoaded(i)}
             onClick={() => setOpen(true)}
             style={{ gridArea: "1 / 1" }}
             initial={false}
             animate={{
-              opacity: i === index && anyLoaded ? 1 : 0,
+              opacity: i === index ? 1 : 0,
               scale: i === index ? 1 : 1.03,
             }}
-            transition={{ duration: 0.45, ease: [0.25, 0.1, 0.25, 1] }}
+            transition={{ duration: 0 }}
             className={cn(
               "w-full cursor-zoom-in",
               i === index ? "pointer-events-auto" : "pointer-events-none",

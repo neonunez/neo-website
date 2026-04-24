@@ -374,9 +374,9 @@ export default function AboutMe() {
 
       <section className="py-6">
         <FadeUp>
-          <h2 className="text-2xl font-bold text-[var(--c-fg)] mb-10">
+          <h1 className="text-2xl font-bold text-[var(--c-fg)] mb-10">
             {tr.navAboutMe}
-          </h2>
+          </h1>
         </FadeUp>
 
         <div ref={containerRef} className="relative">

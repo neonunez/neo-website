@@ -32,9 +32,9 @@ export default function Skills() {
         <FadeUp>
           {/* Technical Skills Section */}
           <div>
-            <h2 className="text-2xl font-bold text-[var(--c-fg)] mb-8">
+            <h1 className="text-2xl font-bold text-[var(--c-fg)] mb-8">
               {tr.sectionSkills}
-            </h2>
+            </h1>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               {categories.map((cat) => (

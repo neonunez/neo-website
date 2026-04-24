@@ -12,9 +12,9 @@ export default function Projects() {
     <Layout>
       <section className="py-6">
         <FadeUp>
-          <h2 className="text-2xl font-bold text-[var(--c-fg)] mb-6">
+          <h1 className="text-2xl font-bold text-[var(--c-fg)] mb-6">
             {tr.sectionProjects}
-          </h2>
+          </h1>
         </FadeUp>
         <div className="space-y-4">
           {PROJECTS.map((p, i) => (
