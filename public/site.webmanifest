@@ -1,0 +1,23 @@
+{
+  "name": "Neo Nuñez — AI Systems & Software Engineer",
+  "short_name": "Neo Nuñez",
+  "description": "Portfolio of Neo Nuñez — AI systems and software engineer.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "type": "image/png",
+      "sizes": "180x180",
+      "purpose": "any"
+    }
+  ]
+}

@@ -12,9 +12,9 @@ export default function Languages() {
     <Layout>
       <section className="py-6">
         <FadeUp>
-          <h2 className="text-2xl font-bold text-[var(--c-fg)] mb-5">
+          <h1 className="text-2xl font-bold text-[var(--c-fg)] mb-5">
             {tr.sectionLanguages}
-          </h2>
+          </h1>
           <p className="text-sm leading-[1.85] text-[var(--c-muted)] mb-6">{tr.langsBio}</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 text-sm text-[var(--c-muted)]">
             {LANGUAGES.map((l) => (

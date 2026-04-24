@@ -9,9 +9,9 @@ export default function Experience() {
     <Layout>
       <section className="py-6">
         <FadeUp>
-          <h2 className="text-2xl font-bold text-[var(--c-fg)] mb-6">
+          <h1 className="text-2xl font-bold text-[var(--c-fg)] mb-6">
             {tr.sectionExperience}
-          </h2>
+          </h1>
         </FadeUp>
         <div className="space-y-6">
           <FadeUp delay={0.05}>

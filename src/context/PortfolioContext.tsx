@@ -30,11 +30,10 @@ export function PortfolioProvider({ children }: { children: React.ReactNode }) {
   const setLang = (v: Lang) => setLangState(v);
 
   useEffect(() => { localStorage.setItem("nn-theme", theme); }, [theme]);
-  useEffect(() => { localStorage.setItem("nn-lang", lang); }, [lang]);
-
   useEffect(() => {
-    document.title = "Neo Nuñez — AI Engineer";
-  }, []);
+    localStorage.setItem("nn-lang", lang);
+    document.documentElement.lang = lang;
+  }, [lang]);
 
   const tr = t[lang];
 
