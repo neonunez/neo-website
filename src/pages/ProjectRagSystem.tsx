@@ -314,7 +314,14 @@ export default function ProjectRagSystem() {
             <p className="text-[var(--c-muted)] text-sm leading-relaxed mb-5">
               {tr.ragSystemHero_tagline}
             </p>
-            <ZoomableImage src="/project-uis/enterprise-rag.png" alt="Enterprise RAG system UI" />
+            <ZoomableImage
+              srcs={[
+                { src: "/project-uis/enterprise-rag.webp", alt: "Enterprise RAG system UI" },
+                { src: "/project-uis/apply-rag-citations.webp", alt: "Apply RAG citations" },
+                { src: "/project-uis/apply-rag-sidebar.webp", alt: "Apply RAG sidebar" },
+                { src: "/project-uis/apply-rag-dark-mode.webp", alt: "Apply RAG dark mode" },
+              ]}
+            />
           </div>
         </FadeUp>
 
@@ -368,7 +375,7 @@ export default function ProjectRagSystem() {
           <ContentBlock delay={0.16}>
             <SectionLabel>{tr.ragSystemLabel_howItWorks}</SectionLabel>
             <div className="mb-5">
-              <ZoomableImage src="/project-diagrams/enterprise-rag-diagram.png" alt="Enterprise RAG system architecture" />
+              <ZoomableImage src="/project-diagrams/enterprise-rag-diagram.webp" alt="Enterprise RAG system architecture" />
             </div>
             <div className="space-y-3 text-sm leading-[1.85] text-[var(--c-soft)]">
               <p>{tr.ragSystemHowItWorks_p1}</p>

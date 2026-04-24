@@ -24,7 +24,7 @@ const SECTIONS = [
   { id: "learnings",     label: "learnings" },
 ];
 
-const GITHUB_URL = "https://github.com/neo-nunez/llm-academic-wiki";
+const GITHUB_URL = "https://github.com/neonunez/llm-academic-wiki";
 
 const SCROLL_OFFSET_DESKTOP = 20; // px above section title on desktop — increase to show more space above
 const SCROLL_OFFSET_MOBILE  = 100; // px above section title on mobile
@@ -318,7 +318,7 @@ export default function ProjectLlmAcademicWiki() {
             <p className="text-[var(--c-muted)] text-sm leading-relaxed mb-5">
               {tr.llmWikiHero_tagline}
             </p>
-            <ZoomableImage src="/project-uis/llm-wiki-ui.png" alt="LLM Academic Wiki UI" />
+            <ZoomableImage src="/project-uis/llm-wiki-ui.webp" alt="LLM Academic Wiki UI" />
           </div>
         </FadeUp>
 
@@ -382,7 +382,7 @@ export default function ProjectLlmAcademicWiki() {
           <ContentBlock delay={0.16}>
             <SectionLabel>{tr.llmWikiLabel_howItWorks}</SectionLabel>
             <div className="mb-5">
-              <ZoomableImage src="/project-diagrams/llm-wiki-diagram.png" alt="LLM Academic Wiki architecture" />
+              <ZoomableImage src="/project-diagrams/llm-wiki-diagram.webp" alt="LLM Academic Wiki architecture" />
             </div>
             <div className="space-y-3 text-sm leading-[1.85] text-[var(--c-soft)]">
               <p>{tr.llmWikiHowItWorks_p1}</p>

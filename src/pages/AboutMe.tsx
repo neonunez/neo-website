@@ -14,7 +14,8 @@ import {
   Volleyball,
   Film,
   BookOpen,
-  ExternalLink
+  ExternalLink,
+  Heart
 } from "lucide-react";
 
 const fade = (delay: number) => ({
@@ -29,6 +30,55 @@ const SECTIONS = [
   { id: "interests", icon: LanguagesIcon },
   { id: "personal", icon: Smile },
 ];
+
+/* ── Reading Books Easter Egg ──────────────────────────────────── */
+function ReadingBooksEasterEgg({ label }: { label: string }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onDocPointerDown = (e: PointerEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("pointerdown", onDocPointerDown);
+    return () => document.removeEventListener("pointerdown", onDocPointerDown);
+  }, [open]);
+
+  return (
+    <span
+      ref={ref}
+      className="relative inline-block cursor-pointer border-b border-dotted border-[var(--c-border-strong)] hover:border-[var(--c-fg)] transition-colors"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+      onClick={(e) => { e.stopPropagation(); setOpen((v) => !v); }}
+    >
+      {label}
+      <AnimatePresence>
+        {open && (
+          <motion.span
+            initial={{ opacity: 0, y: 6, scale: 0.9, filter: "blur(4px)" }}
+            animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+            exit={{ opacity: 0, y: 4, scale: 0.95, filter: "blur(2px)" }}
+            transition={{ type: "spring", stiffness: 450, damping: 25 }}
+            className="absolute left-1/2 -top-9 -translate-x-1/2 px-2.5 py-1 bg-[var(--c-elevated)]/95 backdrop-blur-md rounded-md border border-[var(--c-border-strong)] font-mono text-[11px] whitespace-nowrap z-20 flex items-center gap-1.5 shadow-lg pointer-events-none"
+          >
+            <motion.span
+              initial={{ scale: 0.6 }}
+              animate={{ scale: [0.6, 1.15, 1] }}
+              transition={{ duration: 0.5, times: [0, 0.6, 1], ease: "easeOut" }}
+              className="inline-flex"
+            >
+              <Heart size={11} className="fill-rose-400 text-rose-400" />
+            </motion.span>
+            <span className="text-[var(--c-fg)] font-medium tracking-wide">AK</span>
+            <span className="absolute -bottom-[4px] left-1/2 -translate-x-1/2 w-2 h-2 bg-[var(--c-elevated)] border-b border-r border-[var(--c-border-strong)] rotate-45" />
+          </motion.span>
+        )}
+      </AnimatePresence>
+    </span>
+  );
+}
 
 const SCROLL_OFFSET_DESKTOP = 20; // px above section title on desktop — increase to show more space above
 const SCROLL_OFFSET_MOBILE  = 100; // px above section title on mobile
@@ -385,8 +435,17 @@ export default function AboutMe() {
               {tr.aboutPersonal3a} 
               <a href="https://letterboxd.com/neo_nunez/" target="_blank" rel="noreferrer" className="inline-flex items-center gap-0.5 text-[var(--c-fg)] font-medium border-b border-[var(--c-border-strong)] hover:border-[var(--c-fg)] transition-colors mx-1">
                 here<ExternalLink size={11} className="opacity-50 mb-0.5" />
-              </a> 
-              {tr.aboutPersonal3b}
+              </a>
+              {(() => {
+                const parts = tr.aboutPersonal3b.split("{books}");
+                return (
+                  <>
+                    {parts[0]}
+                    <ReadingBooksEasterEgg label={tr.aboutReadingBooksPhrase} />
+                    {parts[1] ?? ""}
+                  </>
+                );
+              })()}
             </p>
           </Section>
         </div>

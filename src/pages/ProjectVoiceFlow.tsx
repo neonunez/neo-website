@@ -3,10 +3,10 @@ import { Link } from "wouter";
 import { motion } from "framer-motion";
 import {
   ArrowLeft, Cpu, Layers, Shield, GitBranch, CheckCircle2,
-  ChevronRight,
+  ChevronRight, Globe,
 } from "lucide-react";
 import { Layout } from "@/components/Layout";
-import { FadeUp, TechBadge, AnimatedLine, GithubGlyph, ZoomableImage } from "@/components/shared";
+import { FadeUp, TechBadge, AnimatedLine, ZoomableImage } from "@/components/shared";
 import { usePortfolio } from "@/context/PortfolioContext";
 
 const techStack = [
@@ -25,7 +25,7 @@ const SECTIONS = [
   { id: "learnings",     label: "learnings" },
 ];
 
-const GITHUB_URL = "https://github.com/neonunez/voiceflow";
+const SITE_URL = "https://voiceflow-dev.vercel.app/";
 
 /* ── Reading-progress nav (right side, xl+) ─────────────────── */
 function ReadingNav({ activeId, labels }: { activeId: string; labels: Record<string, string> }) {
@@ -255,7 +255,7 @@ export default function ProjectVoiceFlow() {
             <p className="text-[var(--c-muted)] text-sm leading-relaxed mb-5">
               {tr.voiceFlowHero_tagline}
             </p>
-            <ZoomableImage src="/project-uis/voiceflow-ui.png" alt="VoiceFlow UI" />
+            <ZoomableImage src="/project-uis/voiceflow-ui.webp" alt="VoiceFlow UI" />
           </div>
         </FadeUp>
 
@@ -277,12 +277,12 @@ export default function ProjectVoiceFlow() {
                 </ul>
               </div>
               <a
-                href={GITHUB_URL}
+                href={SITE_URL}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-2 text-xs font-medium px-3 py-2 rounded-md border border-[var(--c-border)] bg-[var(--c-surface-2)] text-[var(--c-fg)] hover:bg-[var(--c-surface-3)] hover:border-[var(--c-border-strong)] transition-all duration-150 whitespace-nowrap shrink-0 self-start"
               >
-                <GithubGlyph size={13} />
+                <Globe size={13} />
                 {tr.voiceFlowCta_btn}
               </a>
             </div>
@@ -318,7 +318,7 @@ export default function ProjectVoiceFlow() {
           <ContentBlock delay={0.16}>
             <SectionLabel>{tr.voiceFlowLabel_howItWorks}</SectionLabel>
             <div className="mb-5">
-              <ZoomableImage src="/project-diagrams/voiceflow-diagram.png" alt="VoiceFlow architecture" />
+              <ZoomableImage src="/project-diagrams/voiceflow-diagram.webp" alt="VoiceFlow architecture" />
             </div>
             <div className="space-y-3 text-sm leading-[1.85] text-[var(--c-soft)]">
               <p>{tr.voiceFlowHowItWorks_p1}</p>
@@ -391,12 +391,12 @@ export default function ProjectVoiceFlow() {
               <p className="text-xs text-[var(--c-muted)]">{tr.voiceFlowCta_desc}</p>
             </div>
             <a
-              href={GITHUB_URL}
+              href={SITE_URL}
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center gap-2 text-xs font-medium px-3 py-2 rounded-md border border-[var(--c-border)] bg-[var(--c-surface-2)] text-[var(--c-fg)] hover:bg-[var(--c-surface-3)] hover:border-[var(--c-border-strong)] transition-all duration-150 whitespace-nowrap shrink-0"
             >
-              <GithubGlyph size={13} />
+              <Globe size={13} />
               {tr.voiceFlowCta_btn}
             </a>
           </div>

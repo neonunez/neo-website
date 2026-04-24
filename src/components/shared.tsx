@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, type MouseEvent as ReactMouseEvent } from "react";
 
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { Link } from "wouter";
@@ -20,6 +20,8 @@ import {
   Sliders,
   Repeat2,
   ArrowUpRight,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import {
   SiNextdotjs,
@@ -50,6 +52,7 @@ import {
   SiDeepgram,
 } from "react-icons/si";
 import { LANGUAGES, type Lang } from "@/lib/i18n";
+import { cn } from "@/lib/utils";
 
 // ─── Badge ────────────────────────────────────────────────────────────────────
 
@@ -398,24 +401,112 @@ export function AnimatedLogo({ className = "" }: { className?: string }) {
   );
 }
 
-export function ZoomableImage({ src, alt }: { src: string; alt: string }) {
+type ZoomableImageProps =
+  | { src: string; alt: string; srcs?: undefined }
+  | { srcs: Array<{ src: string; alt: string }>; src?: undefined; alt?: undefined };
+
+export function ZoomableImage(props: ZoomableImageProps) {
+  const slides = props.srcs ?? [{ src: props.src!, alt: props.alt! }];
+  const hasMultiple = slides.length > 1;
+
   const [open, setOpen] = useState(false);
+  const [index, setIndex] = useState(0);
+  const [loadedMap, setLoadedMap] = useState<Record<number, boolean>>({});
+
+  const current = slides[index];
+  const loaded = !!loadedMap[index];
+
+  const next = () => setIndex((i) => (i + 1) % slides.length);
+  const prev = () => setIndex((i) => (i - 1 + slides.length) % slides.length);
 
   useEffect(() => {
     if (!open) return;
-    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+      else if (hasMultiple && e.key === "ArrowRight") next();
+      else if (hasMultiple && e.key === "ArrowLeft") prev();
+    };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [open]);
+  }, [open, hasMultiple, slides.length]);
+
+  const markLoaded = (i: number) =>
+    setLoadedMap((m) => (m[i] ? m : { ...m, [i]: true }));
+
+  const ArrowButton = ({ side, onClick, inModal = false }: { side: "left" | "right"; onClick: (e: ReactMouseEvent) => void; inModal?: boolean }) => (
+    <button
+      type="button"
+      aria-label={side === "left" ? "Previous image" : "Next image"}
+      onClick={(e) => { e.stopPropagation(); onClick(e); }}
+      className={cn(
+        "absolute top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full flex items-center justify-center transition-colors duration-150",
+        side === "left" ? "left-2" : "right-2",
+        inModal
+          ? "bg-white/10 hover:bg-white/20 border border-white/15 text-white/80"
+          : "bg-[var(--c-elevated)]/90 hover:bg-[var(--c-elevated)] border border-[var(--c-border)] text-[var(--c-fg)] backdrop-blur-sm",
+      )}
+    >
+      {side === "left" ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
+    </button>
+  );
+
+  const Dots = ({ inModal = false }: { inModal?: boolean }) => (
+    <div className={cn(
+      "absolute bottom-2 left-1/2 -translate-x-1/2 z-10 flex gap-1.5 px-2 py-1 rounded-full",
+      inModal ? "bg-black/40 backdrop-blur-sm" : "bg-[var(--c-elevated)]/70 backdrop-blur-sm",
+    )}>
+      {slides.map((_, i) => (
+        <button
+          key={i}
+          type="button"
+          aria-label={`Go to image ${i + 1}`}
+          onClick={(e) => { e.stopPropagation(); setIndex(i); }}
+          className={cn(
+            "w-1.5 h-1.5 rounded-full transition-all duration-200",
+            i === index
+              ? inModal ? "bg-white w-4" : "bg-[var(--c-fg)] w-4"
+              : inModal ? "bg-white/40 hover:bg-white/70" : "bg-[var(--c-muted)] hover:bg-[var(--c-fg)]",
+          )}
+        />
+      ))}
+    </div>
+  );
+
+  const anyLoaded = slides.some((_, i) => loadedMap[i]);
 
   return (
     <>
-      <img
-        src={src}
-        alt={alt}
-        onClick={() => setOpen(true)}
-        className="w-full rounded-lg border border-[var(--c-border)] bg-[var(--c-elevated)] cursor-zoom-in"
-      />
+      <div className="relative w-full grid rounded-lg overflow-hidden border border-[var(--c-border)] bg-[var(--c-elevated)]">
+        {slides.map((s, i) => (
+          <motion.img
+            key={s.src}
+            src={s.src}
+            alt={s.alt}
+            loading={i === 0 ? "eager" : "lazy"}
+            decoding="async"
+            onLoad={() => markLoaded(i)}
+            onClick={() => setOpen(true)}
+            style={{ gridArea: "1 / 1" }}
+            initial={false}
+            animate={{
+              opacity: i === index && anyLoaded ? 1 : 0,
+              scale: i === index ? 1 : 1.03,
+            }}
+            transition={{ duration: 0.45, ease: [0.25, 0.1, 0.25, 1] }}
+            className={cn(
+              "w-full cursor-zoom-in",
+              i === index ? "pointer-events-auto" : "pointer-events-none",
+            )}
+          />
+        ))}
+        {hasMultiple && (
+          <>
+            <ArrowButton side="left" onClick={prev} />
+            <ArrowButton side="right" onClick={next} />
+            <Dots />
+          </>
+        )}
+      </div>
       <AnimatePresence>
         {open && (
           <motion.div
@@ -433,16 +524,41 @@ export function ZoomableImage({ src, alt }: { src: string; alt: string }) {
             >
               <X size={15} className="text-white/80" />
             </button>
-            <motion.img
-              src={src}
-              alt={alt}
-              className="relative z-10 max-w-[90vw] max-h-[90vh] object-contain rounded-lg shadow-2xl cursor-zoom-out"
+            {hasMultiple && (
+              <>
+                <ArrowButton side="left" onClick={prev} inModal />
+                <ArrowButton side="right" onClick={next} inModal />
+                <Dots inModal />
+              </>
+            )}
+            <motion.div
+              className="relative z-[5] grid"
               initial={{ scale: 0.92, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.92, opacity: 0 }}
               transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
               onClick={(e) => e.stopPropagation()}
-            />
+            >
+              {slides.map((s, i) => (
+                <motion.img
+                  key={s.src}
+                  src={s.src}
+                  alt={s.alt}
+                  decoding="async"
+                  style={{ gridArea: "1 / 1" }}
+                  initial={false}
+                  animate={{
+                    opacity: i === index ? 1 : 0,
+                    scale: i === index ? 1 : 1.03,
+                  }}
+                  transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+                  className={cn(
+                    "max-w-[90vw] max-h-[90vh] object-contain rounded-lg shadow-2xl cursor-zoom-out",
+                    i === index ? "pointer-events-auto" : "pointer-events-none",
+                  )}
+                />
+              ))}
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

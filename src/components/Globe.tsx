@@ -42,6 +42,18 @@ export function Globe({ className }: { className?: string }) {
   const [hoveredMarker, setHoveredMarker] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!hoveredMarker) return;
+    const onDocPointerDown = (e: PointerEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setHoveredMarker(null);
+        isHoveredRef.current = false;
+      }
+    };
+    document.addEventListener("pointerdown", onDocPointerDown);
+    return () => document.removeEventListener("pointerdown", onDocPointerDown);
+  }, [hoveredMarker]);
+
+  useEffect(() => {
     if (!canvasRef.current || !containerRef.current) return;
 
     let phi = 0;
@@ -83,6 +95,8 @@ export function Globe({ className }: { className?: string }) {
       };
     });
 
+    currentWidth = containerRef.current.getBoundingClientRect().width;
+
     const resizeObserver = new ResizeObserver((entries) => {
       if (entries[0]) {
         currentWidth = entries[0].contentRect.width;
@@ -90,11 +104,18 @@ export function Globe({ className }: { className?: string }) {
     });
     resizeObserver.observe(containerRef.current);
 
+    const onVisibilityChange = () => {
+      if (document.hidden) onPointerUp();
+    };
+
     const canvas = canvasRef.current;
     canvas.addEventListener("pointerdown", onPointerDown);
+    canvas.addEventListener("pointercancel", onPointerUp);
     window.addEventListener("pointerup", onPointerUp);
     window.addEventListener("pointercancel", onPointerUp);
     window.addEventListener("pointermove", onPointerMove);
+    window.addEventListener("blur", onPointerUp);
+    document.addEventListener("visibilitychange", onVisibilityChange);
 
     const globe = createGlobe(canvas, {
       devicePixelRatio: window.devicePixelRatio || 2,
@@ -129,7 +150,7 @@ export function Globe({ className }: { className?: string }) {
           const yRot = marker.yBase;
           const zRot = -Math.sin(phi) * marker.xBase + Math.cos(phi) * marker.zBase;
 
-          let progress = Math.max(0, Math.min(1, (zRot + 0.15) / 0.3));
+          let progress = Math.max(0, Math.min(1, (zRot + 0.05) / 0.2));
 
           if (progress === 0) {
             if (badge.style.display !== "none") badge.style.display = "none";
@@ -150,7 +171,7 @@ export function Globe({ className }: { className?: string }) {
           badge.style.opacity = progress.toString();
           badge.style.pointerEvents = progress > 0.5 ? "auto" : "none";
 
-          const blurAmount = (1 - progress) * 8;
+          const blurAmount = (1 - progress) * 4;
           badge.style.filter = `blur(${blurAmount}px)`;
 
           const yOffset = (1 - progress) * 12;
@@ -172,9 +193,12 @@ export function Globe({ className }: { className?: string }) {
       cancelAnimationFrame(reqId);
       resizeObserver.disconnect();
       canvas.removeEventListener("pointerdown", onPointerDown);
+      canvas.removeEventListener("pointercancel", onPointerUp);
       window.removeEventListener("pointerup", onPointerUp);
       window.removeEventListener("pointercancel", onPointerUp);
       window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("blur", onPointerUp);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
       globe.destroy();
     };
   }, [theme]);
@@ -206,7 +230,7 @@ export function Globe({ className }: { className?: string }) {
         >
           <div
             className="flex flex-col items-center animate-badge-intro opacity-0 group"
-            style={{ animationDelay: `${i * 150 + 600}ms` }}
+            style={{ animationDelay: `${i * 60 + 200}ms` }}
           >
             <div
               className={cn(

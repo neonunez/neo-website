@@ -170,7 +170,14 @@ export function ChatPanel() {
                     <div className={`text-xs leading-relaxed ${msg.role === "user" ? "text-[var(--c-soft)] text-right" : "text-[var(--c-fg)]"}`}>
                       {msg.role === "assistant" ? (
                         <div className="prose prose-sm prose-invert max-w-none prose-p:leading-relaxed prose-p:my-0 prose-pre:bg-[var(--c-surface-2)] prose-pre:border prose-pre:border-[var(--c-border-thin)] prose-code:text-[var(--c-soft)] prose-code:bg-[var(--c-surface-2)] prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-strong:text-[var(--c-fg)] prose-strong:font-bold">
-                          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                          <ReactMarkdown
+                            remarkPlugins={[remarkGfm]}
+                            components={{
+                              img: (props) => (
+                                <img {...props} loading="lazy" decoding="async" />
+                              ),
+                            }}
+                          >
                             {msg.content}
                           </ReactMarkdown>
                         </div>

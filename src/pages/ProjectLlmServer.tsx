@@ -314,7 +314,7 @@ export default function ProjectLlmServer() {
             <p className="text-[var(--c-muted)] text-sm leading-relaxed mb-5">
               {tr.llmSrvHero_tagline}
             </p>
-            <ZoomableImage src="/project-uis/llm-server-ui.png" alt="LLM Server UI" />
+            <ZoomableImage src="/project-uis/llm-server-ui.webp" alt="LLM Server UI" />
           </div>
         </FadeUp>
 
@@ -370,7 +370,7 @@ export default function ProjectLlmServer() {
           <ContentBlock delay={0.16}>
             <SectionLabel>{tr.llmSrvLabel_howItWorks}</SectionLabel>
             <div className="mb-5">
-              <ZoomableImage src="/project-diagrams/llm-server-diagram.png" alt="LLM Server request flow" />
+              <ZoomableImage src="/project-diagrams/llm-server-diagram.webp" alt="LLM Server request flow" />
             </div>
             <div className="space-y-3 text-sm leading-[1.85] text-[var(--c-soft)] border-l border-[var(--c-border)] pl-4">
               <p>{tr.llmSrvHowItWorks_p1}</p>

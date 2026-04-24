@@ -41,6 +41,8 @@ const BrazilFlagIcon = ({ className }: { className?: string }) => (
     <img
       src="https://flagcdn.com/br.svg"
       alt="Brazil Flag"
+      loading="lazy"
+      decoding="async"
       className="w-full h-full object-cover grayscale brightness-[0.7] contrast-[1.1] opacity-70"
     />
     <div className="absolute inset-0 bg-gradient-to-t from-[var(--c-bg)]/20 to-transparent pointer-events-none" />
@@ -76,19 +78,19 @@ export default function LanguageDetail() {
 
         {slug === "english" ? (
           <div className="max-w-lg mx-auto">
-            <ZoomableImage src="/languages-certificates/english-certificate.png" alt="English C1 certificate" />
+            <ZoomableImage src="/languages-certificates/english-certificate.webp" alt="English C1 certificate" />
           </div>
         ) : slug === "german" ? (
           <div className="max-w-lg mx-auto">
-            <ZoomableImage src="/languages-certificates/german-certificate.png" alt="German B2 Goethe certificate" />
+            <ZoomableImage src="/languages-certificates/german-certificate.webp" alt="German B2 Goethe certificate" />
           </div>
         ) : slug === "french" ? (
           <div className="max-w-lg mx-auto">
-            <ZoomableImage src="/languages-certificates/french-certificate.png" alt="French B2 certificate" />
+            <ZoomableImage src="/languages-certificates/french-certificate.webp" alt="French B2 certificate" />
           </div>
         ) : slug === "italian" ? (
           <div className="max-w-2xl mx-auto">
-            <ZoomableImage src="/languages-certificates/italian-certificate.png" alt="Italian B1 certificate" />
+            <ZoomableImage src="/languages-certificates/italian-certificate.webp" alt="Italian B1 certificate" />
           </div>
         ) : slug === "portuguese" ? (
           <div
