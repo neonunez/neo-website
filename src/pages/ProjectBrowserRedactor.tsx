@@ -1,13 +1,13 @@
 import { Link } from "wouter";
-import { motion } from "framer-motion";
-import { ArrowLeft, Clock, FileText, CheckSquare, Bell, ClipboardList, TrendingUp, Calendar, ChevronRight } from "lucide-react";
+import { ArrowLeft, Clock, ShieldCheck, Globe, Eye, Gift, ChevronRight } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { FadeUp, TechBadge, AnimatedLine, DevelopmentIndicator } from "@/components/shared";
 import { usePortfolio } from "@/context/PortfolioContext";
 
 const techStack = [
-  "React Native", "Expo Go", "TypeScript", "SQLite", "Zustand",
-  "expo-router", "expo-notifications", "expo-calendar", "Qwen3-8b", "FlashList",
+  "React 19", "TypeScript", "Vite", "Tailwind v4", "Zustand", "motion",
+  "@huggingface/transformers", "ONNX", "WebAssembly", "Web Workers",
+  "ModernBERT", "Cloudflare Pages", "Cloudflare R2",
 ];
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
@@ -20,21 +20,19 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 }
 
 
-export default function ProjectFocusPad() {
+export default function ProjectBrowserRedactor() {
   const { tr } = usePortfolio();
 
-  const modules = [
-    { icon: <FileText size={14} />,     name: "Notes",        desc: tr.focusPadMod_notes },
-    { icon: <CheckSquare size={14} />,  name: "Tasklists",    desc: tr.focusPadMod_tasks },
-    { icon: <Bell size={14} />,         name: "Reminders",    desc: tr.focusPadMod_reminders },
-    { icon: <ClipboardList size={14} />,name: "Daily Planner",desc: tr.focusPadMod_planner },
-    { icon: <TrendingUp size={14} />,   name: "Habits",       desc: tr.focusPadMod_habits },
-    { icon: <Calendar size={14} />,     name: "Calendar",     desc: tr.focusPadMod_calendar },
+  const principles = [
+    { icon: <ShieldCheck size={14} />, name: tr.browserRedactorPrinciple_clientSide_name,   desc: tr.browserRedactorPrinciple_clientSide_desc },
+    { icon: <Globe size={14} />,       name: tr.browserRedactorPrinciple_multilingual_name, desc: tr.browserRedactorPrinciple_multilingual_desc },
+    { icon: <Eye size={14} />,         name: tr.browserRedactorPrinciple_transparent_name,  desc: tr.browserRedactorPrinciple_transparent_desc },
+    { icon: <Gift size={14} />,        name: tr.browserRedactorPrinciple_free_name,         desc: tr.browserRedactorPrinciple_free_desc },
   ];
 
   const relatedProjects = [
-    { name: "VoiceFlow",   desc: tr.proj2Desc,         href: "/projects/voiceflow" },
-    { name: "LLM Server",  desc: tr.proj_llmServerDesc, href: "/projects/llm-server" },
+    { name: "LLM Server",            desc: tr.proj_llmServerDesc, href: "/projects/llm-server" },
+    { name: "Enterprise RAG System", desc: tr.proj1Desc,          href: "/projects/rag-system" },
   ];
 
   return (
@@ -55,14 +53,14 @@ export default function ProjectFocusPad() {
         <FadeUp delay={0.03}>
           <div className="mb-8">
             <div className="flex items-start justify-between gap-4 mb-3 flex-wrap">
-              <h1 className="text-3xl font-bold text-[var(--c-fg)] leading-tight">FocusPad</h1>
+              <h1 className="text-3xl font-bold text-[var(--c-fg)] leading-tight">Browser Redactor</h1>
               <span className="inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full border border-[var(--c-border)] bg-[var(--c-surface)] text-[var(--c-muted)] whitespace-nowrap">
                 <Clock size={10} className="text-[#fb923c]" />
                 {tr.inDevelopment}
               </span>
             </div>
             <p className="text-[var(--c-muted)] text-sm leading-relaxed max-w-xl">
-              {tr.focusPadHero_tagline}
+              {tr.browserRedactorHero_tagline}
             </p>
           </div>
         </FadeUp>
@@ -78,27 +76,27 @@ export default function ProjectFocusPad() {
         <FadeUp delay={0.08}>
           <div className="mb-10">
             <div className="border-l border-[var(--c-border)] pl-4 space-y-3 text-sm leading-[1.85] text-[var(--c-soft)]">
-              <p>{tr.focusPadAbout_p1}</p>
-              <p>{tr.focusPadAbout_p2}</p>
+              <p>{tr.browserRedactorAbout_p1}</p>
+              <p>{tr.browserRedactorAbout_p2}</p>
             </div>
           </div>
         </FadeUp>
 
-        {/* Modules */}
+        {/* Core principles */}
         <FadeUp delay={0.12}>
           <div className="mb-10">
-            <SectionLabel>{tr.focusPadMod_heading}</SectionLabel>
+            <SectionLabel>{tr.browserRedactorPrinciples_heading}</SectionLabel>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {modules.map((mod) => (
+              {principles.map((p) => (
                 <div
-                  key={mod.name}
+                  key={p.name}
                   className="rounded-lg border border-[var(--c-border)] bg-[var(--c-surface)] p-4 transition-all duration-200 hover:border-[var(--c-border-strong)] hover:bg-[var(--c-surface-2)]"
                 >
                   <div className="flex items-center gap-2.5 mb-1.5">
-                    <span className="text-[var(--c-muted)]">{mod.icon}</span>
-                    <span className="text-sm font-medium text-[var(--c-fg)]">{mod.name}</span>
+                    <span className="text-[var(--c-muted)]">{p.icon}</span>
+                    <span className="text-sm font-medium text-[var(--c-fg)]">{p.name}</span>
                   </div>
-                  <p className="text-xs text-[var(--c-muted)] leading-relaxed">{mod.desc}</p>
+                  <p className="text-xs text-[var(--c-muted)] leading-relaxed">{p.desc}</p>
                 </div>
               ))}
             </div>
@@ -108,7 +106,7 @@ export default function ProjectFocusPad() {
         {/* Tech stack */}
         <FadeUp delay={0.16}>
           <div className="mb-10">
-            <SectionLabel>{tr.focusPadStack_heading}</SectionLabel>
+            <SectionLabel>{tr.browserRedactorStack_heading}</SectionLabel>
             <div className="flex flex-wrap gap-2">
               {techStack.map((t) => (
                 <TechBadge key={t} label={t} />
@@ -123,10 +121,10 @@ export default function ProjectFocusPad() {
             <div className="flex items-center gap-2 mb-2">
               <span className="w-2 h-2 rounded-full bg-[#fb923c] animate-pulse shrink-0" />
               <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[var(--c-muted)]">
-                {tr.focusPadStatus_heading}
+                {tr.browserRedactorStatus_heading}
               </p>
             </div>
-            <p className="text-sm text-[var(--c-soft)] leading-relaxed">{tr.focusPadStatus_desc}</p>
+            <p className="text-sm text-[var(--c-soft)] leading-relaxed">{tr.browserRedactorStatus_desc}</p>
           </div>
         </FadeUp>
 
@@ -134,7 +132,7 @@ export default function ProjectFocusPad() {
         <FadeUp delay={0.24}>
           <div className="mt-8 pt-8 border-t border-[var(--c-border)]">
             <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[var(--c-muted)] mb-4">
-              {tr.focusPadRelated_heading}
+              {tr.browserRedactorRelated_heading}
             </p>
             <div className="flex gap-3 overflow-x-auto pb-1 -mx-1 px-1 snap-x snap-mandatory scrollbar-none">
               {relatedProjects.map((p) => (

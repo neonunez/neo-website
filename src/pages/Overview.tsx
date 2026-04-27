@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { StickyNote, ArrowRight, ArrowUpRight, Server, BookOpen } from "lucide-react";
+import { Shield, ArrowRight, ArrowUpRight, Server, BookOpen } from "lucide-react";
 import { usePortfolio } from "@/context/PortfolioContext";
 import { Layout } from "@/components/Layout";
 import { Badge, FlagBadge, AnimatedLine } from "@/components/shared";
@@ -99,8 +99,8 @@ export default function Overview() {
           </div>
           <div className="flex items-center gap-2.5 flex-wrap">
             <span className="text-[var(--c-fg)] opacity-90">{tr.building}</span>
-            <Badge icon={<StickyNote size={14} className="text-[#fb923c]" />}>
-              FocusPad
+            <Badge icon={<Shield size={14} className="text-[#fb923c]" />}>
+              Browser Redactor
             </Badge>
           </div>
           <div className="flex items-center gap-2.5 flex-wrap">

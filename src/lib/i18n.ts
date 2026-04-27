@@ -147,15 +147,17 @@ export interface Translations {
   softSkill4Title: string; softSkill4Desc: string;
   // Layout footer
   copied: string; downloadCvAlso: string; downloadCvLink: string;
-  // FocusPad page
-  focusPadHero_tagline: string;
-  focusPadAbout_p1: string; focusPadAbout_p2: string;
-  focusPadMod_heading: string;
-  focusPadMod_notes: string; focusPadMod_tasks: string; focusPadMod_reminders: string;
-  focusPadMod_planner: string; focusPadMod_habits: string; focusPadMod_calendar: string;
-  focusPadStack_heading: string;
-  focusPadStatus_heading: string; focusPadStatus_desc: string;
-  focusPadRelated_heading: string;
+  // Browser Redactor page
+  browserRedactorHero_tagline: string;
+  browserRedactorAbout_p1: string; browserRedactorAbout_p2: string;
+  browserRedactorPrinciples_heading: string;
+  browserRedactorPrinciple_clientSide_name: string;   browserRedactorPrinciple_clientSide_desc: string;
+  browserRedactorPrinciple_multilingual_name: string; browserRedactorPrinciple_multilingual_desc: string;
+  browserRedactorPrinciple_transparent_name: string;  browserRedactorPrinciple_transparent_desc: string;
+  browserRedactorPrinciple_free_name: string;         browserRedactorPrinciple_free_desc: string;
+  browserRedactorStack_heading: string;
+  browserRedactorStatus_heading: string; browserRedactorStatus_desc: string;
+  browserRedactorRelated_heading: string;
   // Language Proof sections
   langSpanishProofTitle: string; langSpanishProofDesc: string; langNativeBuenosAires: string;
   langPortugueseProofTitle: string; langPortugueseProofDesc: string; langCurrentlyLearning: string;
@@ -205,7 +207,7 @@ export const t: Record<Lang, Translations> = {
     inDevelopment: "In development",
     proj1Desc: "Production-grade Retrieval-Augmented Generation system for employee onboarding with Oracle EPM documentation.",
     proj2Desc: "macOS menu bar speech-to-text app. A self-hosted alternative to Wispr Flow running local models via MLX.",
-    proj3Desc: "Personal iOS productivity app — reminders, notes, tasks, calendar, planner, and habit tracker.",
+    proj3Desc: "Privacy tool that detects and redacts personal information from any text — runs 100% in the browser via an on-device ML model.",
     proj_llmWikiDesc: "A personal knowledge system built on Obsidian and Claude Code — 115 PDFs turned into a structured, queryable wiki across 3 university subjects.",
     proj_llmServerDesc: "A self-hosted LLM server built with FastAPI — unified inference API with model routing and streaming.",
     skillLang: "Languages", skillData: "Data", skillTools: "Tools", skillLearning: "Learning",
@@ -422,21 +424,23 @@ export const t: Record<Lang, Translations> = {
     softSkill4Desc: "Collaborating effectively with cross-functional teams to deliver shared goals and support peers.",
     // Layout footer
     copied: "Copied!", downloadCvAlso: "You can also", downloadCvLink: "download my CV",
-    // FocusPad
-    focusPadHero_tagline: "All six productivity tools I actually use, unified in one iPhone app — built for myself, from scratch.",
-    focusPadAbout_p1: "FocusPad is a personal iOS app I'm building to replace the fragmented stack of Apple Notes, Apple Reminders, Apple Calendar, and random to-do apps I rely on daily. Everything in one place, everything connected — a task can reference a note, a note can spawn a reminder, and a daily plan pulls from calendar events.",
-    focusPadAbout_p2: "The app runs inside Expo Go — no Apple Developer account needed, no cloud sync complexity. A local SQLite database keeps everything offline and fast, while a local LLM server (Qwen3-8b) powers smart capture, automatic note tagging, and a contextual morning daily brief.",
-    focusPadMod_heading: "Six modules, one app",
-    focusPadMod_notes: "Notebooks, full-text search, tags, and quick capture in under 10 seconds.",
-    focusPadMod_tasks: "Named tasklists with emoji, color, and progress tracking. Every task belongs to a list.",
-    focusPadMod_reminders: "Persistent notifications every 15 minutes until dismissed in-app — no swipe-to-forget.",
-    focusPadMod_planner: "A night-before ritual: build tomorrow's plan in list or time-block mode, then execute.",
-    focusPadMod_habits: "Daily check-ins, streak visualization, and optional reminder notifications.",
-    focusPadMod_calendar: "Read-only Apple Calendar overlay for context while planning.",
-    focusPadStack_heading: "Tech stack",
-    focusPadStatus_heading: "Currently building",
-    focusPadStatus_desc: "The app is fully greenfield as of April 2026. All 11 build phases are planned and documented. No GitHub repo yet — this page will update as the project ships.",
-    focusPadRelated_heading: "Related projects",
+    // Browser Redactor
+    browserRedactorHero_tagline: "Paste any text. Instantly detect and anonymize personal information. 100% in your browser — nothing leaves your device.",
+    browserRedactorAbout_p1: "Browser Redactor is a zero-trust privacy tool I'm building to let anyone safely paste text into AI tools, support tickets, or shared documents without leaking personal data. The whole pipeline — detection, highlighting, redaction — runs entirely in the user's browser. There is no server, no API call, no analytics. The moment the page loads, the network is irrelevant.",
+    browserRedactorAbout_p2: "Detection is powered by a ModernBERT-base model purpose-trained on 580k labeled PII examples, running on-device via @huggingface/transformers and ONNX/WebAssembly inside a Web Worker. It detects 20 categories of personal information across 8 languages, with a regex fallback layer covering organizations, IPs, API keys, and structured data in any other language.",
+    browserRedactorPrinciples_heading: "Four core principles",
+    browserRedactorPrinciple_clientSide_name: "100% client-side",
+    browserRedactorPrinciple_clientSide_desc: "No server, no API call, no storage. The user's text never leaves the device — verifiable in the browser's network tab.",
+    browserRedactorPrinciple_multilingual_name: "Multilingual",
+    browserRedactorPrinciple_multilingual_desc: "Detects PII in English, French, German, Spanish, Italian, Dutch, Hindi, and Telugu, with regex fallback for any other language.",
+    browserRedactorPrinciple_transparent_name: "Transparent",
+    browserRedactorPrinciple_transparent_desc: "Every detection is shown to the user, color-coded by category, and can be toggled or un-flagged before redaction.",
+    browserRedactorPrinciple_free_name: "Free forever",
+    browserRedactorPrinciple_free_desc: "No accounts, no API keys, no rate limits. Runs on the user's own hardware, hosted on Cloudflare for zero egress cost.",
+    browserRedactorStack_heading: "Tech stack",
+    browserRedactorStatus_heading: "Currently building",
+    browserRedactorStatus_desc: "Currently building.",
+    browserRedactorRelated_heading: "Related projects",
     // Language Proof sections
     langSpanishProofTitle: "Latino Proof",
     langSpanishProofDesc: "If we jump on a call, I can prove my Latino roots to you faster than you can say 'mate'.",
@@ -488,7 +492,7 @@ export const t: Record<Lang, Translations> = {
     inDevelopment: "En desarrollo",
     proj1Desc: "Sistema RAG de nivel productivo para la incorporación de empleados usando documentación de Oracle EPM.",
     proj2Desc: "App de dictado en la barra de menú de macOS. Alternativa auto-alojada a Wispr Flow con modelos locales via MLX.",
-    proj3Desc: "App personal de productividad para iOS — recordatorios, notas, tareas, calendario, planificador y seguimiento de hábitos.",
+    proj3Desc: "Herramienta de privacidad que detecta y censura información personal en cualquier texto — corre 100% en el navegador con un modelo de IA on-device.",
     proj_llmWikiDesc: "Un sistema de conocimiento personal basado en Obsidian y Claude Code — 115 PDFs convertidos en una wiki estructurada y consultable sobre 3 materias universitarias.",
     proj_llmServerDesc: "Un servidor LLM self-hosted con FastAPI — API de inferencia unificada con enrutamiento de modelos y streaming.",
     skillLang: "Lenguajes", skillData: "Datos", skillTools: "Herramientas", skillLearning: "Aprendiendo",
@@ -705,21 +709,23 @@ export const t: Record<Lang, Translations> = {
     softSkill4Desc: "Colaborar eficazmente con equipos multifuncionales para alcanzar objetivos comunes y apoyar a los compañeros.",
     // Layout footer
     copied: "¡Copiado!", downloadCvAlso: "También puedes", downloadCvLink: "descargar mi CV",
-    // FocusPad
-    focusPadHero_tagline: "Las seis herramientas de productividad que uso a diario, unificadas en una sola app para iPhone — construida para mí, desde cero.",
-    focusPadAbout_p1: "FocusPad es una app iOS personal que estoy desarrollando para reemplazar el conjunto fragmentado de Apple Notes, Apple Reminders, Apple Calendar y otras apps de tareas. Todo en un solo lugar, todo conectado: una tarea puede referenciar una nota, una nota puede generar un recordatorio, y un plan diario se nutre de eventos del calendario.",
-    focusPadAbout_p2: "La app corre dentro de Expo Go — sin cuenta de desarrollador de Apple ni complejidad de sincronización en la nube. Una base de datos SQLite local mantiene todo offline y rápido, mientras un servidor LLM local (Qwen3-8b) potencia la captura inteligente, el etiquetado automático de notas y un resumen matutino contextual.",
-    focusPadMod_heading: "Seis módulos, una sola app",
-    focusPadMod_notes: "Notebooks, búsqueda de texto completo, etiquetas y captura rápida en menos de 10 segundos.",
-    focusPadMod_tasks: "Listas de tareas con nombre, emoji, color e indicador de progreso. Cada tarea pertenece a una lista.",
-    focusPadMod_reminders: "Notificaciones persistentes cada 15 minutos hasta ser marcadas en la app — sin deslizar para olvidar.",
-    focusPadMod_planner: "Un ritual nocturno: planifica el día siguiente en modo lista o bloques de tiempo, luego ejecútalo.",
-    focusPadMod_habits: "Check-ins diarios, visualización de racha y notificaciones opcionales de recordatorio.",
-    focusPadMod_calendar: "Vista de solo lectura del Calendario de Apple para tener contexto al planificar.",
-    focusPadStack_heading: "Stack tecnológico",
-    focusPadStatus_heading: "En construcción",
-    focusPadStatus_desc: "La app está completamente en fase inicial desde abril de 2026. Las 11 fases de construcción están planificadas y documentadas. Aún no hay repositorio en GitHub — esta página se actualizará a medida que el proyecto avance.",
-    focusPadRelated_heading: "Proyectos relacionados",
+    // Browser Redactor
+    browserRedactorHero_tagline: "Pegá cualquier texto. Detectá y anonimizá información personal al instante. 100% en tu navegador — nada sale de tu dispositivo.",
+    browserRedactorAbout_p1: "Browser Redactor es una herramienta de privacidad zero-trust que estoy desarrollando para que cualquiera pueda pegar texto en herramientas de IA, tickets de soporte o documentos compartidos sin filtrar datos personales. Todo el pipeline — detección, resaltado, censura — corre íntegramente en el navegador del usuario. No hay servidor, ni llamada a una API, ni analítica. Apenas se carga la página, la red deja de ser relevante.",
+    browserRedactorAbout_p2: "La detección está impulsada por un modelo ModernBERT-base entrenado específicamente con 580k ejemplos etiquetados de PII, ejecutándose on-device vía @huggingface/transformers y ONNX/WebAssembly dentro de un Web Worker. Detecta 20 categorías de información personal en 8 idiomas, con una capa de regex de respaldo que cubre organizaciones, IPs, API keys y datos estructurados en cualquier otro idioma.",
+    browserRedactorPrinciples_heading: "Cuatro principios fundamentales",
+    browserRedactorPrinciple_clientSide_name: "100% del lado del cliente",
+    browserRedactorPrinciple_clientSide_desc: "Sin servidor, sin API, sin almacenamiento. El texto del usuario nunca abandona el dispositivo — verificable en la pestaña de red del navegador.",
+    browserRedactorPrinciple_multilingual_name: "Multilingüe",
+    browserRedactorPrinciple_multilingual_desc: "Detecta PII en inglés, francés, alemán, español, italiano, holandés, hindi y telugu, con regex de respaldo para cualquier otro idioma.",
+    browserRedactorPrinciple_transparent_name: "Transparente",
+    browserRedactorPrinciple_transparent_desc: "Cada detección se muestra al usuario, codificada por color por categoría, y puede activarse o desmarcarse antes de censurar.",
+    browserRedactorPrinciple_free_name: "Gratis para siempre",
+    browserRedactorPrinciple_free_desc: "Sin cuentas, sin API keys, sin límites. Corre en el hardware del usuario y se hostea en Cloudflare con costo cero de egreso.",
+    browserRedactorStack_heading: "Stack tecnológico",
+    browserRedactorStatus_heading: "En construcción",
+    browserRedactorStatus_desc: "Actualmente en construcción.",
+    browserRedactorRelated_heading: "Proyectos relacionados",
     // Language Proof sections
     langSpanishProofTitle: "Prueba de Latino",
     langSpanishProofDesc: "Si nos sumamos a una llamada, puedo demostrarte mis raíces latinas más rápido de lo que decís 'mate'.",
@@ -771,7 +777,7 @@ export const t: Record<Lang, Translations> = {
     inDevelopment: "En développement",
     proj1Desc: "Système RAG de niveau production pour l'intégration des employés avec la documentation Oracle EPM.",
     proj2Desc: "Application macOS de dictée dans la barre de menu. Alternative auto-hébergée à Wispr Flow via MLX.",
-    proj3Desc: "Application iOS de productivité personnelle — rappels, notes, tâches, calendrier, planificateur et suivi des habitudes.",
+    proj3Desc: "Outil de confidentialité qui détecte et anonymise les informations personnelles dans tout texte — fonctionne 100% dans le navigateur via un modèle d'IA on-device.",
     proj_llmWikiDesc: "Un système de connaissance personnel basé sur Obsidian et Claude Code — 115 PDFs transformés en un wiki structuré et interrogeable sur 3 matières universitaires.",
     proj_llmServerDesc: "Un serveur LLM auto-hébergé avec FastAPI — API d'inférence unifiée avec routage de modèles et streaming.",
     skillLang: "Langages", skillData: "Données", skillTools: "Outils", skillLearning: "Apprentissage",
@@ -988,21 +994,23 @@ export const t: Record<Lang, Translations> = {
     softSkill4Desc: "Collaborer efficacement avec des équipes pluridisciplinaires pour atteindre des objectifs communs et soutenir ses pairs.",
     // Layout footer
     copied: "Copié !", downloadCvAlso: "Vous pouvez aussi", downloadCvLink: "télécharger mon CV",
-    // FocusPad
-    focusPadHero_tagline: "Les six outils de productivité que j'utilise vraiment, unifiés en une seule app iPhone — construite pour moi, de zéro.",
-    focusPadAbout_p1: "FocusPad est une app iOS personnelle que je développe pour remplacer l'ensemble fragmenté d'Apple Notes, Apple Reminders, Apple Calendar et d'autres apps. Tout au même endroit, tout connecté : une tâche peut référencer une note, une note peut générer un rappel, et un plan quotidien s'appuie sur les événements du calendrier.",
-    focusPadAbout_p2: "L'app fonctionne dans Expo Go — sans compte développeur Apple ni complexité de synchronisation cloud. Une base de données SQLite locale garde tout hors ligne et rapide, tandis qu'un serveur LLM local (Qwen3-8b) alimente la capture intelligente, le taguage automatique de notes et un résumé matinal contextuel.",
-    focusPadMod_heading: "Six modules, une seule app",
-    focusPadMod_notes: "Notebooks, recherche plein texte, tags et capture rapide en moins de 10 secondes.",
-    focusPadMod_tasks: "Listes de tâches nommées avec emoji, couleur et suivi de progression. Chaque tâche appartient à une liste.",
-    focusPadMod_reminders: "Notifications persistantes toutes les 15 minutes jusqu'à validation dans l'app — fini de glisser pour oublier.",
-    focusPadMod_planner: "Un rituel du soir : planifiez le lendemain en mode liste ou blocs horaires, puis exécutez.",
-    focusPadMod_habits: "Check-ins quotidiens, visualisation des séries et notifications de rappel optionnelles.",
-    focusPadMod_calendar: "Vue en lecture seule du Calendrier Apple pour contextualiser la planification.",
-    focusPadStack_heading: "Stack technique",
-    focusPadStatus_heading: "En cours de construction",
-    focusPadStatus_desc: "L'app est entièrement en phase initiale depuis avril 2026. Les 11 phases de construction sont planifiées et documentées. Pas encore de dépôt GitHub — cette page sera mise à jour au fil de l'avancement du projet.",
-    focusPadRelated_heading: "Projets connexes",
+    // Browser Redactor
+    browserRedactorHero_tagline: "Collez n'importe quel texte. Détectez et anonymisez instantanément les informations personnelles. 100% dans votre navigateur — rien ne quitte votre appareil.",
+    browserRedactorAbout_p1: "Browser Redactor est un outil de confidentialité zero-trust que je développe pour permettre à quiconque de coller du texte dans des outils d'IA, des tickets de support ou des documents partagés sans divulguer de données personnelles. Tout le pipeline — détection, surlignage, censure — s'exécute entièrement dans le navigateur de l'utilisateur. Pas de serveur, pas d'appel API, pas d'analytique. Dès que la page est chargée, le réseau devient inutile.",
+    browserRedactorAbout_p2: "La détection s'appuie sur un modèle ModernBERT-base entraîné spécifiquement sur 580k exemples étiquetés de PII, exécuté on-device via @huggingface/transformers et ONNX/WebAssembly dans un Web Worker. Il détecte 20 catégories d'informations personnelles dans 8 langues, avec une couche regex de secours couvrant les organisations, IPs, clés API et données structurées dans toute autre langue.",
+    browserRedactorPrinciples_heading: "Quatre principes fondamentaux",
+    browserRedactorPrinciple_clientSide_name: "100% côté client",
+    browserRedactorPrinciple_clientSide_desc: "Pas de serveur, pas d'API, pas de stockage. Le texte de l'utilisateur ne quitte jamais l'appareil — vérifiable dans l'onglet réseau du navigateur.",
+    browserRedactorPrinciple_multilingual_name: "Multilingue",
+    browserRedactorPrinciple_multilingual_desc: "Détecte les PII en anglais, français, allemand, espagnol, italien, néerlandais, hindi et télougou, avec regex de secours pour toute autre langue.",
+    browserRedactorPrinciple_transparent_name: "Transparent",
+    browserRedactorPrinciple_transparent_desc: "Chaque détection est montrée à l'utilisateur, codée par couleur par catégorie, et peut être activée ou désélectionnée avant la censure.",
+    browserRedactorPrinciple_free_name: "Gratuit pour toujours",
+    browserRedactorPrinciple_free_desc: "Pas de comptes, pas de clés API, pas de limites. S'exécute sur le matériel de l'utilisateur, hébergé sur Cloudflare avec coût d'egress nul.",
+    browserRedactorStack_heading: "Stack technique",
+    browserRedactorStatus_heading: "En cours de construction",
+    browserRedactorStatus_desc: "Actuellement en cours de construction.",
+    browserRedactorRelated_heading: "Projets connexes",
     // Language Proof sections
     langSpanishProofTitle: "Preuve Latino",
     langSpanishProofDesc: "Si nous passons un appel, je peux vous prouver mes racines latines plus vite que vous ne pouvez dire 'mate'.",
@@ -1054,7 +1062,7 @@ export const t: Record<Lang, Translations> = {
     inDevelopment: "In Entwicklung",
     proj1Desc: "Produktionsreifes RAG-System für das Onboarding von Mitarbeitern mit Oracle EPM-Dokumentation.",
     proj2Desc: "macOS-Menüleisten-App für Sprache-zu-Text. Eine selbstgehostete Alternative zu Wispr Flow über MLX.",
-    proj3Desc: "Persönliche iOS-Produktivitäts-App — Erinnerungen, Notizen, Aufgaben, Kalender, Planer und Gewohnheitstracking.",
+    proj3Desc: "Datenschutz-Tool, das personenbezogene Daten in beliebigem Text erkennt und schwärzt — läuft 100 % im Browser über ein on-device ML-Modell.",
     proj_llmWikiDesc: "Ein persönliches Wissenssystem auf Basis von Obsidian und Claude Code — 115 PDFs zu einem strukturierten, abfragbaren Wiki über 3 Universitätsfächer verarbeitet.",
     proj_llmServerDesc: "Ein selbst gehosteter LLM-Server mit FastAPI — einheitliche Inferenz-API mit Modell-Routing und Streaming.",
     skillLang: "Sprachen", skillData: "Daten", skillTools: "Werkzeuge", skillLearning: "Lernend",
@@ -1271,21 +1279,23 @@ export const t: Record<Lang, Translations> = {
     softSkill4Desc: "Effektiv mit funktionsübergreifenden Teams zusammenarbeiten, um gemeinsame Ziele zu erreichen und Kollegen zu unterstützen.",
     // Layout footer
     copied: "Kopiert!", downloadCvAlso: "Du kannst auch", downloadCvLink: "meinen Lebenslauf herunterladen",
-    // FocusPad
-    focusPadHero_tagline: "Die sechs Produktivitätstools, die ich wirklich nutze, vereint in einer iPhone-App — von Grund auf für mich selbst gebaut.",
-    focusPadAbout_p1: "FocusPad ist eine persönliche iOS-App, die ich entwickle, um das fragmentierte Sammelsurium aus Apple Notes, Apple Reminders, Apple Calendar und anderen To-Do-Apps zu ersetzen. Alles an einem Ort, alles miteinander verbunden: Eine Aufgabe kann eine Notiz referenzieren, eine Notiz kann einen Reminder erzeugen, und ein Tagesplan speist sich aus Kalenderereignissen.",
-    focusPadAbout_p2: "Die App läuft in Expo Go — kein Apple-Entwicklerkonto nötig, keine Cloud-Sync-Komplexität. Eine lokale SQLite-Datenbank hält alles offline und schnell, während ein lokaler LLM-Server (Qwen3-8b) Smart Capture, automatisches Note-Tagging und ein kontextuelles Morgenbrief ermöglicht.",
-    focusPadMod_heading: "Sechs Module, eine App",
-    focusPadMod_notes: "Notizbücher, Volltextsuche, Tags und Schnellerfassung in unter 10 Sekunden.",
-    focusPadMod_tasks: "Benannte Aufgabenlisten mit Emoji, Farbe und Fortschrittsanzeige. Jede Aufgabe gehört zu einer Liste.",
-    focusPadMod_reminders: "Persistente Benachrichtigungen alle 15 Minuten bis zur In-App-Bestätigung — kein Wischen zum Vergessen.",
-    focusPadMod_planner: "Ein Abendritual: Plan für morgen im Listen- oder Zeitblock-Modus erstellen, dann ausführen.",
-    focusPadMod_habits: "Tägliche Check-ins, Streak-Visualisierung und optionale Erinnerungsbenachrichtigungen.",
-    focusPadMod_calendar: "Schreibgeschützte Apple-Kalender-Ansicht als Kontext beim Planen.",
-    focusPadStack_heading: "Tech-Stack",
-    focusPadStatus_heading: "In Konstruktion",
-    focusPadStatus_desc: "Die App befindet sich seit April 2026 vollständig in der Anfangsphase. Alle 11 Build-Phasen sind geplant und dokumentiert. Noch kein GitHub-Repository — diese Seite wird aktualisiert, wenn das Projekt Fortschritte macht.",
-    focusPadRelated_heading: "Verwandte Projekte",
+    // Browser Redactor
+    browserRedactorHero_tagline: "Beliebigen Text einfügen. Persönliche Daten sofort erkennen und anonymisieren. 100 % im Browser — nichts verlässt das Gerät.",
+    browserRedactorAbout_p1: "Browser Redactor ist ein Zero-Trust-Datenschutz-Tool, das ich entwickle, damit jeder Text sicher in KI-Tools, Support-Tickets oder geteilte Dokumente einfügen kann, ohne personenbezogene Daten preiszugeben. Die gesamte Pipeline — Erkennung, Markierung, Schwärzung — läuft vollständig im Browser des Nutzers. Kein Server, kein API-Aufruf, keine Analytics. Sobald die Seite geladen ist, ist das Netzwerk irrelevant.",
+    browserRedactorAbout_p2: "Die Erkennung wird von einem ModernBERT-base-Modell angetrieben, das speziell auf 580k beschrifteten PII-Beispielen trainiert wurde, und läuft on-device über @huggingface/transformers und ONNX/WebAssembly in einem Web Worker. Es erkennt 20 Kategorien personenbezogener Daten in 8 Sprachen, mit einer Regex-Fallback-Schicht, die Organisationen, IPs, API-Schlüssel und strukturierte Daten in jeder anderen Sprache abdeckt.",
+    browserRedactorPrinciples_heading: "Vier Kernprinzipien",
+    browserRedactorPrinciple_clientSide_name: "100 % clientseitig",
+    browserRedactorPrinciple_clientSide_desc: "Kein Server, kein API-Aufruf, kein Speicher. Der Text des Nutzers verlässt das Gerät nie — verifizierbar im Netzwerk-Tab des Browsers.",
+    browserRedactorPrinciple_multilingual_name: "Mehrsprachig",
+    browserRedactorPrinciple_multilingual_desc: "Erkennt PII in Englisch, Französisch, Deutsch, Spanisch, Italienisch, Niederländisch, Hindi und Telugu, mit Regex-Fallback für jede andere Sprache.",
+    browserRedactorPrinciple_transparent_name: "Transparent",
+    browserRedactorPrinciple_transparent_desc: "Jede Erkennung wird dem Nutzer angezeigt, farblich nach Kategorie codiert und kann vor der Schwärzung umgeschaltet oder abgewählt werden.",
+    browserRedactorPrinciple_free_name: "Für immer kostenlos",
+    browserRedactorPrinciple_free_desc: "Keine Konten, keine API-Schlüssel, keine Limits. Läuft auf der Hardware des Nutzers, gehostet auf Cloudflare ohne Egress-Kosten.",
+    browserRedactorStack_heading: "Tech-Stack",
+    browserRedactorStatus_heading: "In Konstruktion",
+    browserRedactorStatus_desc: "Aktuell in Konstruktion.",
+    browserRedactorRelated_heading: "Verwandte Projekte",
     // Language Proof sections
     langSpanishProofTitle: "Latino-Beweis",
     langSpanishProofDesc: "Wenn wir telefonieren, kann ich Ihnen meine lateinamerikanischen Wurzeln schneller beweisen, als Sie 'Mate' sagen können.",
@@ -1337,7 +1347,7 @@ export const t: Record<Lang, Translations> = {
     inDevelopment: "In sviluppo",
     proj1Desc: "Sistema RAG di livello produttivo per l'onboarding dei dipendenti con documentazione Oracle EPM.",
     proj2Desc: "App macOS nella barra dei menu per il riconoscimento vocale. Alternativa self-hosted a Wispr Flow via MLX.",
-    proj3Desc: "App iOS personale di produttività — promemoria, note, attività, calendario, pianificatore e tracker delle abitudini.",
+    proj3Desc: "Strumento di privacy che rileva e oscura informazioni personali in qualsiasi testo — gira al 100% nel browser tramite un modello ML on-device.",
     proj_llmWikiDesc: "Un sistema di conoscenza personale basato su Obsidian e Claude Code — 115 PDF trasformati in una wiki strutturata e interrogabile su 3 materie universitarie.",
     proj_llmServerDesc: "Un server LLM self-hosted con FastAPI — API di inferenza unificata con routing di modelli e streaming.",
     skillLang: "Linguaggi", skillData: "Dati", skillTools: "Strumenti", skillLearning: "Imparando",
@@ -1554,21 +1564,23 @@ export const t: Record<Lang, Translations> = {
     softSkill4Desc: "Collaborare efficacemente con team interfunzionali per raggiungere obiettivi comuni e supportare i colleghi.",
     // Layout footer
     copied: "Copiato!", downloadCvAlso: "Puoi anche", downloadCvLink: "scaricare il mio CV",
-    // FocusPad
-    focusPadHero_tagline: "I sei strumenti di produttività che uso davvero, unificati in un'unica app per iPhone — costruita da zero per me stesso.",
-    focusPadAbout_p1: "FocusPad è un'app iOS personale che sto sviluppando per sostituire l'insieme frammentato di Apple Notes, Apple Reminders, Apple Calendar e altre app. Tutto in un unico posto, tutto collegato: un'attività può riferirsi a una nota, una nota può generare un promemoria, e un piano giornaliero si alimenta degli eventi del calendario.",
-    focusPadAbout_p2: "L'app gira su Expo Go — nessun account Apple Developer necessario, nessuna complessità di sincronizzazione cloud. Un database SQLite locale mantiene tutto offline e veloce, mentre un server LLM locale (Qwen3-8b) alimenta la cattura intelligente, il tagging automatico delle note e un briefing mattutino contestuale.",
-    focusPadMod_heading: "Sei moduli, un'unica app",
-    focusPadMod_notes: "Notebook, ricerca full-text, tag e acquisizione rapida in meno di 10 secondi.",
-    focusPadMod_tasks: "Liste di attività con nome, emoji, colore e tracciamento del progresso. Ogni attività appartiene a una lista.",
-    focusPadMod_reminders: "Notifiche persistenti ogni 15 minuti fino alla conferma nell'app — niente scorrimento per dimenticare.",
-    focusPadMod_planner: "Un rituale serale: pianifica il giorno successivo in modalità lista o blocchi temporali, poi esegui.",
-    focusPadMod_habits: "Check-in giornalieri, visualizzazione delle serie e notifiche di promemoria opzionali.",
-    focusPadMod_calendar: "Vista in sola lettura del Calendario Apple per avere contesto durante la pianificazione.",
-    focusPadStack_heading: "Stack tecnologico",
-    focusPadStatus_heading: "In costruzione",
-    focusPadStatus_desc: "L'app è completamente in fase iniziale da aprile 2026. Tutte le 11 fasi di sviluppo sono pianificate e documentate. Ancora nessun repository GitHub — questa pagina si aggiornerà man mano che il progetto avanza.",
-    focusPadRelated_heading: "Progetti correlati",
+    // Browser Redactor
+    browserRedactorHero_tagline: "Incolla qualsiasi testo. Rileva e anonimizza istantaneamente le informazioni personali. 100% nel tuo browser — niente lascia il tuo dispositivo.",
+    browserRedactorAbout_p1: "Browser Redactor è uno strumento di privacy zero-trust che sto sviluppando per permettere a chiunque di incollare testo in strumenti di IA, ticket di supporto o documenti condivisi senza divulgare dati personali. L'intera pipeline — rilevamento, evidenziazione, censura — gira interamente nel browser dell'utente. Nessun server, nessuna chiamata API, nessuna analitica. Appena la pagina è caricata, la rete è irrilevante.",
+    browserRedactorAbout_p2: "Il rilevamento è alimentato da un modello ModernBERT-base addestrato appositamente su 580k esempi etichettati di PII, eseguito on-device tramite @huggingface/transformers e ONNX/WebAssembly all'interno di un Web Worker. Rileva 20 categorie di informazioni personali in 8 lingue, con uno strato di regex di fallback che copre organizzazioni, IP, chiavi API e dati strutturati in qualsiasi altra lingua.",
+    browserRedactorPrinciples_heading: "Quattro principi fondamentali",
+    browserRedactorPrinciple_clientSide_name: "100% lato client",
+    browserRedactorPrinciple_clientSide_desc: "Nessun server, nessuna API, nessuna memorizzazione. Il testo dell'utente non lascia mai il dispositivo — verificabile nella scheda di rete del browser.",
+    browserRedactorPrinciple_multilingual_name: "Multilingue",
+    browserRedactorPrinciple_multilingual_desc: "Rileva PII in inglese, francese, tedesco, spagnolo, italiano, olandese, hindi e telugu, con regex di fallback per qualsiasi altra lingua.",
+    browserRedactorPrinciple_transparent_name: "Trasparente",
+    browserRedactorPrinciple_transparent_desc: "Ogni rilevamento viene mostrato all'utente, codificato per colore per categoria, e può essere attivato o deselezionato prima della censura.",
+    browserRedactorPrinciple_free_name: "Gratuito per sempre",
+    browserRedactorPrinciple_free_desc: "Nessun account, nessuna chiave API, nessun limite. Gira sull'hardware dell'utente, ospitato su Cloudflare a costo egress zero.",
+    browserRedactorStack_heading: "Stack tecnologico",
+    browserRedactorStatus_heading: "In costruzione",
+    browserRedactorStatus_desc: "Attualmente in costruzione.",
+    browserRedactorRelated_heading: "Progetti correlati",
     // Language Proof sections
     langSpanishProofTitle: "Prova Latino",
     langSpanishProofDesc: "Se facciamo una chiamata, posso dimostrarti le mie radici latine più velocemente di quanto tu possa dire 'mate'.",
@@ -1620,7 +1632,7 @@ export const t: Record<Lang, Translations> = {
     inDevelopment: "Em desenvolvimento",
     proj1Desc: "Sistema RAG de nível produtivo para integração de funcionários com documentação Oracle EPM.",
     proj2Desc: "App macOS na barra de menu para ditado. Alternativa auto-hospedada ao Wispr Flow via MLX.",
-    proj3Desc: "App iOS pessoal de produtividade — lembretes, notas, tarefas, calendário, planejador e rastreador de hábitos.",
+    proj3Desc: "Ferramenta de privacidade que detecta e censura informações pessoais em qualquer texto — roda 100% no navegador via um modelo de ML on-device.",
     proj_llmWikiDesc: "Um sistema de conhecimento pessoal baseado em Obsidian e Claude Code — 115 PDFs transformados numa wiki estruturada e consultável sobre 3 disciplinas universitárias.",
     proj_llmServerDesc: "Um servidor LLM auto-hospedado com FastAPI — API de inferência unificada com roteamento de modelos e streaming.",
     skillLang: "Linguagens", skillData: "Dados", skillTools: "Ferramentas", skillLearning: "Aprendendo",
@@ -1837,21 +1849,23 @@ export const t: Record<Lang, Translations> = {
     softSkill4Desc: "Colaborar eficazmente com equipes multifuncionais para atingir objetivos compartilhados e apoiar colegas.",
     // Layout footer
     copied: "Copiado!", downloadCvAlso: "Você também pode", downloadCvLink: "baixar meu CV",
-    // FocusPad
-    focusPadHero_tagline: "As seis ferramentas de produtividade que realmente uso, unificadas em um único app para iPhone — construído do zero para mim mesmo.",
-    focusPadAbout_p1: "FocusPad é um app iOS pessoal que estou desenvolvendo para substituir o conjunto fragmentado de Apple Notes, Apple Reminders, Apple Calendar e outros apps. Tudo em um lugar, tudo conectado: uma tarefa pode referenciar uma nota, uma nota pode gerar um lembrete, e um plano diário se alimenta de eventos do calendário.",
-    focusPadAbout_p2: "O app roda dentro do Expo Go — sem necessidade de conta de desenvolvedor Apple nem complexidade de sincronização na nuvem. Um banco de dados SQLite local mantém tudo offline e rápido, enquanto um servidor LLM local (Qwen3-8b) alimenta a captura inteligente, a marcação automática de notas e um resumo matinal contextual.",
-    focusPadMod_heading: "Seis módulos, um app",
-    focusPadMod_notes: "Notebooks, busca de texto completo, tags e captura rápida em menos de 10 segundos.",
-    focusPadMod_tasks: "Listas de tarefas com nome, emoji, cor e rastreamento de progresso. Cada tarefa pertence a uma lista.",
-    focusPadMod_reminders: "Notificações persistentes a cada 15 minutos até serem confirmadas no app — sem deslizar para esquecer.",
-    focusPadMod_planner: "Um ritual noturno: planeje o dia seguinte no modo lista ou blocos de tempo, depois execute.",
-    focusPadMod_habits: "Check-ins diários, visualização de sequências e notificações de lembrete opcionais.",
-    focusPadMod_calendar: "Visualização somente leitura do Calendário Apple para contexto durante o planejamento.",
-    focusPadStack_heading: "Stack tecnológico",
-    focusPadStatus_heading: "Em construção",
-    focusPadStatus_desc: "O app está completamente em fase inicial desde abril de 2026. Todas as 11 fases de desenvolvimento estão planejadas e documentadas. Ainda sem repositório no GitHub — esta página será atualizada conforme o projeto avança.",
-    focusPadRelated_heading: "Projetos relacionados",
+    // Browser Redactor
+    browserRedactorHero_tagline: "Cole qualquer texto. Detecte e anonimize informações pessoais instantaneamente. 100% no seu navegador — nada sai do seu dispositivo.",
+    browserRedactorAbout_p1: "Browser Redactor é uma ferramenta de privacidade zero-trust que estou desenvolvendo para que qualquer pessoa possa colar texto em ferramentas de IA, tickets de suporte ou documentos compartilhados sem vazar dados pessoais. Todo o pipeline — detecção, destaque, censura — roda inteiramente no navegador do usuário. Sem servidor, sem chamada de API, sem analítica. Assim que a página é carregada, a rede é irrelevante.",
+    browserRedactorAbout_p2: "A detecção é alimentada por um modelo ModernBERT-base treinado especificamente em 580k exemplos rotulados de PII, executando on-device via @huggingface/transformers e ONNX/WebAssembly dentro de um Web Worker. Detecta 20 categorias de informações pessoais em 8 idiomas, com uma camada de regex de fallback cobrindo organizações, IPs, chaves de API e dados estruturados em qualquer outro idioma.",
+    browserRedactorPrinciples_heading: "Quatro princípios fundamentais",
+    browserRedactorPrinciple_clientSide_name: "100% no lado do cliente",
+    browserRedactorPrinciple_clientSide_desc: "Sem servidor, sem API, sem armazenamento. O texto do usuário nunca sai do dispositivo — verificável na aba de rede do navegador.",
+    browserRedactorPrinciple_multilingual_name: "Multilíngue",
+    browserRedactorPrinciple_multilingual_desc: "Detecta PII em inglês, francês, alemão, espanhol, italiano, holandês, hindi e telugu, com regex de fallback para qualquer outro idioma.",
+    browserRedactorPrinciple_transparent_name: "Transparente",
+    browserRedactorPrinciple_transparent_desc: "Cada detecção é mostrada ao usuário, codificada por cor por categoria, e pode ser ativada ou desmarcada antes da censura.",
+    browserRedactorPrinciple_free_name: "Grátis para sempre",
+    browserRedactorPrinciple_free_desc: "Sem contas, sem chaves de API, sem limites. Roda no hardware do usuário, hospedado na Cloudflare com custo zero de egresso.",
+    browserRedactorStack_heading: "Stack tecnológico",
+    browserRedactorStatus_heading: "Em construção",
+    browserRedactorStatus_desc: "Atualmente em construção.",
+    browserRedactorRelated_heading: "Projetos relacionados",
     // Language Proof sections
     langSpanishProofTitle: "Prova de Latino",
     langSpanishProofDesc: "Se entrarmos numa chamada, posso provar minhas raízes latinas mais rápido do que você diz 'mate'.",

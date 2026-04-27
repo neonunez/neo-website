@@ -26,7 +26,7 @@ const META: Record<string, Meta> = {
   "/projects": {
     title: "Projects · Neo Nuñez",
     description:
-      "Selected projects by Neo Nuñez: enterprise RAG, self-hosted LLM inference server, academic wiki with LLMs, VoiceFlow macOS app, and FocusPad.",
+      "Selected projects by Neo Nuñez: enterprise RAG, self-hosted LLM inference server, academic wiki with LLMs, VoiceFlow macOS app, and Browser Redactor.",
   },
   "/projects/llm-academic-wiki": {
     title: "LLM Academic Wiki · Neo Nuñez",
@@ -48,10 +48,10 @@ const META: Record<string, Meta> = {
     description:
       "Enterprise-grade agentic RAG built with Next.js, FastAPI, Supabase, and Gemini. Citations, dark mode, and production workflows.",
   },
-  "/projects/focuspad": {
-    title: "FocusPad · Neo Nuñez",
+  "/projects/browser-redactor": {
+    title: "Browser Redactor · Neo Nuñez",
     description:
-      "FocusPad — React Native focus and productivity mobile app with construction-indicator UI.",
+      "Browser Redactor — paste any text and instantly anonymize personal information. 100% in-browser PII detection powered by an on-device ML model. Nothing leaves your device.",
   },
   "/skills": {
     title: "Skills · Neo Nuñez",

@@ -23,8 +23,8 @@ Neo Nuñez is a Computer Science student at UBA (Universidad de Buenos Aires) ba
 
 ## Projects
 
-**FocusPad** (in development — current focus)
-Personal iOS productivity app that replaces Apple Notes, Apple Reminders, Apple Calendar, and random to-do apps with one unified tool. Reminders, notes, tasks, calendar, planner, and habit tracker — all connected. Built from scratch for personal use.
+**Browser Redactor** (in development — current focus)
+A zero-trust privacy tool that detects and anonymizes personal information in any pasted text — 100% in the browser, nothing leaves the user's device. Detection runs on a ModernBERT-base model purpose-trained on 580k PII examples, executed on-device via @huggingface/transformers (ONNX/WebAssembly) inside a Web Worker. Covers 20 PII categories across 8 languages, with a regex fallback layer for organizations, IPs, API keys, and structured data in any other language. Built with React 19, TypeScript, Vite, Tailwind v4, Zustand, and motion. Hosted on Cloudflare Pages + R2 (zero egress) so the 140 MB model can scale to any traffic for free. No GitHub repo yet.
 
 **LLM Academic Wiki** (open source — current focus)
 A personal knowledge system built on Obsidian and Claude Code. 51 university PDFs turned into 36+ structured Markdown wiki pages across 10 algorithm topics. 11 slash commands covering the full study lifecycle: ingest, resolve, simulate, synthesize. Parse-once, query-many architecture — Claude Code acts as the librarian.
@@ -46,7 +46,7 @@ Databases: Supabase
 AI/ML: Gemini Flash, Ollama, llama.cpp, mlx-whisper, LangGraph
 DevOps / infra: Docker, Git, Nginx, Cloudflare, NSSM, PowerShell
 Data integration: Oracle Data Integrator, Groovy, Jython
-Also learning: React Native, Expo (for FocusPad)
+Also learning: in-browser ML inference (transformers.js, ONNX, WebAssembly), Zustand, Cloudflare R2/Pages
 
 ## Interests & personal
 
