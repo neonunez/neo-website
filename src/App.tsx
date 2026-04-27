@@ -16,7 +16,7 @@ const ProjectRagSystem = lazy(() => import("@/pages/ProjectRagSystem"));
 const ProjectLlmAcademicWiki = lazy(() => import("@/pages/ProjectLlmAcademicWiki"));
 const ProjectLlmServer = lazy(() => import("@/pages/ProjectLlmServer"));
 const ProjectVoiceFlow = lazy(() => import("@/pages/ProjectVoiceFlow"));
-const ProjectFocusPad = lazy(() => import("@/pages/ProjectFocusPad"));
+const ProjectBrowserRedactor = lazy(() => import("@/pages/ProjectBrowserRedactor"));
 const AboutMe = lazy(() => import("@/pages/AboutMe"));
 
 const queryClient = new QueryClient();
@@ -41,7 +41,7 @@ function Router() {
           <Route path="/projects/llm-server" component={ProjectLlmServer} />
           <Route path="/projects/voiceflow" component={ProjectVoiceFlow} />
           <Route path="/projects/rag-system" component={ProjectRagSystem} />
-          <Route path="/projects/focuspad" component={ProjectFocusPad} />
+          <Route path="/projects/browser-redactor" component={ProjectBrowserRedactor} />
           <Route path="/skills" component={Skills} />
           <Route path="/languages" component={Languages} />
           <Route path="/languages/:slug" component={LanguageDetail} />

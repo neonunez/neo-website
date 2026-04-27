@@ -14,7 +14,7 @@ export const ROUTES: RouteDef[] = [
   { path: "/projects/llm-server", prerender: true },
   { path: "/projects/voiceflow", prerender: true },
   { path: "/projects/rag-system", prerender: true },
-  { path: "/projects/focuspad", prerender: true },
+  { path: "/projects/browser-redactor", prerender: true },
   { path: "/skills", prerender: true },
   { path: "/languages", prerender: true },
   { path: "/languages/spanish", prerender: true },

@@ -15,7 +15,7 @@ const ROUTES = [
   "/projects/llm-server",
   "/projects/voiceflow",
   "/projects/rag-system",
-  "/projects/focuspad",
+  "/projects/browser-redactor",
   "/skills",
   "/languages",
   "/languages/spanish",
