@@ -46,6 +46,7 @@ export function ChatPanel() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [streaming, setStreaming] = useState(false);
+  const [lastUserMessage, setLastUserMessage] = useState("");
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -58,6 +59,8 @@ export function ChatPanel() {
   async function send(text: string) {
     const trimmed = text.trim();
     if (!trimmed || streaming) return;
+
+    setLastUserMessage(trimmed);
 
     const userMsg: Message = { role: "user", content: trimmed };
     const next = [...messages, userMsg];
@@ -93,6 +96,9 @@ export function ChatPanel() {
           if (!line.startsWith("data: ")) continue;
           try {
             const parsed = JSON.parse(line.slice(6));
+            if (parsed.error) {
+              throw new Error(parsed.error);
+            }
             if (parsed.content) {
               full += parsed.content;
               setMessages((prev) => {
@@ -101,15 +107,21 @@ export function ChatPanel() {
                 return updated;
               });
             }
-          } catch {
-            // ignore parse errors
+          } catch (err) {
+            if (err instanceof Error && err.message !== "") throw err;
           }
         }
       }
-    } catch {
+    } catch (err) {
+      console.error("[ChatPanel] Error:", {
+        type: err instanceof Error && err.name === "TimeoutError" ? "timeout" : "network",
+        message: err instanceof Error ? err.message : String(err),
+        lastUserMessage,
+        timestamp: new Date().toISOString(),
+      });
       setMessages((prev) => {
         const updated = [...prev];
-        updated[updated.length - 1] = { role: "assistant", content: "Something went wrong. Try again." };
+        updated[updated.length - 1] = { role: "assistant", content: "The server is currently not responding. Please try again." };
         return updated;
       });
     } finally {
