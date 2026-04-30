@@ -87,6 +87,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const apiKey = process.env.LLM_SERVER_API_KEY;
 
   if (!baseURL || !apiKey) {
+    console.error(`[${new Date().toISOString()}] LLM server not configured`);
     res.status(500).json({ error: "LLM server not configured" });
     return;
   }
@@ -97,7 +98,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader("Cache-Control", "no-cache");
   res.setHeader("Connection", "keep-alive");
 
-  // Append /no_think to the last user message for faster responses (no chain-of-thought)
   const augmentedMessages = messages.map((m, i) =>
     i === messages.length - 1 && m.role === "user"
       ? { ...m, content: m.content + " /no_think" }
@@ -105,16 +105,22 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   );
 
   try {
-    const stream = await llmClient.chat.completions.create({
-      model: "qwen3-8b",
-      max_tokens: 512,
-      messages: [
-        { role: "system", content: SYSTEM_PROMPT },
-        ...augmentedMessages,
-      ],
-      stream: true,
-    });
+    const stream = await Promise.race([
+      llmClient.chat.completions.create({
+        model: "qwen3-8b",
+        max_tokens: 512,
+        messages: [
+          { role: "system", content: SYSTEM_PROMPT },
+          ...augmentedMessages,
+        ],
+        stream: true,
+      }),
+      new Promise((_, reject) =>
+        setTimeout(() => reject(new Error("TimeoutError")), 10000)
+      ),
+    ]);
 
+    // @ts-expect-error stream from race
     for await (const chunk of stream) {
       const content = chunk.choices[0]?.delta?.content;
       if (content) {
@@ -124,8 +130,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     res.write(`data: ${JSON.stringify({ done: true })}\n\n`);
     res.end();
-  } catch {
-    res.write(`data: ${JSON.stringify({ error: "Something went wrong" })}\n\n`);
+  } catch (err) {
+    console.error(`[${new Date().toISOString()}] Stream error:`, err instanceof Error ? err.message : err);
+    res.write(`data: ${JSON.stringify({ error: "Server error" })}\n\n`);
     res.end();
   }
 }

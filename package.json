@@ -39,6 +39,7 @@
     "zod": "^3.25.76"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "cobe": "^2.0.1",
     "react-markdown": "^10.1.0",
     "remark-gfm": "^4.0.1"
