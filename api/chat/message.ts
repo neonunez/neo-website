@@ -116,7 +116,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         stream: true,
       }),
       new Promise((_, reject) =>
-        setTimeout(() => reject(new Error("TimeoutError")), 10000)
+        setTimeout(() => reject(new Error("TimeoutError")), 20000)
       ),
     ]);
 
@@ -132,7 +132,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     res.end();
   } catch (err) {
     console.error(`[${new Date().toISOString()}] Stream error:`, err instanceof Error ? err.message : err);
-    res.write(`data: ${JSON.stringify({ error: "Server error" })}\n\n`);
+    const isTimeout = err instanceof Error && err.message === "TimeoutError";
+    res.write(`data: ${JSON.stringify({ error: isTimeout ? "TimeoutError" : "Server error" })}\n\n`);
     res.end();
   }
 }
