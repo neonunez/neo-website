@@ -113,15 +113,22 @@ export function ChatPanel() {
         }
       }
     } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      const isTimeout = message === "TimeoutError";
       console.error("[ChatPanel] Error:", {
-        type: err instanceof Error && err.name === "TimeoutError" ? "timeout" : "network",
-        message: err instanceof Error ? err.message : String(err),
+        type: isTimeout ? "timeout" : "network",
+        message,
         lastUserMessage,
         timestamp: new Date().toISOString(),
       });
       setMessages((prev) => {
         const updated = [...prev];
-        updated[updated.length - 1] = { role: "assistant", content: "The server is currently not responding. Please try again." };
+        updated[updated.length - 1] = {
+          role: "assistant",
+          content: isTimeout
+            ? "The model is being loaded into VRAM. Please wait a moment and try again."
+            : "The server is currently not responding. Please try again.",
+        };
         return updated;
       });
     } finally {
