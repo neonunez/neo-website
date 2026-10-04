@@ -442,22 +442,22 @@ export function AnimatedLogo({ className = "" }: { className?: string }) {
         className="relative h-[17px] sm:h-[18px] w-auto overflow-visible"
       >
         <defs>
-          <clipPath id={clipId}>
+          <clipPath id={clipId} clipRule="evenodd">
             {NEO_GLYPHS.map((glyph) => (
-              <path key={glyph.letter} fillRule="evenodd" d={glyph.d} />
+              <path key={glyph.letter} clipRule="evenodd" fillRule="evenodd" d={glyph.d} />
             ))}
           </clipPath>
           <linearGradient id={beamId} x1="0" y1="0" x2="1" y2="0">
             <stop offset="0%" stopColor="#ffffff" stopOpacity="0" />
-            <stop offset="35%" stopColor="#ffffff" stopOpacity="0.10" />
-            <stop offset="50%" stopColor="#ffffff" stopOpacity="0.80" />
-            <stop offset="65%" stopColor="#ffffff" stopOpacity="0.10" />
+            <stop offset="25%" stopColor="#ffffff" stopOpacity="0.30" />
+            <stop offset="50%" stopColor="#ffffff" stopOpacity="1" />
+            <stop offset="75%" stopColor="#ffffff" stopOpacity="0.30" />
             <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
           </linearGradient>
         </defs>
 
-        {/* Base crisp letterforms rendered in currentColor */}
-        <g fill="currentColor">
+        {/* Base crisp letterforms rendered in currentColor with refined contrast */}
+        <g fill="currentColor" opacity="0.68">
           {NEO_GLYPHS.map((glyph) => (
             <path key={glyph.letter} fillRule="evenodd" d={glyph.d} />
           ))}
