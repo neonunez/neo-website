@@ -397,32 +397,49 @@ const NEO_GLYPHS = [
   },
 ];
 
+const beamVariants: Variants = {
+  idle: {
+    x: [-380, 780],
+    transition: {
+      repeat: Infinity,
+      duration: 4.8,
+      ease: [0.35, 0, 0.25, 1],
+      repeatDelay: 4.5,
+    },
+  },
+  hover: {
+    x: [-380, 780],
+    transition: {
+      duration: 1.6,
+      ease: [0.22, 1, 0.36, 1],
+      repeat: Infinity,
+      repeatDelay: 1.2,
+    },
+  },
+};
+
 export function AnimatedLogo({ className = "" }: { className?: string }) {
   const uid = useId().replace(/:/g, "");
   const shouldReduceMotion = useReducedMotion();
   const clipId = `neo-clip-${uid}`;
   const beamId = `neo-beam-${uid}`;
 
-  const [isHovered, setIsHovered] = useState(false);
-  const [hoverKey, setHoverKey] = useState(0);
-
   return (
     <motion.div
       role="img"
       aria-label="Neo Nuñez"
-      className={`group relative inline-flex items-center cursor-pointer select-none transition-all duration-300 opacity-85 hover:opacity-100 ${className}`}
-      onMouseEnter={() => {
-        setIsHovered(true);
-        setHoverKey((k) => k + 1);
-      }}
-      onMouseLeave={() => setIsHovered(false)}
+      className={`group relative inline-flex items-center py-1 -my-1 cursor-pointer select-none transition-opacity duration-300 opacity-90 hover:opacity-100 ${className}`}
+      initial="idle"
+      animate="idle"
+      whileHover={shouldReduceMotion ? undefined : "hover"}
       whileTap={{ scale: 0.97 }}
-      whileHover={shouldReduceMotion ? undefined : { scale: 1.015 }}
-      transition={{ duration: 0.25, ease: "easeOut" }}
     >
+      {/* Subtle ambient bloom behind logo on hover (GPU-composited opacity, 0% SVG repaint) */}
+      <div className="absolute inset-0 -inset-x-2.5 -inset-y-1 rounded-full bg-white/[0.06] dark:bg-white/[0.08] blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+
       <svg
         viewBox="0 0 650 116"
-        className="h-[17px] sm:h-[18px] w-auto overflow-visible transition-[filter] duration-300 drop-shadow-none group-hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.28)] dark:group-hover:drop-shadow-[0_0_12px_rgba(255,255,255,0.28)]"
+        className="relative h-[17px] sm:h-[18px] w-auto overflow-visible"
       >
         <defs>
           <clipPath id={clipId}>
@@ -432,9 +449,9 @@ export function AnimatedLogo({ className = "" }: { className?: string }) {
           </clipPath>
           <linearGradient id={beamId} x1="0" y1="0" x2="1" y2="0">
             <stop offset="0%" stopColor="#ffffff" stopOpacity="0" />
-            <stop offset="35%" stopColor="#ffffff" stopOpacity="0.12" />
-            <stop offset="50%" stopColor="#ffffff" stopOpacity="0.85" />
-            <stop offset="65%" stopColor="#ffffff" stopOpacity="0.12" />
+            <stop offset="35%" stopColor="#ffffff" stopOpacity="0.10" />
+            <stop offset="50%" stopColor="#ffffff" stopOpacity="0.80" />
+            <stop offset="65%" stopColor="#ffffff" stopOpacity="0.10" />
             <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
           </linearGradient>
         </defs>
@@ -451,18 +468,11 @@ export function AnimatedLogo({ className = "" }: { className?: string }) {
           <g clipPath={`url(#${clipId})`}>
             <g transform="skewX(-20)">
               <motion.rect
-                key={isHovered ? `hover-${hoverKey}` : "idle"}
                 y="-30"
-                width="190"
+                width="210"
                 height="176"
                 fill={`url(#${beamId})`}
-                initial={{ x: -350 }}
-                animate={{ x: 750 }}
-                transition={
-                  isHovered
-                    ? { duration: 0.65, ease: [0.16, 1, 0.3, 1] }
-                    : { repeat: Infinity, duration: 2.2, ease: [0.4, 0, 0.2, 1], repeatDelay: 5 }
-                }
+                variants={beamVariants}
               />
             </g>
           </g>
