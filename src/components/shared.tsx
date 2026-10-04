@@ -1,6 +1,6 @@
-import { useRef, useState, useEffect, type MouseEvent as ReactMouseEvent } from "react";
+import { useRef, useState, useEffect, useId, type MouseEvent as ReactMouseEvent } from "react";
 
-import { motion, AnimatePresence, useInView } from "framer-motion";
+import { motion, AnimatePresence, useInView, useReducedMotion, type Variants } from "framer-motion";
 import { Link } from "wouter";
 import {
   BrainCircuit,
@@ -382,22 +382,93 @@ export function CommandPalette({ items, open, onClose }: { items: CmdItem[]; ope
 
 // ─── AnimatedLogo ─────────────────────────────────────────────────────────────
 
+const NEO_GLYPHS = [
+  {
+    letter: "n",
+    d: "M0,116 L0,53 C0,25.97 29.4,0 60,0 L159,0 C189.6,0 219,25.97 219,53 L219,116 L170,116 L170,40 C170,28.95 161.05,20 150,20 L69,20 C57.95,20 49,28.95 49,40 L49,116 Z",
+  },
+  {
+    letter: "e",
+    d: "M414,0 L302,0 C271.4,0 242,25.97 242,53 L242,63 C242,90.03 271.4,116 302,116 L414,116 L414,96 L311,96 C299.95,96 291,87.05 291,76 L291,67.25 L414,67.25 L414,48.75 L291,48.75 L291,40 C291,28.95 299.95,20 311,20 L414,20 Z",
+  },
+  {
+    letter: "o",
+    d: "M497,0 L590,0 C620.6,0 650,25.97 650,53 L650,63 C650,90.03 620.6,116 590,116 L497,116 C466.4,116 437,90.03 437,63 L437,53 C437,25.97 466.4,0 497,0 Z M506,20 L581,20 C592.05,20 601,28.95 601,40 L601,76 C601,87.05 592.05,96 581,96 L506,96 C494.95,96 486,87.05 486,76 L486,40 C486,28.95 494.95,20 506,20 Z",
+  },
+];
+
+const letterVariants: Variants = {
+  initial: { y: 6, opacity: 0 },
+  animate: (i: number) => ({
+    y: 0,
+    opacity: 0.88,
+    transition: {
+      delay: i * 0.08,
+      duration: 0.35,
+      ease: [0.25, 1, 0.5, 1],
+    },
+  }),
+  hover: (i: number) => ({
+    y: [0, -18, 0],
+    opacity: 1,
+    transition: {
+      delay: i * 0.06,
+      duration: 0.48,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  }),
+};
+
 export function AnimatedLogo({ className = "" }: { className?: string }) {
+  const uid = useId().replace(/:/g, "");
+  const shouldReduceMotion = useReducedMotion();
+  const gradId = `neo-logo-shimmer-${uid}`;
+
   return (
-    <div className={`flex items-baseline font-mono font-medium text-[1.125rem] tracking-tight opacity-90 hover:opacity-100 cursor-pointer transition-opacity ${className}`}>
-      <motion.span
-        className="text-transparent bg-clip-text"
-        style={{
-          backgroundImage: "linear-gradient(90deg, var(--c-dim) 0%, var(--c-fg) 40%, var(--c-fg) 60%, var(--c-dim) 100%)",
-          backgroundSize: "250% 100%",
-          WebkitBackgroundClip: "text",
-        }}
-        animate={{ backgroundPosition: ["200% 0", "-100% 0"] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+    <motion.div
+      role="img"
+      aria-label="Neo Nuñez"
+      className={`group relative inline-flex items-center cursor-pointer select-none transition-opacity duration-200 opacity-90 hover:opacity-100 ${className}`}
+      initial="initial"
+      animate="animate"
+      whileHover={shouldReduceMotion ? undefined : "hover"}
+      whileTap={{ scale: 0.95 }}
+    >
+      <motion.svg
+        viewBox="0 0 650 116"
+        className="h-[17px] sm:h-[18px] w-auto overflow-visible transition-[filter,transform] duration-300 group-hover:scale-[1.02] drop-shadow-none group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.22)] dark:group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.25)]"
       >
-        nn_
-      </motion.span>
-    </div>
+        <defs>
+          <linearGradient id={gradId} gradientUnits="userSpaceOnUse" x1="-550" y1="0" x2="650" y2="0">
+            <stop offset="0%" stopColor="var(--c-dim)" />
+            <stop offset="35%" stopColor="var(--c-dim)" />
+            <stop offset="48%" stopColor="var(--c-fg)" />
+            <stop offset="50%" stopColor="var(--c-fg)" />
+            <stop offset="52%" stopColor="var(--c-fg)" />
+            <stop offset="65%" stopColor="var(--c-dim)" />
+            <stop offset="100%" stopColor="var(--c-dim)" />
+            {!shouldReduceMotion && (
+              <>
+                <animate attributeName="x1" from="-550" to="650" dur="4s" repeatCount="indefinite" />
+                <animate attributeName="x2" from="150" to="1350" dur="4s" repeatCount="indefinite" />
+              </>
+            )}
+          </linearGradient>
+        </defs>
+
+        <g fill={`url(#${gradId})`}>
+          {NEO_GLYPHS.map((glyph, i) => (
+            <motion.path
+              key={glyph.letter}
+              fillRule="evenodd"
+              d={glyph.d}
+              custom={i}
+              variants={shouldReduceMotion ? undefined : letterVariants}
+            />
+          ))}
+        </g>
+      </motion.svg>
+    </motion.div>
   );
 }
 
