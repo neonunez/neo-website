@@ -397,77 +397,77 @@ const NEO_GLYPHS = [
   },
 ];
 
-const letterVariants: Variants = {
-  initial: { y: 6, opacity: 0 },
-  animate: (i: number) => ({
-    y: 0,
-    opacity: 0.88,
-    transition: {
-      delay: i * 0.08,
-      duration: 0.35,
-      ease: [0.25, 1, 0.5, 1],
-    },
-  }),
-  hover: (i: number) => ({
-    y: [0, -18, 0],
-    opacity: 1,
-    transition: {
-      delay: i * 0.06,
-      duration: 0.48,
-      ease: [0.22, 1, 0.36, 1],
-    },
-  }),
-};
-
 export function AnimatedLogo({ className = "" }: { className?: string }) {
   const uid = useId().replace(/:/g, "");
   const shouldReduceMotion = useReducedMotion();
-  const gradId = `neo-logo-shimmer-${uid}`;
+  const clipId = `neo-clip-${uid}`;
+  const beamId = `neo-beam-${uid}`;
+
+  const [isHovered, setIsHovered] = useState(false);
+  const [hoverKey, setHoverKey] = useState(0);
 
   return (
     <motion.div
       role="img"
       aria-label="Neo Nuñez"
-      className={`group relative inline-flex items-center cursor-pointer select-none transition-opacity duration-200 opacity-90 hover:opacity-100 ${className}`}
-      initial="initial"
-      animate="animate"
-      whileHover={shouldReduceMotion ? undefined : "hover"}
-      whileTap={{ scale: 0.95 }}
+      className={`group relative inline-flex items-center cursor-pointer select-none transition-all duration-300 opacity-85 hover:opacity-100 ${className}`}
+      onMouseEnter={() => {
+        setIsHovered(true);
+        setHoverKey((k) => k + 1);
+      }}
+      onMouseLeave={() => setIsHovered(false)}
+      whileTap={{ scale: 0.97 }}
+      whileHover={shouldReduceMotion ? undefined : { scale: 1.015 }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
     >
-      <motion.svg
+      <svg
         viewBox="0 0 650 116"
-        className="h-[17px] sm:h-[18px] w-auto overflow-visible transition-[filter,transform] duration-300 group-hover:scale-[1.02] drop-shadow-none group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.22)] dark:group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.25)]"
+        className="h-[17px] sm:h-[18px] w-auto overflow-visible transition-[filter] duration-300 drop-shadow-none group-hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.28)] dark:group-hover:drop-shadow-[0_0_12px_rgba(255,255,255,0.28)]"
       >
         <defs>
-          <linearGradient id={gradId} gradientUnits="userSpaceOnUse" x1="-550" y1="0" x2="650" y2="0">
-            <stop offset="0%" stopColor="var(--c-dim)" />
-            <stop offset="35%" stopColor="var(--c-dim)" />
-            <stop offset="48%" stopColor="var(--c-fg)" />
-            <stop offset="50%" stopColor="var(--c-fg)" />
-            <stop offset="52%" stopColor="var(--c-fg)" />
-            <stop offset="65%" stopColor="var(--c-dim)" />
-            <stop offset="100%" stopColor="var(--c-dim)" />
-            {!shouldReduceMotion && (
-              <>
-                <animate attributeName="x1" from="-550" to="650" dur="4s" repeatCount="indefinite" />
-                <animate attributeName="x2" from="150" to="1350" dur="4s" repeatCount="indefinite" />
-              </>
-            )}
+          <clipPath id={clipId}>
+            {NEO_GLYPHS.map((glyph) => (
+              <path key={glyph.letter} fillRule="evenodd" d={glyph.d} />
+            ))}
+          </clipPath>
+          <linearGradient id={beamId} x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="#ffffff" stopOpacity="0" />
+            <stop offset="35%" stopColor="#ffffff" stopOpacity="0.12" />
+            <stop offset="50%" stopColor="#ffffff" stopOpacity="0.85" />
+            <stop offset="65%" stopColor="#ffffff" stopOpacity="0.12" />
+            <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
           </linearGradient>
         </defs>
 
-        <g fill={`url(#${gradId})`}>
-          {NEO_GLYPHS.map((glyph, i) => (
-            <motion.path
-              key={glyph.letter}
-              fillRule="evenodd"
-              d={glyph.d}
-              custom={i}
-              variants={shouldReduceMotion ? undefined : letterVariants}
-            />
+        {/* Base crisp letterforms rendered in currentColor */}
+        <g fill="currentColor">
+          {NEO_GLYPHS.map((glyph) => (
+            <path key={glyph.letter} fillRule="evenodd" d={glyph.d} />
           ))}
         </g>
-      </motion.svg>
+
+        {/* Angled Specular Sheen Beam clipped cleanly to the glyph geometry */}
+        {!shouldReduceMotion && (
+          <g clipPath={`url(#${clipId})`}>
+            <g transform="skewX(-20)">
+              <motion.rect
+                key={isHovered ? `hover-${hoverKey}` : "idle"}
+                y="-30"
+                width="190"
+                height="176"
+                fill={`url(#${beamId})`}
+                initial={{ x: -350 }}
+                animate={{ x: 750 }}
+                transition={
+                  isHovered
+                    ? { duration: 0.65, ease: [0.16, 1, 0.3, 1] }
+                    : { repeat: Infinity, duration: 2.2, ease: [0.4, 0, 0.2, 1], repeatDelay: 5 }
+                }
+              />
+            </g>
+          </g>
+        )}
+      </svg>
     </motion.div>
   );
 }
