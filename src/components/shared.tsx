@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect, useId, type MouseEvent as ReactMouseEvent } from "react";
 
-import { motion, AnimatePresence, useInView, useReducedMotion, type Variants } from "framer-motion";
+import { motion, AnimatePresence, useInView, useReducedMotion, type Variants, type Transition } from "framer-motion";
 import { Link } from "wouter";
 import {
   BrainCircuit,
@@ -53,6 +53,7 @@ import {
 } from "react-icons/si";
 import { LANGUAGES, type Lang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
+import { usePortfolio } from "@/context/PortfolioContext";
 
 // ─── Badge ────────────────────────────────────────────────────────────────────
 
@@ -397,28 +398,11 @@ const NEO_GLYPHS = [
   },
 ];
 
-const beamVariants: Variants = {
-  idle: {
-    x: -380,
-    opacity: 0,
-    transition: {
-      opacity: { duration: 0.25, ease: "easeOut" },
-      x: { duration: 0, delay: 0.25 },
-    },
-  },
-  hover: {
-    x: [-380, 780],
-    opacity: 1,
-    transition: {
-      x: {
-        duration: 1.6,
-        ease: [0.22, 1, 0.36, 1],
-        repeat: Infinity,
-        repeatDelay: 1.2,
-      },
-      opacity: { duration: 0.15 },
-    },
-  },
+const beamTransition: Transition = {
+  duration: 2.2,
+  ease: [0.22, 1, 0.36, 1],
+  repeat: Infinity,
+  repeatDelay: 2.4,
 };
 
 export function AnimatedLogo({ className = "" }: { className?: string }) {
@@ -427,14 +411,14 @@ export function AnimatedLogo({ className = "" }: { className?: string }) {
   const clipId = `neo-clip-${uid}`;
   const beamId = `neo-beam-${uid}`;
 
+  const { theme } = usePortfolio();
+  const beamColor = theme === "light" ? "#000000" : "#ffffff";
+
   return (
     <motion.div
       role="img"
       aria-label="Neo Nuñez"
       className={`group relative inline-flex items-center py-1 -my-1 cursor-pointer select-none transition-opacity duration-300 opacity-90 hover:opacity-100 ${className}`}
-      initial="idle"
-      animate="idle"
-      whileHover={shouldReduceMotion ? undefined : "hover"}
       whileTap={{ scale: 0.97 }}
     >
       {/* Subtle ambient bloom behind logo on hover (GPU-composited opacity, 0% SVG repaint) */}
@@ -451,16 +435,16 @@ export function AnimatedLogo({ className = "" }: { className?: string }) {
             ))}
           </clipPath>
           <linearGradient id={beamId} x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#ffffff" stopOpacity="0" />
-            <stop offset="25%" stopColor="#ffffff" stopOpacity="0.30" />
-            <stop offset="50%" stopColor="#ffffff" stopOpacity="1" />
-            <stop offset="75%" stopColor="#ffffff" stopOpacity="0.30" />
-            <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
+            <stop offset="0%" stopColor={beamColor} stopOpacity="0" />
+            <stop offset="25%" stopColor={beamColor} stopOpacity="0.30" />
+            <stop offset="50%" stopColor={beamColor} stopOpacity="1" />
+            <stop offset="75%" stopColor={beamColor} stopOpacity="0.30" />
+            <stop offset="100%" stopColor={beamColor} stopOpacity="0" />
           </linearGradient>
         </defs>
 
         {/* Base crisp letterforms rendered in currentColor with refined contrast */}
-        <g fill="currentColor" opacity="0.68">
+        <g fill="currentColor" opacity={shouldReduceMotion ? "0.95" : "0.68"}>
           {NEO_GLYPHS.map((glyph) => (
             <path key={glyph.letter} fillRule="evenodd" d={glyph.d} />
           ))}
@@ -475,7 +459,9 @@ export function AnimatedLogo({ className = "" }: { className?: string }) {
                 width="210"
                 height="176"
                 fill={`url(#${beamId})`}
-                variants={beamVariants}
+                initial={{ x: -380 }}
+                animate={{ x: [-380, 780] }}
+                transition={beamTransition}
               />
             </g>
           </g>

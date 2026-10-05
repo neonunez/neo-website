@@ -1,4 +1,4 @@
-export const SITE_URL = "https://neo-nunez.vercel.app";
+export const SITE_URL = "https://neonunez.com";
 
 export type RouteDef = {
   path: string;

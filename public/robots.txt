@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://neo-nunez.vercel.app/sitemap.xml
+Sitemap: https://neonunez.com/sitemap.xml
