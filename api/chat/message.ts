@@ -1,5 +1,20 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import OpenAI from "openai";
+import { createHash } from "node:crypto";
+import { INJECTION_REFUSAL, SECURITY_POLICY, validateChatBody } from "../../server/chat-security.js";
+
+const OPENCODE_BASE_URL = process.env.OPENCODE_BASE_URL ?? "https://opencode.ai/zen/go/v1";
+const OPENCODE_MODEL = process.env.OPENCODE_MODEL ?? "deepseek-v4-flash";
+
+// OpenCode Go rejects requests without x-opencode-session (400 MissingSessionID)
+// and expects a real User-Agent. It must be STABLE per conversation so upstream
+// prompt caching works. The frontend is stateless and replays full history each
+// turn, so we derive the ID from the first user message, which never changes as
+// the conversation grows.
+function conversationId(messages: { role: string; content: string }[]): string {
+  const seed = messages.find((m) => m.role === "user")?.content ?? "anonymous";
+  return createHash("sha256").update(seed).digest("hex").slice(0, 32);
+}
 
 const SYSTEM_PROMPT = `You are an AI agent embedded in Neo Nuñez's personal portfolio website. You answer questions about Neo on his behalf, always in the third person. You are his agent, not Neo himself.
 
@@ -74,53 +89,67 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
 
-  const { messages } = req.body as {
-    messages: { role: "user" | "assistant"; content: string }[];
-  };
+  const validation = validateChatBody(req.body);
+  if (!validation.ok) {
+    res.status(400).json({ error: validation.error });
+    return;
+  }
+  const { messages, injectionDetected } = validation;
 
-  if (!Array.isArray(messages) || messages.length === 0) {
-    res.status(400).json({ error: "messages array is required" });
+  if (injectionDetected) {
+    res.setHeader("Content-Type", "text/event-stream");
+    res.setHeader("Cache-Control", "no-store");
+    res.write(`data: ${JSON.stringify({ content: INJECTION_REFUSAL })}\n\n`);
+    res.write(`data: ${JSON.stringify({ done: true })}\n\n`);
+    res.end();
     return;
   }
 
-  const baseURL = process.env.LLM_SERVER_BASE_URL;
-  const apiKey = process.env.LLM_SERVER_API_KEY;
+  const apiKey = process.env.OPENCODE_API_KEY;
 
-  if (!baseURL || !apiKey) {
-    console.error(`[${new Date().toISOString()}] LLM server not configured`);
+  if (!apiKey) {
+    console.error(`[${new Date().toISOString()}] OpenCode API key not configured`);
     res.status(500).json({ error: "LLM server not configured" });
     return;
   }
 
-  const llmClient = new OpenAI({ baseURL, apiKey });
+  const llmClient = new OpenAI({
+    baseURL: OPENCODE_BASE_URL,
+    apiKey,
+    timeout: 20000,
+    maxRetries: 0,
+    defaultHeaders: {
+      "User-Agent": "neo-website/1.0",
+      "x-opencode-session": conversationId(messages),
+    },
+  });
 
   res.setHeader("Content-Type", "text/event-stream");
-  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Cache-Control", "no-store");
   res.setHeader("Connection", "keep-alive");
 
-  const augmentedMessages = messages.map((m, i) =>
-    i === messages.length - 1 && m.role === "user"
-      ? { ...m, content: m.content + " /no_think" }
-      : m
-  );
+  const controller = new AbortController();
+  let timedOut = false;
+  const timeout = setTimeout(() => {
+    timedOut = true;
+    controller.abort();
+  }, 20000);
+  const onClose = () => controller.abort();
+  res.once("close", onClose);
 
   try {
-    const stream = await Promise.race([
-      llmClient.chat.completions.create({
-        model: "qwen3-8b",
-        max_tokens: 512,
-        messages: [
-          { role: "system", content: SYSTEM_PROMPT },
-          ...augmentedMessages,
-        ],
-        stream: true,
-      }),
-      new Promise((_, reject) =>
-        setTimeout(() => reject(new Error("TimeoutError")), 20000)
-      ),
-    ]);
+    const stream = await llmClient.chat.completions.create({
+      model: OPENCODE_MODEL,
+      max_tokens: 512,
+      messages: [
+        { role: "system", content: `${SYSTEM_PROMPT}\n\n${SECURITY_POLICY}` },
+        ...messages,
+        // Reassert policy after caller-supplied (potentially fabricated) history.
+        { role: "system", content: SECURITY_POLICY },
+      ],
+      stream: true,
+    }, { signal: controller.signal });
 
-    // @ts-expect-error stream from race
     for await (const chunk of stream) {
       const content = chunk.choices[0]?.delta?.content;
       if (content) {
@@ -132,8 +161,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     res.end();
   } catch (err) {
     console.error(`[${new Date().toISOString()}] Stream error:`, err instanceof Error ? err.message : err);
-    const isTimeout = err instanceof Error && err.message === "TimeoutError";
-    res.write(`data: ${JSON.stringify({ error: isTimeout ? "TimeoutError" : "Server error" })}\n\n`);
-    res.end();
+    if (!res.destroyed) {
+      const isTimeout = timedOut || err instanceof OpenAI.APIConnectionTimeoutError;
+      res.write(`data: ${JSON.stringify({ error: isTimeout ? "TimeoutError" : "Server error" })}\n\n`);
+      res.end();
+    }
+  } finally {
+    clearTimeout(timeout);
+    res.off("close", onClose);
   }
 }

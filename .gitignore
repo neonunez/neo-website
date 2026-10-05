@@ -44,9 +44,13 @@ Thumbs.db
 .cursor/rules/nx-rules.mdc
 .github/instructions/nx.instructions.md
 
-# Env
-.env.local
-.env*.local
+# Local agent settings
+.claude/settings.local.json
+
+# Env (only explicit examples belong in version control)
+.env
+.env.*
+!.env.example
 
 # Vercel
 .vercel/
