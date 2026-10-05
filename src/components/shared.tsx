@@ -1,6 +1,6 @@
-import { useRef, useState, useEffect, type MouseEvent as ReactMouseEvent } from "react";
+import { useRef, useState, useEffect, useId, type MouseEvent as ReactMouseEvent } from "react";
 
-import { motion, AnimatePresence, useInView } from "framer-motion";
+import { motion, AnimatePresence, useInView, useReducedMotion, type Variants, type Transition } from "framer-motion";
 import { Link } from "wouter";
 import {
   BrainCircuit,
@@ -53,6 +53,7 @@ import {
 } from "react-icons/si";
 import { LANGUAGES, type Lang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
+import { usePortfolio } from "@/context/PortfolioContext";
 
 // ─── Badge ────────────────────────────────────────────────────────────────────
 
@@ -382,22 +383,91 @@ export function CommandPalette({ items, open, onClose }: { items: CmdItem[]; ope
 
 // ─── AnimatedLogo ─────────────────────────────────────────────────────────────
 
+const NEO_GLYPHS = [
+  {
+    letter: "n",
+    d: "M0,116 L0,53 C0,25.97 29.4,0 60,0 L159,0 C189.6,0 219,25.97 219,53 L219,116 L170,116 L170,40 C170,28.95 161.05,20 150,20 L69,20 C57.95,20 49,28.95 49,40 L49,116 Z",
+  },
+  {
+    letter: "e",
+    d: "M414,0 L302,0 C271.4,0 242,25.97 242,53 L242,63 C242,90.03 271.4,116 302,116 L414,116 L414,96 L311,96 C299.95,96 291,87.05 291,76 L291,67.25 L414,67.25 L414,48.75 L291,48.75 L291,40 C291,28.95 299.95,20 311,20 L414,20 Z",
+  },
+  {
+    letter: "o",
+    d: "M497,0 L590,0 C620.6,0 650,25.97 650,53 L650,63 C650,90.03 620.6,116 590,116 L497,116 C466.4,116 437,90.03 437,63 L437,53 C437,25.97 466.4,0 497,0 Z M506,20 L581,20 C592.05,20 601,28.95 601,40 L601,76 C601,87.05 592.05,96 581,96 L506,96 C494.95,96 486,87.05 486,76 L486,40 C486,28.95 494.95,20 506,20 Z",
+  },
+];
+
+const beamTransition: Transition = {
+  duration: 2.2,
+  ease: [0.22, 1, 0.36, 1],
+  repeat: Infinity,
+  repeatDelay: 2.4,
+};
+
 export function AnimatedLogo({ className = "" }: { className?: string }) {
+  const uid = useId().replace(/:/g, "");
+  const shouldReduceMotion = useReducedMotion();
+  const clipId = `neo-clip-${uid}`;
+  const beamId = `neo-beam-${uid}`;
+
+  const { theme } = usePortfolio();
+  const beamColor = theme === "light" ? "#000000" : "#ffffff";
+
   return (
-    <div className={`flex items-baseline font-mono font-medium text-[1.125rem] tracking-tight opacity-90 hover:opacity-100 cursor-pointer transition-opacity ${className}`}>
-      <motion.span
-        className="text-transparent bg-clip-text"
-        style={{
-          backgroundImage: "linear-gradient(90deg, var(--c-dim) 0%, var(--c-fg) 40%, var(--c-fg) 60%, var(--c-dim) 100%)",
-          backgroundSize: "250% 100%",
-          WebkitBackgroundClip: "text",
-        }}
-        animate={{ backgroundPosition: ["200% 0", "-100% 0"] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+    <motion.div
+      role="img"
+      aria-label="Neo Nuñez"
+      className={`group relative inline-flex items-center py-1 -my-1 cursor-pointer select-none transition-opacity duration-300 opacity-90 hover:opacity-100 ${className}`}
+      whileTap={{ scale: 0.97 }}
+    >
+      {/* Subtle ambient bloom behind logo on hover (GPU-composited opacity, 0% SVG repaint) */}
+      <div className="absolute inset-0 -inset-x-2.5 -inset-y-1 rounded-full bg-white/[0.06] dark:bg-white/[0.08] blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+
+      <svg
+        viewBox="0 0 650 116"
+        className="relative h-[17px] sm:h-[18px] w-auto overflow-visible"
       >
-        nn_
-      </motion.span>
-    </div>
+        <defs>
+          <clipPath id={clipId} clipRule="evenodd">
+            {NEO_GLYPHS.map((glyph) => (
+              <path key={glyph.letter} clipRule="evenodd" fillRule="evenodd" d={glyph.d} />
+            ))}
+          </clipPath>
+          <linearGradient id={beamId} x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor={beamColor} stopOpacity="0" />
+            <stop offset="25%" stopColor={beamColor} stopOpacity="0.30" />
+            <stop offset="50%" stopColor={beamColor} stopOpacity="1" />
+            <stop offset="75%" stopColor={beamColor} stopOpacity="0.30" />
+            <stop offset="100%" stopColor={beamColor} stopOpacity="0" />
+          </linearGradient>
+        </defs>
+
+        {/* Base crisp letterforms rendered in currentColor with refined contrast */}
+        <g fill="currentColor" opacity={shouldReduceMotion ? "0.95" : "0.68"}>
+          {NEO_GLYPHS.map((glyph) => (
+            <path key={glyph.letter} fillRule="evenodd" d={glyph.d} />
+          ))}
+        </g>
+
+        {/* Angled Specular Sheen Beam clipped cleanly to the glyph geometry */}
+        {!shouldReduceMotion && (
+          <g clipPath={`url(#${clipId})`}>
+            <g transform="skewX(-20)">
+              <motion.rect
+                y="-30"
+                width="210"
+                height="176"
+                fill={`url(#${beamId})`}
+                initial={{ x: -380 }}
+                animate={{ x: [-380, 780] }}
+                transition={beamTransition}
+              />
+            </g>
+          </g>
+        )}
+      </svg>
+    </motion.div>
   );
 }
 

@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DIST = resolve(__dirname, "..", "dist");
-const SITE_URL = "https://neo-nunez.vercel.app";
+const SITE_URL = "https://neonunez.com";
 const AUTHOR = "Neo Nuñez";
 
 const META = {

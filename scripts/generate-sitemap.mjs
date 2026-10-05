@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const SITE_URL = "https://neo-nunez.vercel.app";
+const SITE_URL = "https://neonunez.com";
 
 const ROUTES = [
   "/",
