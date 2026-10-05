@@ -399,21 +399,24 @@ const NEO_GLYPHS = [
 
 const beamVariants: Variants = {
   idle: {
-    x: [-380, 780],
+    x: -380,
+    opacity: 0,
     transition: {
-      repeat: Infinity,
-      duration: 4.8,
-      ease: [0.35, 0, 0.25, 1],
-      repeatDelay: 4.5,
+      opacity: { duration: 0.25, ease: "easeOut" },
+      x: { duration: 0, delay: 0.25 },
     },
   },
   hover: {
     x: [-380, 780],
+    opacity: 1,
     transition: {
-      duration: 1.6,
-      ease: [0.22, 1, 0.36, 1],
-      repeat: Infinity,
-      repeatDelay: 1.2,
+      x: {
+        duration: 1.6,
+        ease: [0.22, 1, 0.36, 1],
+        repeat: Infinity,
+        repeatDelay: 1.2,
+      },
+      opacity: { duration: 0.15 },
     },
   },
 };
